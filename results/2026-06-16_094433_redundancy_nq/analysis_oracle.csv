@@ -1,0 +1,25 @@
+overlap,Selector,S-Recall@k,oracle - fixed,oracle - kNN,% beats kNN
+0.0,kNN,0.9208,,,
+0.0,MMR fixed [MMR(0.7)],0.9276,,,
+0.0,MMR oracle,0.9569,0.0292,0.0361,3.8
+0.0,RNG fixed [RNG(-0.1)],0.9293,,,
+0.0,RNG oracle,0.948,0.0186,0.0272,2.7
+0.0,All-methods oracle,0.9686,,0.0479,4.8
+0.25,kNN,0.9176,,,
+0.25,MMR fixed [MMR(0.9)],0.929,,,
+0.25,MMR oracle,0.9582,0.0292,0.0406,4.2
+0.25,RNG fixed [RNG(-0.1)],0.9302,,,
+0.25,RNG oracle,0.9476,0.0175,0.0301,3.0
+0.25,All-methods oracle,0.9706,,0.0531,5.3
+0.5,kNN,0.9098,,,
+0.5,MMR fixed [MMR(0.7)],0.9303,,,
+0.5,MMR oracle,0.959,0.0287,0.0492,4.9
+0.5,RNG fixed [RNG(-0.1)],0.9333,,,
+0.5,RNG oracle,0.9496,0.0163,0.0398,4.0
+0.5,All-methods oracle,0.9713,,0.0615,6.1
+0.75,kNN,0.8972,,,
+0.75,MMR fixed [MMR(0.7)],0.9297,,,
+0.75,MMR oracle,0.9562,0.0265,0.0589,6.0
+0.75,RNG fixed [RNG(-0.1)],0.9298,,,
+0.75,RNG oracle,0.948,0.0181,0.0507,5.1
+0.75,All-methods oracle,0.9669,,0.0697,7.0

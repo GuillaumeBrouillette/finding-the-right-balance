@@ -1,0 +1,67 @@
+{
+  "alpha_grid": [
+    -0.3,
+    -0.2,
+    -0.1,
+    -0.05,
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.5,
+    1.0
+  ],
+  "batch_size": 64,
+  "chunk_window": 60,
+  "dataset": "fiqa",
+  "device": "cuda",
+  "dup_noise": "light",
+  "dup_target": "mixed",
+  "encode_cache": true,
+  "encoder_model": "BAAI/bge-m3",
+  "experiment": "both",
+  "gen_max_samples": 1000,
+  "gen_methods": [],
+  "generator_model": null,
+  "git_commit": "8d34a84",
+  "lambda_grid": [
+    0.3,
+    0.5,
+    0.7,
+    0.9
+  ],
+  "max_samples": null,
+  "metric": "cosine",
+  "objective": "S-Recall@k",
+  "overlap_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "rho_grid": [
+    0.0,
+    0.025,
+    0.05,
+    0.1,
+    0.15,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "run_generation": false,
+  "script": "evaluate_redundancy.py",
+  "seed": 0,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "single_subtopic": false,
+  "split": "test",
+  "timestamp": "2026-07-02_103328",
+  "top_k": 10,
+  "top_m": 100,
+  "val_fraction": 0.2
+}

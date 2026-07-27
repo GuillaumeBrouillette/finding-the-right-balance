@@ -1,0 +1,58 @@
+{
+  "alpha_grid": [
+    -0.5,
+    -0.3,
+    -0.1,
+    -0.05,
+    0.0,
+    0.05,
+    0.1,
+    0.3,
+    0.5
+  ],
+  "alpha_json": null,
+  "alpha_max": 1.0,
+  "alpha_min": -1.0,
+  "alpha_step": 0.25,
+  "beta_grid": [
+    0,
+    0.1,
+    0.3,
+    0.5,
+    0.7,
+    0.9,
+    1.0
+  ],
+  "ce_model": "BAAI/bge-reranker-v2-m3",
+  "coarse_to_fine": false,
+  "dataset": "hotpotqa_fullwiki",
+  "dead_zone_min": -1.0,
+  "device": "cuda",
+  "encoder_model": "BAAI/bge-m3",
+  "fine_step": null,
+  "generator_model": "google/flan-t5-base",
+  "git_commit": "5126ee5",
+  "max_new_tokens": 64,
+  "max_samples": null,
+  "metric": "cosine",
+  "mmr_lambdas": [
+    0.3,
+    0.5,
+    0.7
+  ],
+  "num_beams": 4,
+  "objective": [
+    "alpha_ndcg"
+  ],
+  "run_generation": true,
+  "script": "evaluate_cross_encoder.py",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "split": "validation",
+  "timestamp": "2026-06-24_064052",
+  "top_k": 5,
+  "top_m": 100
+}

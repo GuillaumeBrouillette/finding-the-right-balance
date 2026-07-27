@@ -1,0 +1,45 @@
+rho,Selector,S-Recall@k,trigger rate,note
+0.0,kNN,0.8206,,
+0.0,always Greedy-DPP,0.8256,,
+0.0,"rule (tau=2.31, Greedy-DPP)",0.83,0.044,
+0.0,per-level tuned,0.8469,,[RNG(0.2)]
+0.0,all-methods oracle,0.9469,,
+0.025,kNN,0.8206,,
+0.025,always Greedy-DPP,0.8256,,
+0.025,"rule (tau=2.31, Greedy-DPP)",0.83,0.044,
+0.025,per-level tuned,0.8469,,[RNG(0.2)]
+0.025,all-methods oracle,0.9469,,
+0.05,kNN,0.8206,,
+0.05,always Greedy-DPP,0.8256,,
+0.05,"rule (tau=2.31, Greedy-DPP)",0.83,0.044,
+0.05,per-level tuned,0.8469,,[RNG(0.2)]
+0.05,all-methods oracle,0.9469,,
+0.1,kNN,0.805,,
+0.1,always Greedy-DPP,0.8237,,
+0.1,"rule (tau=2.31, Greedy-DPP)",0.8163,0.064,
+0.1,per-level tuned,0.8344,,[RNG(0.2)]
+0.1,all-methods oracle,0.9444,,
+0.15,kNN,0.7931,,
+0.15,always Greedy-DPP,0.83,,
+0.15,"rule (tau=2.31, Greedy-DPP)",0.8044,0.163,
+0.15,per-level tuned,0.8031,,[RNG(-0.2)]
+0.15,all-methods oracle,0.94,,
+0.25,kNN,0.7925,,
+0.25,always Greedy-DPP,0.8319,,
+0.25,"rule (tau=2.31, Greedy-DPP)",0.8037,0.171,
+0.25,per-level tuned,0.8037,,[RNG(-0.2)]
+0.25,all-methods oracle,0.9413,,
+0.5,kNN,0.7488,,
+0.5,always Greedy-DPP,0.8356,,
+0.5,"rule (tau=2.31, Greedy-DPP)",0.7981,0.484,
+0.5,per-level tuned,0.8356,,[Greedy-DPP]
+0.5,all-methods oracle,0.9313,,
+1.0,kNN,0.6419,,
+1.0,always Greedy-DPP,0.8413,,
+1.0,"rule (tau=2.31, Greedy-DPP)",0.8231,0.9,
+1.0,per-level tuned,0.8413,,[Greedy-DPP]
+1.0,all-methods oracle,0.9344,,
+pooled,kNN,0.7804,,
+pooled,always Greedy-DPP,0.8299,,
+pooled,"rule (tau=2.31, Greedy-DPP)",0.817,,
+pooled,all-methods oracle,0.9415,,

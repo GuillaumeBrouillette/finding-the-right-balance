@@ -1,0 +1,44 @@
+{
+  "alpha_grid": [
+    -0.5,
+    -0.3,
+    -0.1,
+    -0.05,
+    0.0,
+    0.05,
+    0.1,
+    0.3,
+    0.5
+  ],
+  "alpha_json": null,
+  "alpha_max": 1.0,
+  "alpha_min": -1.0,
+  "alpha_step": 0.25,
+  "ce_model": null,
+  "coarse_to_fine": false,
+  "dead_zone_min": -1.0,
+  "device": "cuda",
+  "encoder_model": "BAAI/bge-m3",
+  "fine_step": null,
+  "git_commit": "5126ee5",
+  "index_dir": "results/indices",
+  "max_queries": null,
+  "metric": "cosine",
+  "objective": [
+    "alpha_ndcg"
+  ],
+  "script": "evaluate_beir.py",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tasks": [
+    "scifact",
+    "fiqa",
+    "trec-covid"
+  ],
+  "timestamp": "2026-06-22_211522",
+  "top_k": 10,
+  "top_m": 100
+}

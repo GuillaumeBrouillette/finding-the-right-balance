@@ -1,0 +1,22 @@
+{
+  "n_seeds": 3,
+  "min_rel": 2.0,
+  "min_rel_ci95": 0.0,
+  "tau": 3.36667,
+  "tau_ci95": 0.48827,
+  "D": "RNG(-0.2);RNG(-0.1);MMR(0.7)",
+  "pooled kNN": 0.6524,
+  "pooled kNN_ci95": 0.00584,
+  "pooled ungated rule": 0.71733,
+  "pooled ungated rule_ci95": 0.00442,
+  "pooled gated rule": 0.71703,
+  "pooled gated rule_ci95": 0.00451,
+  "pooled gate-off rate": 0.02,
+  "pooled gate-off rate_ci95": 0.0043,
+  "ungated - kNN": 0.0649,
+  "ungated - kNN_ci95": 0.00407,
+  "gated - kNN": 0.0646,
+  "gated - kNN_ci95": 0.00358,
+  "gate recovers (gated - ungated)": -0.0003,
+  "gate recovers (gated - ungated)_ci95": 0.0005
+}

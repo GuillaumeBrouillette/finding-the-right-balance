@@ -1,0 +1,19 @@
+{
+  "alpha_grid": null,
+  "alpha_json": null,
+  "alpha_objective": "f1",
+  "coarse_to_fine": null,
+  "config": "/home/guillaume/Code/Relative-Distance-Selection-for-RAG/implementation/config.yaml",
+  "dataset": "hotpotqa_fullwiki",
+  "device": "cuda",
+  "git_commit": "b921f98",
+  "include_rds": false,
+  "max_samples": null,
+  "metric": "cosine",
+  "run_generation": true,
+  "script": "evaluate.py",
+  "split": "validation",
+  "timestamp": "2026-06-05_200449",
+  "top_k": 5,
+  "top_m": 100
+}

@@ -1,0 +1,82 @@
+# RDS / RNG-Score Evaluation Pipeline – configuration
+# ----------------------------------------
+# Copy this file and edit as needed, then pass with --config <path>.
+
+# ── Dataset ──────────────────────────────────────────────────────────────────
+dataset: hotpotqa         # hotpotqa | nq_open | squad
+split: validation         # train | validation
+max_samples: 100          # set null to run the full split (slow on a laptop)
+
+# ── Retrieval ─────────────────────────────────────────────────────────────────
+encoder_model: minilm     # alias → sentence-transformers/all-MiniLM-L6-v2 (fast, CPU-friendly)
+#   Other aliases: bge-m3 (BAAI/bge-m3), qwen3-embed-4b (Qwen/Qwen3-Embedding-4B)
+#   Or pass a full HuggingFace ID directly.
+top_m: 100                # candidate pool size fed to every re-ranker
+top_k: 5                  # final number of documents returned per query
+metric: cosine            # euclidean | angular | cosine
+retriever_index_dir: null # required for datasets without attached passages (e.g. nq_open)
+
+# ── RNG-Score hyperparameter sweep ───────────────────────────────────────────
+# -2.0 is the fallback sentinel: under cosine distance it deactivates every
+# obstruction penalty, so the grid provably contains the k-NN operating point.
+rng_score_alphas: [-2.0, -0.3, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3]
+
+# ── Seg-Score (RNG-Score 2) hyperparameter sweep ─────────────────────────────
+seg_score_alphas: []   # Seg-Score excluded from the study (2026-07-16)
+
+# ── MMR hyperparameter sweep ──────────────────────────────────────────────────
+mmr_lambdas: [0.3, 0.5, 0.7]
+
+# ── RDS / RADS (legacy hard-selection methods, opt-in) ───────────────────────
+include_rds: false
+rds_alphas: [0.0, 0.05, 0.1, 0.2, 0.3, 0.5]
+rads_alphas: [0.0, 0.05, 0.1, 0.2, 0.3, 0.5]
+
+# ── Generator ─────────────────────────────────────────────────────────────────
+generator_model: flan-t5-small   # alias → google/flan-t5-small (fast, CPU-friendly)
+#   Other aliases: llama-3.2-3b, llama-3.1-8b, qwen3-8b
+#   Or pass a full HuggingFace ID directly.
+max_new_tokens: 128
+num_beams: 4
+run_generation: true      # set false to skip generation (retrieval metrics only)
+
+# ── Output ────────────────────────────────────────────────────────────────────
+output_dir: results       # tables saved here as CSV
+print_table: true
+
+
+# =============================================================================
+# RQ3 – BEIR evaluation  (evaluate_beir.py)
+# =============================================================================
+# Uncomment and adjust when running evaluate_beir.py directly.
+# Command-line flags override these values.
+#
+# beir_tasks: [scifact, fiqa, trec-covid]
+# beir_encoder_model: sentence-transformers/all-MiniLM-L6-v2
+# beir_top_m: 100
+# beir_top_k: 10
+# beir_max_queries: null         # set e.g. 50 for a quick smoke-test
+# beir_index_dir: results/indices
+
+
+# =============================================================================
+# RQ4 – Cross-encoder pipeline  (evaluate_cross_encoder.py)
+# =============================================================================
+# ce_model: cross-encoder/ms-marco-MiniLM-L-6-v2
+#   Alternatives (stronger, ~2× slower):
+#     cross-encoder/ms-marco-MiniLM-L-12-v2
+#
+# ce_top_m: 100
+# ce_top_k: 5
+# ce_alpha_grid: [-0.3, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3]
+# ce_beta_grid:  [0.1, 0.3, 0.5, 0.7]   # for S1 blending
+# ce_run_generation: false
+
+
+# =============================================================================
+# RQ5 – Efficiency  (efficiency.py)
+# =============================================================================
+# efficiency_pool_sizes: [25, 50, 100, 200, 500]
+# efficiency_dim: 384      # match encoder dim (384 for all-MiniLM-L6-v2)
+# efficiency_repeats: 200
+# efficiency_top_k: 5

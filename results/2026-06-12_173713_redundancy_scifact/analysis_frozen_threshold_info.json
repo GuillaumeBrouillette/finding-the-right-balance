@@ -1,0 +1,10 @@
+{
+  "tau": 4.62,
+  "D": "MMR(0.7)",
+  "trigger_metric": "Vendi",
+  "tau_normalized": 0.462,
+  "pooled kNN": 0.8204,
+  "pooled rule": 0.8224,
+  "pooled oracle": 0.8871,
+  "headroom captured (%)": 3.0
+}

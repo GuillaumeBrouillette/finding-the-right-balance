@@ -1,0 +1,41 @@
+rho,Selector,S-Recall@k,oracle - fixed,oracle - kNN,% beats kNN
+0.0,kNN,0.8967,,,
+0.0,MMR fixed [MMR(0.9)],0.89,,,
+0.0,MMR oracle,0.9154,0.0253,0.0187,7.1
+0.0,RNG fixed [RNG(1)],0.8971,,,
+0.0,RNG oracle,0.9201,0.023,0.0234,6.3
+0.0,Seg fixed [Seg(1)],0.897,,,
+0.0,Seg oracle,0.919,0.022,0.0224,6.2
+0.0,All-methods oracle,0.9528,,0.0561,13.6
+0.1,kNN,0.8817,,,
+0.1,MMR fixed [MMR(0.9)],0.88,,,
+0.1,MMR oracle,0.9088,0.0288,0.027,9.1
+0.1,RNG fixed [RNG(-0.3)],0.8865,,,
+0.1,RNG oracle,0.9125,0.026,0.0308,8.3
+0.1,Seg fixed [Seg(-0.3)],0.8824,,,
+0.1,Seg oracle,0.9112,0.0288,0.0295,8.2
+0.1,All-methods oracle,0.9485,,0.0668,16.6
+0.25,kNN,0.8626,,,
+0.25,MMR fixed [MMR(0.9)],0.8607,,,
+0.25,MMR oracle,0.8982,0.0376,0.0356,11.6
+0.25,RNG fixed [RNG(-0.3)],0.8722,,,
+0.25,RNG oracle,0.9002,0.028,0.0375,10.6
+0.25,Seg fixed [Seg(-0.3)],0.8695,,,
+0.25,Seg oracle,0.8996,0.0301,0.037,10.6
+0.25,All-methods oracle,0.9428,,0.0802,20.3
+0.5,kNN,0.8135,,,
+0.5,MMR fixed [MMR(0.7)],0.822,,,
+0.5,MMR oracle,0.8795,0.0575,0.066,18.9
+0.5,RNG fixed [RNG(-0.3)],0.8402,,,
+0.5,RNG oracle,0.8751,0.0349,0.0616,16.7
+0.5,Seg fixed [Seg(-0.3)],0.8402,,,
+0.5,Seg oracle,0.8733,0.0331,0.0598,16.2
+0.5,All-methods oracle,0.9329,,0.1194,29.6
+1.0,kNN,0.6905,,,
+1.0,MMR fixed [MMR(0.7)],0.802,,,
+1.0,MMR oracle,0.8479,0.046,0.1574,38.3
+1.0,RNG fixed [RNG(-0.2)],0.7974,,,
+1.0,RNG oracle,0.8318,0.0344,0.1413,33.4
+1.0,Seg fixed [Seg(-0.2)],0.7843,,,
+1.0,Seg oracle,0.8274,0.0432,0.1369,32.5
+1.0,All-methods oracle,0.9241,,0.2336,52.7

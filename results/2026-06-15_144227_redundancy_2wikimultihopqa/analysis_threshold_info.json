@@ -1,0 +1,10 @@
+{
+  "tau": 3.4,
+  "D": "Greedy-DPP",
+  "trigger_metric": "Vendi",
+  "tau_normalized": 0.68,
+  "pooled kNN": 0.819,
+  "pooled rule": 0.8534,
+  "pooled oracle": 0.9322,
+  "headroom captured (%)": 30.4
+}

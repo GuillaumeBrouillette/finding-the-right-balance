@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Downloaded datasets (fetched on first use — never committed)
+data/*.zip
+data/beir/
+data/dpr/
+data/mdr/
+
+# Large per-query evaluation tables (can exceed GitHub's 100 MB file limit)
+results/*/*_per_query.csv
+
+# Local ANN index caches
+results/indices/
+
+# Model checkpoints
+checkpoints/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,25 @@
+overlap,Selector,S-Recall@k,trigger rate,note
+0.0,kNN,0.9208,,
+0.0,always RNG(-0.1),0.9293,,
+0.0,"rule (tau=3.02, RNG(-0.1))",0.9293,0.973,
+0.0,per-level tuned,0.9293,,[RNG(-0.1)]
+0.0,all-methods oracle,0.9686,,
+0.25,kNN,0.9176,,
+0.25,always RNG(-0.1),0.9302,,
+0.25,"rule (tau=3.02, RNG(-0.1))",0.9298,0.98,
+0.25,per-level tuned,0.9302,,[RNG(-0.1)]
+0.25,all-methods oracle,0.9706,,
+0.5,kNN,0.9098,,
+0.5,always RNG(-0.1),0.9333,,
+0.5,"rule (tau=3.02, RNG(-0.1))",0.9333,0.992,
+0.5,per-level tuned,0.9333,,[RNG(-0.1)]
+0.5,all-methods oracle,0.9713,,
+0.75,kNN,0.8972,,
+0.75,always RNG(-0.1),0.9298,,
+0.75,"rule (tau=3.02, RNG(-0.1))",0.9297,0.996,
+0.75,per-level tuned,0.9298,,[RNG(-0.1)]
+0.75,all-methods oracle,0.9669,,
+pooled,kNN,0.9113,,
+pooled,always RNG(-0.1),0.9307,,
+pooled,"rule (tau=3.02, RNG(-0.1))",0.9305,,
+pooled,all-methods oracle,0.9694,,

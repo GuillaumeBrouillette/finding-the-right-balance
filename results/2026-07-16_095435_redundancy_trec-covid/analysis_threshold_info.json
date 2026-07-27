@@ -1,0 +1,17 @@
+{
+  "n_seeds": 3,
+  "tau": 3.23667,
+  "tau_ci95": 0.07171,
+  "D": "MMR(0.7);RNG(-0.1);MMR(0.9)",
+  "trigger_metric": "Vendi",
+  "tau_normalized": 0.32367,
+  "tau_normalized_ci95": 0.00717,
+  "pooled kNN": 0.22327,
+  "pooled kNN_ci95": 0.01193,
+  "pooled rule": 0.23987,
+  "pooled rule_ci95": 0.01815,
+  "pooled oracle": 0.28237,
+  "pooled oracle_ci95": 0.01436,
+  "headroom captured (%)": 28.06667,
+  "headroom captured (%)_ci95": 9.64771
+}

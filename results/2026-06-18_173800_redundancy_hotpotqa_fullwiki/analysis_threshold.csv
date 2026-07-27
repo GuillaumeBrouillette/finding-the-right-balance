@@ -1,0 +1,30 @@
+rho,Selector,S-Recall@k,trigger rate,note
+0.0,kNN,0.7877,,
+0.0,always MMR(0.7),0.7286,,
+0.0,"rule (tau=2.31, MMR(0.7))",0.7875,0.031,
+0.0,per-level tuned,0.79,,[RNG(0.2)]
+0.0,all-methods oracle,0.8194,,
+0.1,kNN,0.7116,,
+0.1,always MMR(0.7),0.7308,,
+0.1,"rule (tau=2.31, MMR(0.7))",0.7308,0.901,
+0.1,per-level tuned,0.7626,,[RNG(-0.2)]
+0.1,all-methods oracle,0.8105,,
+0.25,kNN,0.545,,
+0.25,always MMR(0.7),0.734,,
+0.25,"rule (tau=2.31, MMR(0.7))",0.7327,0.928,
+0.25,per-level tuned,0.734,,[MMR(0.7)]
+0.25,all-methods oracle,0.8049,,
+0.5,kNN,0.5301,,
+0.5,always MMR(0.7),0.7376,,
+0.5,"rule (tau=2.31, MMR(0.7))",0.7356,0.938,
+0.5,per-level tuned,0.7376,,[MMR(0.7)]
+0.5,all-methods oracle,0.8033,,
+1.0,kNN,0.5255,,
+1.0,always MMR(0.7),0.7457,,
+1.0,"rule (tau=2.31, MMR(0.7))",0.7452,0.958,
+1.0,per-level tuned,0.7457,,[MMR(0.7)]
+1.0,all-methods oracle,0.809,,
+pooled,kNN,0.62,,
+pooled,always MMR(0.7),0.7353,,
+pooled,"rule (tau=2.31, MMR(0.7))",0.7463,,
+pooled,all-methods oracle,0.8094,,

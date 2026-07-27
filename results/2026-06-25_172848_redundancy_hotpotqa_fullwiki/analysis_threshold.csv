@@ -1,0 +1,63 @@
+rho,Selector,n_seeds,S-Recall@k,S-Recall@k_ci95,trigger rate,note,trigger rate_ci95
+0.0,kNN,3,0.8007,0.0028,,,
+0.0,always Greedy-DPP,3,0.7219,0.004,,,
+0.0,"rule (tau=1.83, Greedy-DPP)",1,0.8019,0.0,0.001,,0.0
+0.0,per-level tuned,3,0.8027,0.0045,,[RNG(0.3)],
+0.0,all-methods oracle,3,0.8342,0.0027,,,
+0.025,kNN,3,0.7872,0.0055,,,
+0.025,always Greedy-DPP,3,0.7287,0.006,,,
+0.025,"rule (tau=1.83, Greedy-DPP)",1,0.7876,0.0,0.007,,0.0
+0.025,per-level tuned,3,0.7899,0.0073,,[RNG(0.5)],
+0.025,all-methods oracle,3,0.8293,0.004,,,
+0.05,kNN,3,0.7969,0.0082,,,
+0.05,always Greedy-DPP,3,0.7458,0.0034,,,
+0.05,"rule (tau=1.83, Greedy-DPP)",1,0.7952,0.0,0.05,,0.0
+0.05,per-level tuned,3,0.8011,0.0072,,[RNG(0.2)],
+0.05,all-methods oracle,3,0.8441,0.0052,,,
+0.1,kNN,3,0.7395,0.0051,,,
+0.1,always Greedy-DPP,3,0.7566,0.0046,,,
+0.1,"rule (tau=1.83, Greedy-DPP)",1,0.7585,0.0,0.649,,0.0
+0.1,per-level tuned,3,0.7829,0.0068,,[RNG(-0.1)],
+0.1,all-methods oracle,3,0.8399,0.0055,,,
+0.15,kNN,3,0.625,0.0051,,,
+0.15,always Greedy-DPP,3,0.76,0.0029,,,
+0.15,"rule (tau=1.83, Greedy-DPP)",1,0.7636,0.0,0.844,,0.0
+0.15,per-level tuned,3,0.7644,0.0064,,[RNG(-0.1)],
+0.15,all-methods oracle,3,0.8379,0.0053,,,
+0.25,kNN,3,0.5472,0.0029,,,
+0.25,always Greedy-DPP,3,0.7628,0.0074,,,
+0.25,"rule (tau=1.83, Greedy-DPP)",1,0.7649,0.0,0.891,,0.0
+0.25,per-level tuned,3,0.7628,0.0074,,[Greedy-DPP],
+0.25,all-methods oracle,3,0.8363,0.0071,,,
+0.5,kNN,3,0.5311,0.0036,,,
+0.5,always Greedy-DPP,3,0.7655,0.0062,,,
+0.5,"rule (tau=1.83, Greedy-DPP)",1,0.7656,0.0,0.911,,0.0
+0.5,per-level tuned,3,0.7655,0.0062,,[Greedy-DPP],
+0.5,all-methods oracle,3,0.833,0.005,,,
+1.0,kNN,3,0.5266,0.0043,,,
+1.0,always Greedy-DPP,3,0.7662,0.0054,,,
+1.0,"rule (tau=1.83, Greedy-DPP)",1,0.7681,0.0,0.923,,0.0
+1.0,per-level tuned,3,0.7662,0.0054,,[Greedy-DPP],
+1.0,all-methods oracle,3,0.8341,0.0025,,,
+pooled,kNN,3,0.6693,0.0046,,,
+pooled,always Greedy-DPP,3,0.7509,0.0046,,,
+pooled,"rule (tau=1.83, Greedy-DPP)",1,0.7757,0.0,,,
+pooled,all-methods oracle,3,0.8361,0.0044,,,
+0.0,"rule (tau=1.76, Greedy-DPP)",1,0.801,0.0,0.002,,0.0
+0.025,"rule (tau=1.76, Greedy-DPP)",1,0.788,0.0,0.004,,0.0
+0.05,"rule (tau=1.76, Greedy-DPP)",1,0.7937,0.0,0.033,,0.0
+0.1,"rule (tau=1.76, Greedy-DPP)",1,0.7579,0.0,0.605,,0.0
+0.15,"rule (tau=1.76, Greedy-DPP)",1,0.7635,0.0,0.828,,0.0
+0.25,"rule (tau=1.76, Greedy-DPP)",1,0.7664,0.0,0.884,,0.0
+0.5,"rule (tau=1.76, Greedy-DPP)",1,0.7666,0.0,0.906,,0.0
+1.0,"rule (tau=1.76, Greedy-DPP)",1,0.7643,0.0,0.923,,0.0
+pooled,"rule (tau=1.76, Greedy-DPP)",1,0.7752,0.0,,,
+0.0,"rule (tau=1.77, Greedy-DPP)",1,0.7994,0.0,0.002,,0.0
+0.025,"rule (tau=1.77, Greedy-DPP)",1,0.7843,0.0,0.005,,0.0
+0.05,"rule (tau=1.77, Greedy-DPP)",1,0.7891,0.0,0.037,,0.0
+0.1,"rule (tau=1.77, Greedy-DPP)",1,0.7541,0.0,0.606,,0.0
+0.15,"rule (tau=1.77, Greedy-DPP)",1,0.7605,0.0,0.832,,0.0
+0.25,"rule (tau=1.77, Greedy-DPP)",1,0.7622,0.0,0.883,,0.0
+0.5,"rule (tau=1.77, Greedy-DPP)",1,0.7632,0.0,0.904,,0.0
+1.0,"rule (tau=1.77, Greedy-DPP)",1,0.7625,0.0,0.919,,0.0
+pooled,"rule (tau=1.77, Greedy-DPP)",1,0.7719,0.0,,,

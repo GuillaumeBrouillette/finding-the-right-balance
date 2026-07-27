@@ -1,0 +1,2 @@
+objective,per_seed,mean,ci95_half_width,n_seeds_with_crossover,note
+S-Recall@k,"[0.16667, 0.0, 0.08173]",0.0828,0.20703,3,
