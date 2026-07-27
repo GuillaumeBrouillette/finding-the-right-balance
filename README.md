@@ -1,7 +1,7 @@
 # Finding the Right Balance: Relevance and Diversity in LLM Retrieval
 
 Code for the paper **"Finding the Right Balance: Relevance and Diversity in
-LLM Retrieval"** (Guillaume Brouillette et al.).
+LLM Retrieval"** (Guillaume Brouillette and Faustin Kagabo).
 It measures the geometric **RNG-Score** / **Seg-Score** rerankers against
 diversification baselines (MMR, Maxmin, Greedy-DPP, cross-encoder pipelines)
 and, more centrally, characterises *when* diversification helps: redundancy
@@ -525,7 +525,7 @@ If you use this code, please cite the paper:
 ```bibtex
 @article{brouillette2026balance,
   title  = {Finding the Right Balance: Relevance and Diversity in LLM Retrieval},
-  author = {Brouillette, Guillaume},
+  author = {Brouillette, Guillaume and Kagabo, Faustin},
   year   = {2026},
   note   = {Preprint}
 }
