@@ -1,0 +1,2824 @@
+{
+  "algorithm_rules": {
+    "chunking": "whitespace word windows; stride=max(1,round(window*(1-overlap))); drop a trailing fragment shorter than half a window; chunks inherit their source title",
+    "injection": "n_dup=round(rho*original_pool_size); append exact/light/heavy copies selected by gold/random/mixed targeting; copied passages inherit their source title"
+  },
+  "format_version": 1,
+  "historical_repository_head_at_recovery": "25075153a4cd59659899427c76863a6d74f4d553",
+  "runs": [
+    {
+      "artifact_families": [
+        "cross_encoder"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "62a51aa441cb284475f0ed0197542ad07fd3b213c2716b2d96cfe5c1524cf4f6",
+      "historical_code_snapshot": "manifests/execution/historical_code/5594ebc51aa9d75d196a8c90edf57c35adfaea37/evaluate_cross_encoder.py",
+      "historical_git_commit": "5594ebc51aa9d75d196a8c90edf57c35adfaea37",
+      "historical_git_commit_short": "5594ebc",
+      "random_streams": [
+        {
+          "call": "default_rng(0)",
+          "line": 247,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "run_id": "2026-06-04_124043_ce_musique",
+      "run_params": "results/retained/2026-06-04_124043_ce_musique/run_params.json",
+      "run_params_sha256": "583e1b86ae3078aefb34ded4681100fb90f1708127e3d403a1e78569773916f0",
+      "script": "evaluate_cross_encoder.py",
+      "seed_evidence": "hard-coded numpy.random.default_rng(0) in historical source",
+      "source_datasets": [
+        "musique"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "cross_encoder"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "629420495d59c5edec183ecfc228681786ecb6b4f4ae79be1b87877116d4ef2d",
+      "historical_code_snapshot": "manifests/execution/historical_code/b921f9859893fee3713319c18c97a6c2457413f0/evaluate_cross_encoder.py",
+      "historical_git_commit": "b921f9859893fee3713319c18c97a6c2457413f0",
+      "historical_git_commit_short": "b921f98",
+      "random_streams": [
+        {
+          "call": "default_rng(0)",
+          "line": 248,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "run_id": "2026-06-05_102637_ce_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-05_102637_ce_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "56dc9c4b1cafdbe16ed6636775080c7fe04b5f307482582925f3fad37f9c0155",
+      "script": "evaluate_cross_encoder.py",
+      "seed_evidence": "hard-coded numpy.random.default_rng(0) in historical source",
+      "source_datasets": [
+        "2wikimultihopqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "generation"
+      ],
+      "effective_seeds": [],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "42a148f642557d796ab079fb22e9b2179f693c3b1e27412ace7dbecb8a2d79fe",
+      "historical_code_snapshot": "manifests/execution/historical_code/b921f9859893fee3713319c18c97a6c2457413f0/evaluate.py",
+      "historical_git_commit": "b921f9859893fee3713319c18c97a6c2457413f0",
+      "historical_git_commit_short": "b921f98",
+      "random_streams": [],
+      "run_id": "2026-06-05_200449_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-05_200449_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "63dbdf3a11cb5cde8e52fa1f53e817c4082969514c9e55126f8eace38a089569",
+      "script": "evaluate.py",
+      "seed_evidence": "no random-number generator invoked by the primary execution script",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "cross_encoder"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "b4ac12e1d44e78088d15913e58512dd745cfb3ca4b41a38bb01a346018d6049d",
+      "historical_code_snapshot": "manifests/execution/historical_code/3106168feb333e1d72261f1e2aeec4cbe13873bf/evaluate_cross_encoder.py",
+      "historical_git_commit": "3106168feb333e1d72261f1e2aeec4cbe13873bf",
+      "historical_git_commit_short": "3106168",
+      "random_streams": [
+        {
+          "call": "default_rng(0)",
+          "line": 248,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "run_id": "2026-06-06_205350_ce_nq",
+      "run_params": "results/retained/2026-06-06_205350_ce_nq/run_params.json",
+      "run_params_sha256": "f05a539cf8ebaf03f34aae1c4714540d38797876cb592a7b1f8eb14353448d54",
+      "script": "evaluate_cross_encoder.py",
+      "seed_evidence": "hard-coded numpy.random.default_rng(0) in historical source",
+      "source_datasets": [
+        "nq"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "beir"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "f36222eb46d17f1df7ef200a3417718b938b5de20c6f5c3059c33358866bfc59",
+      "historical_code_snapshot": "manifests/execution/historical_code/3106168feb333e1d72261f1e2aeec4cbe13873bf/evaluate_beir.py",
+      "historical_git_commit": "3106168feb333e1d72261f1e2aeec4cbe13873bf",
+      "historical_git_commit_short": "3106168",
+      "random_streams": [
+        {
+          "call": "default_rng(0)",
+          "line": 174,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "run_id": "2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020",
+      "run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json",
+      "run_params_sha256": "7022eb1754a22416e10578d29045cc83cae68a4682873336b940112d68305592",
+      "script": "evaluate_beir.py",
+      "seed_evidence": "hard-coded numpy.random.default_rng(0) in historical source",
+      "source_datasets": [
+        "scifact",
+        "fiqa",
+        "trec-covid",
+        "arguana",
+        "webis-touche2020"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "21b90fab3395acb68460ce00120ba97606c925cb9aa11a53d859adc992c3c32a",
+      "historical_code_snapshot": "manifests/execution/historical_code/130ea7cea46d572ecff8fe8c17ab5154bec21e62/evaluate_redundancy.py",
+      "historical_git_commit": "130ea7cea46d572ecff8fe8c17ab5154bec21e62",
+      "historical_git_commit_short": "130ea7c",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 471,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 533,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 673,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-12_173713_redundancy_scifact",
+      "run_params": "results/retained/2026-06-12_173713_redundancy_scifact/run_params.json",
+      "run_params_sha256": "bedf458866714880799f163343f7d6b3b63990aa54afa456bc91a65eeafd8f53",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "scifact"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "53844e740e85f43005a65044929f3adaf08ff434684c155703bd730d8aa5b8fe",
+      "historical_code_snapshot": "manifests/execution/historical_code/67a891dd775c956fbdae46042832c56cf8e19128/evaluate_redundancy.py",
+      "historical_git_commit": "67a891dd775c956fbdae46042832c56cf8e19128",
+      "historical_git_commit_short": "67a891d",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 479,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 541,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 681,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-12_204158_redundancy_hotpotqa",
+      "run_params": "results/retained/2026-06-12_204158_redundancy_hotpotqa/run_params.json",
+      "run_params_sha256": "5a79500ff2095c8a5b768b03729a5a6a4ce2ed0c89052ae8740b3afd5f236792",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "hotpotqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "not_in_reported_dataset_scope: exploratory HotpotQA distractor run",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "53844e740e85f43005a65044929f3adaf08ff434684c155703bd730d8aa5b8fe",
+      "historical_code_snapshot": "manifests/execution/historical_code/89adc0d87bc37084041e932879e0de9d1e6d27e6/evaluate_redundancy.py",
+      "historical_git_commit": "89adc0d87bc37084041e932879e0de9d1e6d27e6",
+      "historical_git_commit_short": "89adc0d",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 479,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 541,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 681,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-15_142100_redundancy_musique",
+      "run_params": "results/retained/2026-06-15_142100_redundancy_musique/run_params.json",
+      "run_params_sha256": "65b178b2b92ce6d8a26db018068dba0ebe287364ca77b6954cba74c061d3c7ec",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "musique"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "53844e740e85f43005a65044929f3adaf08ff434684c155703bd730d8aa5b8fe",
+      "historical_code_snapshot": "manifests/execution/historical_code/89adc0d87bc37084041e932879e0de9d1e6d27e6/evaluate_redundancy.py",
+      "historical_git_commit": "89adc0d87bc37084041e932879e0de9d1e6d27e6",
+      "historical_git_commit_short": "89adc0d",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 479,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 541,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 681,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-15_144227_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-15_144227_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "2711ed2144b826e44723fc8587379dd531a01294bd3a1e92c8c0cf550e4ec532",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "2wikimultihopqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "200ca8381d6be50154f34aa6a2942a3fbe090d7a1a0e2e0041c288e7d195e807",
+      "historical_code_snapshot": "manifests/execution/historical_code/8dccbec2761948ff180e1b6bd9b86d7753877b15/evaluate_redundancy.py",
+      "historical_git_commit": "8dccbec2761948ff180e1b6bd9b86d7753877b15",
+      "historical_git_commit_short": "8dccbec",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 492,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 554,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 695,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-16_094433_redundancy_nq",
+      "run_params": "results/retained/2026-06-16_094433_redundancy_nq/run_params.json",
+      "run_params_sha256": "e6abb45f1fe13394646a3cc426c0d3dc5b1dc21447d0b9bce6b684b5e4b2d3d6",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "nq"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "781a6a9a33932242b5a2f05de0a065731d6b64d4b75c081acc44de6995d641f6",
+      "historical_code_snapshot": "manifests/execution/historical_code/39a27c9599b1fcbe1c40f17c233d10ebe9da4c5a/evaluate_redundancy.py",
+      "historical_git_commit": "39a27c9599b1fcbe1c40f17c233d10ebe9da4c5a",
+      "historical_git_commit_short": "39a27c9",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"] + 1)",
+          "line": 441,
+          "resolved_seed_values": "derived at runtime from: cfg[\"seed\"] + 1",
+          "seed_expression": "cfg[\"seed\"] + 1",
+          "source_line": "np.random.default_rng(cfg[\"seed\"] + 1)"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 542,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 610,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 754,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-18_121117_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-18_121117_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "320560b6dc8f079d8d9b3a1085574f264b795f8c7e10e0f9469978bfa677ff22",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "2wikimultihopqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "64727944124710c4a8e38904fbf4cdc9dea20215fbef41d9f7d1fd943b347c2f",
+      "historical_code_snapshot": "manifests/execution/historical_code/44d595e335719d30e008b11b1effbec337ef846d/evaluate_redundancy.py",
+      "historical_git_commit": "44d595e335719d30e008b11b1effbec337ef846d",
+      "historical_git_commit_short": "44d595e",
+      "random_streams": [
+        {
+          "call": "default_rng(cfg[\"seed\"] + 1)",
+          "line": 441,
+          "resolved_seed_values": "derived at runtime from: cfg[\"seed\"] + 1",
+          "seed_expression": "cfg[\"seed\"] + 1",
+          "source_line": "np.random.default_rng(cfg[\"seed\"] + 1)"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 544,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 612,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 756,
+          "resolved_seed_values": [
+            0
+          ],
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-18_173800_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-18_173800_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "c98ffff6b9ba7858620699d6e5997a306f3e2508f822a749420ab7ca4f2952ce",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seed",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "beir"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "a7a61c3f55f5742c78493155b144631f917be891a940e8a69aae4d7dbb81d62d",
+      "historical_code_snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_beir.py",
+      "historical_git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "historical_git_commit_short": "5126ee5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 275,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        }
+      ],
+      "run_id": "2026-06-22_211522_beir_scifact_fiqa_trec-covid",
+      "run_params": "results/retained/2026-06-22_211522_beir_scifact_fiqa_trec-covid/run_params.json",
+      "run_params_sha256": "6304803ef7d2db04515494e03f2ae7d54aea8561ac5fe788fa8d3411d6d656fd",
+      "script": "evaluate_beir.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "scifact",
+        "fiqa",
+        "trec-covid"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "cross_encoder"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "75ec5800ce235cc874538c6e9c804d18dbe4b873fd585a624005a3fdc0ed43e1",
+      "historical_code_snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_cross_encoder.py",
+      "historical_git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "historical_git_commit_short": "5126ee5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 274,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        }
+      ],
+      "run_id": "2026-06-24_064052_ce_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_064052_ce_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "653f0959614e0ea89174f2223a1918a8a432b454c99e3171e85b0abcb1cc7253",
+      "script": "evaluate_cross_encoder.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_redundancy.py",
+      "historical_git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "historical_git_commit_short": "5126ee5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-24_083656_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "7229f8be8ed1792b5938299ed5b8f99e1302bc8e935a5cbd8ed7ee148c8b6354",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_redundancy.py",
+      "historical_git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "historical_git_commit_short": "5126ee5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-24_230733_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "fd2be0d514249a567e7bc207d9b2f6e5bd8fe624082ddcad7ca3fa7120f76a50",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection",
+        "chunking",
+        "oracle"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_redundancy.py",
+      "historical_git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "historical_git_commit_short": "5126ee5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-25_082550_redundancy_scifact",
+      "run_params": "results/retained/2026-06-25_082550_redundancy_scifact/run_params.json",
+      "run_params_sha256": "ed5a9fac8c7ace6fe4ccd1a8beebd95165da1953f83781a46d7ff54c14982a43",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "scifact"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "all",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection",
+        "oracle"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/9372710146168134bbd5088dbf30004278cdfc95/evaluate_redundancy.py",
+      "historical_git_commit": "9372710146168134bbd5088dbf30004278cdfc95",
+      "historical_git_commit_short": "9372710",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-25_172848_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "220b4b820729b07a1495ccda00f4bbdc1595313e66401c9b22d975e34c48e548",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "both",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection",
+        "oracle"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/9372710146168134bbd5088dbf30004278cdfc95/evaluate_redundancy.py",
+      "historical_git_commit": "9372710146168134bbd5088dbf30004278cdfc95",
+      "historical_git_commit_short": "9372710",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-06-28_094117_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "44a97c60939cb01d7a4539aa5696e2d5ebab06288d7253ecccc4a5f1fbd5f674",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "both",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70",
+      "historical_code_snapshot": "manifests/execution/historical_code/8d34a84420d84fcb9ac2467535071f571c9a6f05/evaluate_redundancy.py",
+      "historical_git_commit": "8d34a84420d84fcb9ac2467535071f571c9a6f05",
+      "historical_git_commit_short": "8d34a84",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-02_103328_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-02_103328_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "516b72ed6b4de06197582b5eaa824a9ec0035993ecc1ff5896fe656b2ff4e67d",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "fiqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "both",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "70cfc093399f334271841e388ccfa52917f712636997f23b9fe664ef09561019",
+      "historical_code_snapshot": "manifests/execution/historical_code/b7a1ed4250aa6b6d1a7b318302fdd803d44f57ef/evaluate_redundancy.py",
+      "historical_git_commit": "b7a1ed4250aa6b6d1a7b318302fdd803d44f57ef",
+      "historical_git_commit_short": "b7a1ed4",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-16_095435_redundancy_trec-covid",
+      "run_params": "results/retained/2026-07-16_095435_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "81fa34bf2b24eba4bec170ecd27d93cf7c43bd672d212851fa660cbca24c2826",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "trec-covid"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection",
+        "oracle"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/cb3ac39ddf732743322df40b8882cd12f4c62503/evaluate_redundancy.py",
+      "historical_git_commit": "cb3ac39ddf732743322df40b8882cd12f4c62503",
+      "historical_git_commit_short": "cb3ac39",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-20_121145_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-07-20_121145_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "f397a87badfa877761f1ed8603864ee65ccc01d583e9202d390da179b733c024",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "both",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/210cf2f4914e36495add1300b7c9eb6d8bc891d1/evaluate_redundancy.py",
+      "historical_git_commit": "210cf2f4914e36495add1300b7c9eb6d8bc891d1",
+      "historical_git_commit_short": "210cf2f",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-23_085711_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "d54fa6ca044da65a83e78dc06b206169f4c6271cd8b3e52cf1df44e462ed97c0",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "2wikimultihopqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/210cf2f4914e36495add1300b7c9eb6d8bc891d1/evaluate_redundancy.py",
+      "historical_git_commit": "210cf2f4914e36495add1300b7c9eb6d8bc891d1",
+      "historical_git_commit_short": "210cf2f",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-23_101022_redundancy_musique",
+      "run_params": "results/retained/2026-07-23_101022_redundancy_musique/run_params.json",
+      "run_params_sha256": "4a71bd4e48199155b1edf6d6eefb3c5284423e7979c7fc17f038c0e957c00bcb",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "musique"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/210cf2f4914e36495add1300b7c9eb6d8bc891d1/evaluate_redundancy.py",
+      "historical_git_commit": "210cf2f4914e36495add1300b7c9eb6d8bc891d1",
+      "historical_git_commit_short": "210cf2f",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-23_104202_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-23_104202_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "ccb7c7a68dd9f8e840a0dcb54afdf1fa2d1811ea887bee0050ff80a3843d0ab7",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "fiqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "both",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "chunking"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/2ef6f61fd353897c73a573cbac3a33dc17c03118/evaluate_redundancy.py",
+      "historical_git_commit": "2ef6f61fd353897c73a573cbac3a33dc17c03118",
+      "historical_git_commit_short": "2ef6f61",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-28_095742_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-28_095742_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "a4fd304effc51f7e7797d4ae84fdfe3dc73231c2b3c7a47aebe8faf17b5e4268",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "fiqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "chunking",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/2ef6f61fd353897c73a573cbac3a33dc17c03118/evaluate_redundancy.py",
+      "historical_git_commit": "2ef6f61fd353897c73a573cbac3a33dc17c03118",
+      "historical_git_commit_short": "2ef6f61",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-28_115804_redundancy_trec-covid",
+      "run_params": "results/retained/2026-07-28_115804_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "fc5da624fc2f8899abba421f1514aa4cc1b96be96be28ff2429cce5a81977260",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "trec-covid"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "generation"
+      ],
+      "effective_seeds": [],
+      "generation_decoding": "beam/greedy decoding with do_sample=False; no sampling seed",
+      "generation_is_deterministic": true,
+      "historical_code_sha256": "17d660bc3873a1196ac7f675bd2e67a6f0fb8da8e3e0db2ccd08b3f6b9058d79",
+      "historical_code_snapshot": "manifests/execution/historical_code/92343e674d25f339a3ba557b8ff6ba3d9d4e7f5e/evaluate.py",
+      "historical_git_commit": "92343e674d25f339a3ba557b8ff6ba3d9d4e7f5e",
+      "historical_git_commit_short": "92343e6",
+      "random_streams": [],
+      "run_id": "2026-07-28_152156_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-07-28_152156_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "1d35f2ee397db1da35b8786e13db5ffc59a3144ce672170eefd4090b8c15370c",
+      "script": "evaluate.py",
+      "seed_evidence": "no random-number generator invoked by the primary execution script",
+      "source_datasets": [
+        "hotpotqa_fullwiki"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {}
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/89eaca534f1b966fa40700b61da99e09c2c4dc07/evaluate_redundancy.py",
+      "historical_git_commit": "89eaca534f1b966fa40700b61da99e09c2c4dc07",
+      "historical_git_commit_short": "89eaca5",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-28_154431_redundancy_musique",
+      "run_params": "results/retained/2026-07-28_154431_redundancy_musique/run_params.json",
+      "run_params_sha256": "613846c5784290f8ce1fcc26ee3670b60d2c30dac3f0789da8fc80c2ba23783a",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "musique"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "artifact_families": [
+        "injection"
+      ],
+      "effective_seeds": [
+        0,
+        1,
+        2
+      ],
+      "generation_decoding": null,
+      "generation_is_deterministic": null,
+      "historical_code_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504",
+      "historical_code_snapshot": "manifests/execution/historical_code/350bde4a8db553ccfbcf7db0e66ae9c34eb05a4d/evaluate_redundancy.py",
+      "historical_git_commit": "350bde4a8db553ccfbcf7db0e66ae9c34eb05a4d",
+      "historical_git_commit_short": "350bde4",
+      "random_streams": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "resolved_seed_values": [
+            1,
+            2,
+            3
+          ],
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "resolved_seed_values": [
+            0,
+            1,
+            2
+          ],
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "run_id": "2026-07-28_170313_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "8702a611ce870cf9176bf38eef9573374a023afc4eb0a6e4f584d18816880c55",
+      "script": "evaluate_redundancy.py",
+      "seed_evidence": "run_params.seeds",
+      "source_datasets": [
+        "2wikimultihopqa"
+      ],
+      "source_identity_manifest": "manifests/source_groups/metadata.json",
+      "source_identity_status": "complete",
+      "transformation_parameters": {
+        "chunk_window": 60,
+        "dup_noise": "light",
+        "dup_target": "mixed",
+        "experiment": "redundancy",
+        "overlap_grid": [
+          0.0,
+          0.25,
+          0.5,
+          0.75
+        ],
+        "rho_grid": [
+          0.0,
+          0.025,
+          0.05,
+          0.1,
+          0.15,
+          0.25,
+          0.5,
+          1.0
+        ]
+      }
+    }
+  ],
+  "seed_rules": {
+    "chunking": "deterministic; seed affects only validation/test assignment",
+    "generation_decoding": "deterministic do_sample=False; no sampling seed",
+    "generation_query_subset": "numpy.random.default_rng(seed + 1) where that feature exists",
+    "injection_pool": "numpy.random.default_rng(seed), re-created for each rho; source selection and text perturbation share that stream",
+    "validation_test_split": "an independent numpy.random.default_rng(seed) permutation"
+  },
+  "snapshots": [
+    {
+      "git_blob": "bd9086513995713eebab721cc90846d7de6419f7",
+      "git_commit": "130ea7cea46d572ecff8fe8c17ab5154bec21e62",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 471,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 533,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 673,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/130ea7cea46d572ecff8fe8c17ab5154bec21e62/evaluate_redundancy.py",
+      "snapshot_sha256": "21b90fab3395acb68460ce00120ba97606c925cb9aa11a53d859adc992c3c32a"
+    },
+    {
+      "git_blob": "d9121890d5494287777fc66acd084001f4948444",
+      "git_commit": "210cf2f4914e36495add1300b7c9eb6d8bc891d1",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/210cf2f4914e36495add1300b7c9eb6d8bc891d1/evaluate_redundancy.py",
+      "snapshot_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504"
+    },
+    {
+      "git_blob": "d9121890d5494287777fc66acd084001f4948444",
+      "git_commit": "2ef6f61fd353897c73a573cbac3a33dc17c03118",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/2ef6f61fd353897c73a573cbac3a33dc17c03118/evaluate_redundancy.py",
+      "snapshot_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504"
+    },
+    {
+      "git_blob": "b1b6d57bb379898e9eb5730768954e499f410870",
+      "git_commit": "3106168feb333e1d72261f1e2aeec4cbe13873bf",
+      "repository_path": "implementation/evaluate_beir.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(0)",
+          "line": 174,
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/3106168feb333e1d72261f1e2aeec4cbe13873bf/evaluate_beir.py",
+      "snapshot_sha256": "f36222eb46d17f1df7ef200a3417718b938b5de20c6f5c3059c33358866bfc59"
+    },
+    {
+      "git_blob": "d8f6247e17e8b00ceaf561ee2b5660ab2ba3951f",
+      "git_commit": "3106168feb333e1d72261f1e2aeec4cbe13873bf",
+      "repository_path": "implementation/evaluate_cross_encoder.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(0)",
+          "line": 248,
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/3106168feb333e1d72261f1e2aeec4cbe13873bf/evaluate_cross_encoder.py",
+      "snapshot_sha256": "b4ac12e1d44e78088d15913e58512dd745cfb3ca4b41a38bb01a346018d6049d"
+    },
+    {
+      "git_blob": "d9121890d5494287777fc66acd084001f4948444",
+      "git_commit": "350bde4a8db553ccfbcf7db0e66ae9c34eb05a4d",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/350bde4a8db553ccfbcf7db0e66ae9c34eb05a4d/evaluate_redundancy.py",
+      "snapshot_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504"
+    },
+    {
+      "git_blob": "26dfc086cc0625db38f6d2d66a58a0eb42c9fb0b",
+      "git_commit": "39a27c9599b1fcbe1c40f17c233d10ebe9da4c5a",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"] + 1)",
+          "line": 441,
+          "seed_expression": "cfg[\"seed\"] + 1",
+          "source_line": "np.random.default_rng(cfg[\"seed\"] + 1)"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 542,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 610,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 754,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/39a27c9599b1fcbe1c40f17c233d10ebe9da4c5a/evaluate_redundancy.py",
+      "snapshot_sha256": "781a6a9a33932242b5a2f05de0a065731d6b64d4b75c081acc44de6995d641f6"
+    },
+    {
+      "git_blob": "c3700e0b68f44e97c4b93a4a312f48c4d7387425",
+      "git_commit": "44d595e335719d30e008b11b1effbec337ef846d",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"] + 1)",
+          "line": 441,
+          "seed_expression": "cfg[\"seed\"] + 1",
+          "source_line": "np.random.default_rng(cfg[\"seed\"] + 1)"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 544,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 612,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 756,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/44d595e335719d30e008b11b1effbec337ef846d/evaluate_redundancy.py",
+      "snapshot_sha256": "64727944124710c4a8e38904fbf4cdc9dea20215fbef41d9f7d1fd943b347c2f"
+    },
+    {
+      "git_blob": "64788c3ebe159eedbebb1810bcf43de40afce342",
+      "git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "repository_path": "implementation/evaluate_beir.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 275,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_beir.py",
+      "snapshot_sha256": "a7a61c3f55f5742c78493155b144631f917be891a940e8a69aae4d7dbb81d62d"
+    },
+    {
+      "git_blob": "8d627cdd9c4e93d2cde540b541d009e261ca8bd6",
+      "git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "repository_path": "implementation/evaluate_cross_encoder.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 274,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_cross_encoder.py",
+      "snapshot_sha256": "75ec5800ce235cc874538c6e9c804d18dbe4b873fd585a624005a3fdc0ed43e1"
+    },
+    {
+      "git_blob": "545476f3338b1ebe9d10344a76af9bd1a9f6c829",
+      "git_commit": "5126ee54d516be2c53ee4359943eab93196da40f",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/5126ee54d516be2c53ee4359943eab93196da40f/evaluate_redundancy.py",
+      "snapshot_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70"
+    },
+    {
+      "git_blob": "92da864e24b2ca168b1bdab35c3163f0fa793087",
+      "git_commit": "5594ebc51aa9d75d196a8c90edf57c35adfaea37",
+      "repository_path": "implementation/evaluate_cross_encoder.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(0)",
+          "line": 247,
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/5594ebc51aa9d75d196a8c90edf57c35adfaea37/evaluate_cross_encoder.py",
+      "snapshot_sha256": "62a51aa441cb284475f0ed0197542ad07fd3b213c2716b2d96cfe5c1524cf4f6"
+    },
+    {
+      "git_blob": "e8ba4d75860ac487dc72805ac802b25a96797de0",
+      "git_commit": "67a891dd775c956fbdae46042832c56cf8e19128",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 479,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 541,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 681,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/67a891dd775c956fbdae46042832c56cf8e19128/evaluate_redundancy.py",
+      "snapshot_sha256": "53844e740e85f43005a65044929f3adaf08ff434684c155703bd730d8aa5b8fe"
+    },
+    {
+      "git_blob": "e8ba4d75860ac487dc72805ac802b25a96797de0",
+      "git_commit": "89adc0d87bc37084041e932879e0de9d1e6d27e6",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 479,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 541,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 681,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/89adc0d87bc37084041e932879e0de9d1e6d27e6/evaluate_redundancy.py",
+      "snapshot_sha256": "53844e740e85f43005a65044929f3adaf08ff434684c155703bd730d8aa5b8fe"
+    },
+    {
+      "git_blob": "d9121890d5494287777fc66acd084001f4948444",
+      "git_commit": "89eaca534f1b966fa40700b61da99e09c2c4dc07",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/89eaca534f1b966fa40700b61da99e09c2c4dc07/evaluate_redundancy.py",
+      "snapshot_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504"
+    },
+    {
+      "git_blob": "545476f3338b1ebe9d10344a76af9bd1a9f6c829",
+      "git_commit": "8d34a84420d84fcb9ac2467535071f571c9a6f05",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/8d34a84420d84fcb9ac2467535071f571c9a6f05/evaluate_redundancy.py",
+      "snapshot_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70"
+    },
+    {
+      "git_blob": "f0b0ddcdbf21edf211cd311afac8ef648825e226",
+      "git_commit": "8dccbec2761948ff180e1b6bd9b86d7753877b15",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 492,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 554,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "rng = np.random.default_rng(cfg[\"seed\"])"
+        },
+        {
+          "call": "default_rng(cfg[\"seed\"])",
+          "line": 695,
+          "seed_expression": "cfg[\"seed\"]",
+          "source_line": "order = np.random.default_rng(cfg[\"seed\"]).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/8dccbec2761948ff180e1b6bd9b86d7753877b15/evaluate_redundancy.py",
+      "snapshot_sha256": "200ca8381d6be50154f34aa6a2942a3fbe090d7a1a0e2e0041c288e7d195e807"
+    },
+    {
+      "git_blob": "46d109eae162a548f9e35545d77e816340a1d125",
+      "git_commit": "92343e674d25f339a3ba557b8ff6ba3d9d4e7f5e",
+      "repository_path": "implementation/evaluate.py",
+      "rng_sites": [],
+      "snapshot": "manifests/execution/historical_code/92343e674d25f339a3ba557b8ff6ba3d9d4e7f5e/evaluate.py",
+      "snapshot_sha256": "17d660bc3873a1196ac7f675bd2e67a6f0fb8da8e3e0db2ccd08b3f6b9058d79"
+    },
+    {
+      "git_blob": "545476f3338b1ebe9d10344a76af9bd1a9f6c829",
+      "git_commit": "9372710146168134bbd5088dbf30004278cdfc95",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 441,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 609,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 717,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 875,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/9372710146168134bbd5088dbf30004278cdfc95/evaluate_redundancy.py",
+      "snapshot_sha256": "c9971a41c0ba849cf4ac4fd2adddb456c670434bef03922fcf350a540372dd70"
+    },
+    {
+      "git_blob": "9a45ca7ee4c81bc8752adb56b59210468cdfc1d8",
+      "git_commit": "b7a1ed4250aa6b6d1a7b318302fdd803d44f57ef",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/b7a1ed4250aa6b6d1a7b318302fdd803d44f57ef/evaluate_redundancy.py",
+      "snapshot_sha256": "70cfc093399f334271841e388ccfa52917f712636997f23b9fe664ef09561019"
+    },
+    {
+      "git_blob": "1e4d05a87f6b49db062d022eec35705bf56e8dc9",
+      "git_commit": "b921f9859893fee3713319c18c97a6c2457413f0",
+      "repository_path": "implementation/evaluate.py",
+      "rng_sites": [],
+      "snapshot": "manifests/execution/historical_code/b921f9859893fee3713319c18c97a6c2457413f0/evaluate.py",
+      "snapshot_sha256": "42a148f642557d796ab079fb22e9b2179f693c3b1e27412ace7dbecb8a2d79fe"
+    },
+    {
+      "git_blob": "6490c5e40f27028f646e360a4aff8d6dccaacb36",
+      "git_commit": "b921f9859893fee3713319c18c97a6c2457413f0",
+      "repository_path": "implementation/evaluate_cross_encoder.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(0)",
+          "line": 248,
+          "seed_expression": "0",
+          "source_line": "rng = np.random.default_rng(0)"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/b921f9859893fee3713319c18c97a6c2457413f0/evaluate_cross_encoder.py",
+      "snapshot_sha256": "629420495d59c5edec183ecfc228681786ecb6b4f4ae79be1b87877116d4ef2d"
+    },
+    {
+      "git_blob": "d9121890d5494287777fc66acd084001f4948444",
+      "git_commit": "cb3ac39ddf732743322df40b8882cd12f4c62503",
+      "repository_path": "implementation/evaluate_redundancy.py",
+      "rng_sites": [
+        {
+          "call": "default_rng(seed)",
+          "line": 454,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(n_examples)"
+        },
+        {
+          "call": "default_rng(seed + 1)",
+          "line": 626,
+          "seed_expression": "seed + 1",
+          "source_line": "np.random.default_rng(seed + 1)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 739,
+          "seed_expression": "seed",
+          "source_line": "rng = np.random.default_rng(seed)"
+        },
+        {
+          "call": "default_rng(seed)",
+          "line": 899,
+          "seed_expression": "seed",
+          "source_line": "order = np.random.default_rng(seed).permutation(len(examples))"
+        }
+      ],
+      "snapshot": "manifests/execution/historical_code/cb3ac39ddf732743322df40b8882cd12f4c62503/evaluate_redundancy.py",
+      "snapshot_sha256": "243774c5a0e7b5de38a8a5cfd4dd0b8854d50d6ca304cfe0e0dcee5189243504"
+    }
+  ],
+  "source_identity_metadata": "manifests/source_groups/metadata.json",
+  "source_identity_metadata_sha256": "8c9a65c6c4d5f67a46f4a080d73caab1f984f8780923d539447ee5d5c1f44c90"
+}

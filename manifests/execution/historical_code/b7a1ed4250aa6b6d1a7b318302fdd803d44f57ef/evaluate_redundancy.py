@@ -106,12 +106,6 @@ from evaluation.metrics import (
     vendi_score,
 )
 from generation.generator import load_generator
-from pool_size_invariants import (
-    assert_candidate_pool,
-    assert_encoded_pool,
-    assert_pool_collection,
-    clean_pool_target,
-)
 from retrieval.precompute import _format_passage, encode_queries_and_passages
 from retrieval.rerankers import (
     rerank_dedup,
@@ -401,7 +395,7 @@ def method_selections(
         out[f"VendiG({lam:g})"] = rerank_vendi_greedy(p_embs, sims, k, lambda_=lam)
     for a in alpha_grid:
         out[f"RNG({a:g})"] = rerank_rng_score(p_embs, q_emb, k, alpha=a, metric=metric)
-        # Seg-Score excluded (2026-07-16)
+        out[f"Seg({a:g})"] = rerank_rng_score2(p_embs, q_emb, k, alpha=a, metric=metric)
     return out
 
 
@@ -469,7 +463,7 @@ def _seed_summary_rows(
                                      ("Greedy-DPP", "Greedy-DPP")]
     for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
                          ("VendiG", lambda_grid),
-                         ("RNG", alpha_grid)]:
+                         ("RNG", alpha_grid), ("Seg", alpha_grid)]:
         members = [m for m in _grid_members(prefix, grid) if m in per_method]
         if not members:
             continue
@@ -575,13 +569,6 @@ def _run_pool_sweep(
     per_seed_summary: List[Dict] = []
     per_query_rows: List[Dict] = []
     gen_rows: List[Dict] = []
-    pool_size_rows: List[Dict] = []
-
-    query_ids = [str(ex["id"]) for ex in examples]
-    original_sizes = [len(ex["passages"]) for ex in examples]
-    candidate_targets = [
-        clean_pool_target(size, m, k) for size in original_sizes
-    ]
 
     gen_methods = list(cfg.get("gen_methods") or [])
     do_gen = generator is not None and bool(gen_methods)
@@ -599,15 +586,6 @@ def _run_pool_sweep(
         for seed in seeds:
             print(f"   · seed {seed}")
             pools = make_pools(level, seed)
-            assert_pool_collection(
-                query_ids=query_ids,
-                pools=pools,
-                original_sizes=original_sizes,
-                targets=candidate_targets,
-                level_name=level_col,
-                level=level,
-                seed=seed,
-            )
             gen_jobs: Dict[str, List] = {}
 
             if not use_cache:
@@ -659,41 +637,12 @@ def _run_pool_sweep(
                 q_emb = q_embs_l[i]
                 p_embs = p_flat[s:e]
                 pool = pools[i]
-                target = candidate_targets[i]
-                assert_encoded_pool(
-                    query_id=query_ids[i],
-                    transformed_size=len(pool),
-                    encoded_size=len(p_embs),
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
 
-                # Fixed-size first-stage truncation. ``top_m`` is an upper
-                # bound; a query whose clean attached pool is smaller freezes
-                # that clean size across every redundancy/overlap level.
+                # First-stage truncation: top-m by query similarity.
                 sims = p_embs @ q_emb
-                keep = np.argsort(-sims)[:target]
+                keep = np.argsort(-sims)[: min(m, len(pool))]
                 pool_m = [pool[j] for j in keep]
                 p_embs_m = p_embs[keep]
-                assert_candidate_pool(
-                    query_id=query_ids[i],
-                    candidate_size=len(pool_m),
-                    target=target,
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
-                pool_size_rows.append({
-                    level_col: level,
-                    "seed": seed,
-                    "qid": ex["id"],
-                    "OriginalPoolSize": original_sizes[i],
-                    "TransformedPoolSize": len(pool),
-                    "CandidatePoolTarget": target,
-                    "CandidatePoolSize": len(pool_m),
-                    "PoolSizeAssertion": "pass",
-                })
 
                 redundancies.append(pool_redundancy(p_embs_m))
                 rel_size = relevant_set_size(
@@ -712,10 +661,6 @@ def _run_pool_sweep(
                         {level_col: level, "seed": seed, "qid": ex["id"],
                          "Method": name,
                          "PoolRedundancy": round(redundancies[-1], 4),
-                         "OriginalPoolSize": original_sizes[i],
-                         "TransformedPoolSize": len(pool),
-                         "CandidatePoolTarget": target,
-                         "CandidatePoolSize": len(pool_m),
                          "RelSetSize": rel_size, **res}
                     )
 
@@ -766,8 +711,6 @@ def _run_pool_sweep(
              os.path.join(run_dir, f"results_{file_tag}_per_seed_summary.csv"))
     save_csv(per_query_rows,
              os.path.join(run_dir, f"results_{file_tag}_per_query.csv"))
-    save_csv(attach_run_params(pool_size_rows, cfg),
-             os.path.join(run_dir, f"results_{file_tag}_pool_size_audit.csv"))
     print(f"   {len(seeds)} seed(s); summary carries 95% across-seed CIs.")
     if gen_rows:
         save_csv(attach_run_params(_pad_rows(gen_rows), cfg),
@@ -973,7 +916,7 @@ def run_oracle_experiment(
 
         for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
                              ("VendiG", lambda_grid),
-                             ("RNG", alpha_grid)]:
+                             ("RNG", alpha_grid), ("Seg", alpha_grid)]:
             members = [m for m in _grid_members(prefix, grid)
                        if m in per_method]
             if not members:
@@ -1152,7 +1095,6 @@ def main() -> None:
         "encoder_model": encoder_name,
         "device": device,
         "top_m": args.top_m,
-        "candidate_pool_policy": "fixed_clean_pool_size_per_query",
         "top_k": args.top_k,
         "metric": args.metric,
         "objective": args.objective,

@@ -1,0 +1,45 @@
+{
+  "format_version": 1,
+  "models": {
+    "BAAI/bge-m3": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+      "weight_precision": "float32",
+      "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns"
+    },
+    "BAAI/bge-reranker-v2-m3": {
+      "loader": "sentence_transformers.CrossEncoder",
+      "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+      "weight_precision": "float32",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since"
+    },
+    "Qwen/Qwen3-Embedding-4B": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+      "tokenizer_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+      "upstream_last_modified": "2025-06-20T09:30:56+00:00",
+      "weight_precision": "bfloat16",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates the archived run and has not changed since"
+    },
+    "google/flan-t5-base": {
+      "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+      "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+      "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+      "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+      "weight_precision": "float32",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since"
+    },
+    "sentence-transformers/all-MiniLM-L6-v2": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "upstream_last_modified": "2026-06-01T06:29:13+00:00",
+      "weight_precision": "float32",
+      "revision_evidence": "Hugging Face repository SHA; identical to the recovered local cache ref and predates the archived runs"
+    }
+  }
+}

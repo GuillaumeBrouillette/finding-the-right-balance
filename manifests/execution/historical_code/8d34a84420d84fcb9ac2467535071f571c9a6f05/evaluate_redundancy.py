@@ -106,20 +106,12 @@ from evaluation.metrics import (
     vendi_score,
 )
 from generation.generator import load_generator
-from pool_size_invariants import (
-    assert_candidate_pool,
-    assert_encoded_pool,
-    assert_pool_collection,
-    clean_pool_target,
-)
 from retrieval.precompute import _format_passage, encode_queries_and_passages
 from retrieval.rerankers import (
-    rerank_dedup,
     rerank_greedy_dpp,
     rerank_knn,
     rerank_maxmin,
     rerank_mmr,
-    rerank_vendi_greedy,
     rerank_rng_score,
     rerank_rng_score2,
 )
@@ -165,14 +157,9 @@ LOADERS: Dict[str, Callable] = {
 # the coarse sweep showed the entire regime flip happening inside (0, 0.25),
 # with the curves flat from 0.25 onward, so the resolution goes where the
 # action is and the stable tail keeps only {0.25, 0.5, 1.0}.
-# -2.0 is the fallback sentinel: under cosine distance it deactivates every
-# obstruction penalty (Prop. knnlimit), so the sweep grid contains the exact
-# k-NN operating point by construction (-0.3 deviates from k-NN on ~1% of
-# clean fullwiki queries and is an active operating point under injection).
-DEFAULT_ALPHA_GRID = [-2.0, -0.3, -0.2, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3,
+DEFAULT_ALPHA_GRID = [-0.3, -0.2, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3,
                       0.5, 1.0]
 DEFAULT_LAMBDA_GRID = [0.3, 0.5, 0.7, 0.9]
-DEFAULT_DEDUP_GRID = [0.85, 0.9, 0.95]
 DEFAULT_RHO_GRID = [0.0, 0.025, 0.05, 0.1, 0.15, 0.25, 0.5, 1.0]
 DEFAULT_OVERLAP_GRID = [0.0, 0.25, 0.5, 0.75]
 
@@ -381,7 +368,6 @@ def method_selections(
     metric: str,
     alpha_grid: Sequence[float],
     lambda_grid: Sequence[float],
-    dedup_grid: Sequence[float] = DEFAULT_DEDUP_GRID,
 ) -> Dict[str, List[int]]:
     """Run every reranker on one pool and return {method_name: selection}.
 
@@ -391,17 +377,13 @@ def method_selections(
     """
     sims = p_embs @ q_emb
     out: Dict[str, List[int]] = {"kNN": rerank_knn(sims, k)}
-    for t in dedup_grid:
-        out[f"Dedup({t:g})"] = rerank_dedup(p_embs, sims, k, threshold=t)
     for lam in lambda_grid:
         out[f"MMR({lam:g})"] = rerank_mmr(p_embs, q_emb, sims, k, lambda_=lam)
     out["Maxmin"] = rerank_maxmin(p_embs, sims, k)
     out["Greedy-DPP"] = rerank_greedy_dpp(p_embs, sims, k)
-    for lam in lambda_grid:
-        out[f"VendiG({lam:g})"] = rerank_vendi_greedy(p_embs, sims, k, lambda_=lam)
     for a in alpha_grid:
         out[f"RNG({a:g})"] = rerank_rng_score(p_embs, q_emb, k, alpha=a, metric=metric)
-        # Seg-Score excluded (2026-07-16)
+        out[f"Seg({a:g})"] = rerank_rng_score2(p_embs, q_emb, k, alpha=a, metric=metric)
     return out
 
 
@@ -454,7 +436,6 @@ def _seed_summary_rows(
     """
     alpha_grid = cfg["alpha_grid"]
     lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
 
     n_val = max(1, int(cfg["val_fraction"] * n_examples))
     order = np.random.default_rng(seed).permutation(n_examples)
@@ -467,12 +448,9 @@ def _seed_summary_rows(
 
     report: List[Tuple[str, str]] = [("kNN", "kNN"), ("Maxmin", "Maxmin"),
                                      ("Greedy-DPP", "Greedy-DPP")]
-    for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
-                         ("VendiG", lambda_grid),
-                         ("RNG", alpha_grid)]:
-        members = [m for m in _grid_members(prefix, grid) if m in per_method]
-        if not members:
-            continue
+    for prefix, grid in [("MMR", lambda_grid), ("RNG", alpha_grid),
+                         ("Seg", alpha_grid)]:
+        members = _grid_members(prefix, grid)
         best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
         report.append((f"{prefix}*", best))
 
@@ -567,7 +545,6 @@ def _run_pool_sweep(
     metric = cfg["metric"]
     alpha_grid = cfg["alpha_grid"]
     lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
     objective = cfg["objective"]
     use_cache = bool(cfg.get("encode_cache", True))
     seeds = cfg["seeds"]
@@ -575,13 +552,6 @@ def _run_pool_sweep(
     per_seed_summary: List[Dict] = []
     per_query_rows: List[Dict] = []
     gen_rows: List[Dict] = []
-    pool_size_rows: List[Dict] = []
-
-    query_ids = [str(ex["id"]) for ex in examples]
-    original_sizes = [len(ex["passages"]) for ex in examples]
-    candidate_targets = [
-        clean_pool_target(size, m, k) for size in original_sizes
-    ]
 
     gen_methods = list(cfg.get("gen_methods") or [])
     do_gen = generator is not None and bool(gen_methods)
@@ -599,15 +569,6 @@ def _run_pool_sweep(
         for seed in seeds:
             print(f"   · seed {seed}")
             pools = make_pools(level, seed)
-            assert_pool_collection(
-                query_ids=query_ids,
-                pools=pools,
-                original_sizes=original_sizes,
-                targets=candidate_targets,
-                level_name=level_col,
-                level=level,
-                seed=seed,
-            )
             gen_jobs: Dict[str, List] = {}
 
             if not use_cache:
@@ -659,49 +620,19 @@ def _run_pool_sweep(
                 q_emb = q_embs_l[i]
                 p_embs = p_flat[s:e]
                 pool = pools[i]
-                target = candidate_targets[i]
-                assert_encoded_pool(
-                    query_id=query_ids[i],
-                    transformed_size=len(pool),
-                    encoded_size=len(p_embs),
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
 
-                # Fixed-size first-stage truncation. ``top_m`` is an upper
-                # bound; a query whose clean attached pool is smaller freezes
-                # that clean size across every redundancy/overlap level.
+                # First-stage truncation: top-m by query similarity.
                 sims = p_embs @ q_emb
-                keep = np.argsort(-sims)[:target]
+                keep = np.argsort(-sims)[: min(m, len(pool))]
                 pool_m = [pool[j] for j in keep]
                 p_embs_m = p_embs[keep]
-                assert_candidate_pool(
-                    query_id=query_ids[i],
-                    candidate_size=len(pool_m),
-                    target=target,
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
-                pool_size_rows.append({
-                    level_col: level,
-                    "seed": seed,
-                    "qid": ex["id"],
-                    "OriginalPoolSize": original_sizes[i],
-                    "TransformedPoolSize": len(pool),
-                    "CandidatePoolTarget": target,
-                    "CandidatePoolSize": len(pool_m),
-                    "PoolSizeAssertion": "pass",
-                })
 
                 redundancies.append(pool_redundancy(p_embs_m))
                 rel_size = relevant_set_size(
                     ex["gold_titles"] or [], cfg.get("single_subtopic", False))
 
                 selections = method_selections(
-                    p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid,
-                    dedup_grid,
+                    p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid
                 )
                 for name, sel in selections.items():
                     res = evaluate_selection(
@@ -712,10 +643,6 @@ def _run_pool_sweep(
                         {level_col: level, "seed": seed, "qid": ex["id"],
                          "Method": name,
                          "PoolRedundancy": round(redundancies[-1], 4),
-                         "OriginalPoolSize": original_sizes[i],
-                         "TransformedPoolSize": len(pool),
-                         "CandidatePoolTarget": target,
-                         "CandidatePoolSize": len(pool_m),
                          "RelSetSize": rel_size, **res}
                     )
 
@@ -742,11 +669,7 @@ def _run_pool_sweep(
                         gen_rows.append(
                             {level_col: level, "seed": seed, "qid": qid,
                              "Method": gm, "EM": round(em, 4),
-                             "F1": round(f1, 4), "Halluc": round(hall, 4),
-                             # Raw prediction kept so scoring can be audited
-                             # and re-run offline (answer extraction, judge
-                             # models) without re-generating.
-                             "Prediction": pred[:2000]})
+                             "F1": round(f1, 4), "Halluc": round(hall, 4)})
 
             mean_red = float(np.mean(redundancies))
             per_seed_summary.extend(_seed_summary_rows(
@@ -766,8 +689,6 @@ def _run_pool_sweep(
              os.path.join(run_dir, f"results_{file_tag}_per_seed_summary.csv"))
     save_csv(per_query_rows,
              os.path.join(run_dir, f"results_{file_tag}_per_query.csv"))
-    save_csv(attach_run_params(pool_size_rows, cfg),
-             os.path.join(run_dir, f"results_{file_tag}_pool_size_audit.csv"))
     print(f"   {len(seeds)} seed(s); summary carries 95% across-seed CIs.")
     if gen_rows:
         save_csv(attach_run_params(_pad_rows(gen_rows), cfg),
@@ -909,7 +830,6 @@ def run_oracle_experiment(
     metric = cfg["metric"]
     alpha_grid = cfg["alpha_grid"]
     lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
     objective = cfg["objective"]
 
     questions = [ex["question"] for ex in examples]
@@ -930,8 +850,7 @@ def run_oracle_experiment(
         pool_m = [pool[j] for j in keep]
         p_embs_m = p_embs[keep]
 
-        selections = method_selections(p_embs_m, q_emb, k, metric, alpha_grid,
-                                       lambda_grid, dedup_grid)
+        selections = method_selections(p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid)
         row: Dict[str, object] = {"qid": ex["id"]}
         for name, sel in selections.items():
             res = evaluate_selection(sel, pool_m, p_embs_m, ex["gold_titles"] or [], k,
@@ -971,13 +890,9 @@ def run_oracle_experiment(
         _report("kNN", "kNN", knn_obj,
                 {key: _mean("kNN", test_ids, key) for key in obj_metrics})
 
-        for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
-                             ("VendiG", lambda_grid),
-                             ("RNG", alpha_grid)]:
-            members = [m for m in _grid_members(prefix, grid)
-                       if m in per_method]
-            if not members:
-                continue
+        for prefix, grid in [("MMR", lambda_grid), ("RNG", alpha_grid),
+                             ("Seg", alpha_grid)]:
+            members = _grid_members(prefix, grid)
 
             # Fixed operating point tuned on this seed's validation fraction.
             best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
@@ -1080,10 +995,6 @@ def _parse_args() -> argparse.Namespace:
                         "and significance tests.")
     p.add_argument("--alpha_grid", type=float, nargs="+", default=DEFAULT_ALPHA_GRID)
     p.add_argument("--lambda_grid", type=float, nargs="+", default=DEFAULT_LAMBDA_GRID)
-    p.add_argument("--dedup_grid", type=float, nargs="+", default=DEFAULT_DEDUP_GRID,
-                   help="Cosine thresholds t for the Dedup(t) baseline "
-                        "(greedy near-duplicate removal, then top-k by "
-                        "relevance).")
     p.add_argument("--rho_grid", type=float, nargs="+", default=DEFAULT_RHO_GRID,
                    help="Injected-redundancy levels (duplicates / pool size).")
     p.add_argument("--overlap_grid", type=float, nargs="+",
@@ -1152,13 +1063,11 @@ def main() -> None:
         "encoder_model": encoder_name,
         "device": device,
         "top_m": args.top_m,
-        "candidate_pool_policy": "fixed_clean_pool_size_per_query",
         "top_k": args.top_k,
         "metric": args.metric,
         "objective": args.objective,
         "alpha_grid": list(args.alpha_grid),
         "lambda_grid": list(args.lambda_grid),
-        "dedup_grid": list(args.dedup_grid),
         "rho_grid": list(args.rho_grid),
         "overlap_grid": list(args.overlap_grid),
         "chunk_window": args.chunk_window,

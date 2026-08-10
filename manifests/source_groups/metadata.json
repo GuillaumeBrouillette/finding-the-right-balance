@@ -1,0 +1,152 @@
+{
+  "datasets": [
+    {
+      "dataset": "hotpotqa_fullwiki",
+      "manifest": "manifests/source_groups/hotpotqa_fullwiki.csv.gz",
+      "manifest_sha256": "e25a378596f1c2f0740cec2d0fa93284c30a1bc27f043741a019626df0521e42",
+      "query_count": 7405,
+      "query_order_sha256": "fca76fdd9c605201472889b9567d5a92f61e3df71f3a55dd5637cbdc6387a769",
+      "source": "MDR HotpotQA dev top-100 chains",
+      "source_group_count": 502355,
+      "source_input": "data/mdr/hotpotqa_dev_top100.json",
+      "source_input_sha256": "424513f94c35d8f46e5ed699b3792de509f2ab8a1633793f33ab5f884b9bb5ea",
+      "source_url": "https://dl.fbaipublicfiles.com/mdpr/data/hotpot/dev_retrieval_top100_sp.json",
+      "source_variant_count": 502355
+    },
+    {
+      "dataset": "nq",
+      "manifest": "manifests/source_groups/nq.csv.gz",
+      "manifest_sha256": "1a64ea0902c1551c2d6669a72aa96999ee769fbfcb1d7bed565652010c866f8e",
+      "query_count": 7444,
+      "query_order_sha256": "d8541faf69c7955675668c841f6b74eff815f085f151bc3b4a66002cfaf9827b",
+      "source": "DPR NQ development top-100 retrieval results",
+      "source_group_count": 537486,
+      "source_input": "data/dpr/nq-dev.json.gz",
+      "source_input_sha256": "e0d605df36fae3b789b3958fc5fd6acd1429b6af1b124b5a7b2860d1d53df746",
+      "source_url": "https://dl.fbaipublicfiles.com/dpr/data/retriever_results/single/nq-dev.json.gz",
+      "source_variant_count": 537486
+    },
+    {
+      "dataset": "2wikimultihopqa",
+      "immutable_revision": "612bc5039a457880d9e7d84c3b0a4cf154b70e4f",
+      "manifest": "manifests/source_groups/2wikimultihopqa.csv.gz",
+      "manifest_sha256": "a0bb7f4d1cd4454218134dfe7db0cbc4788615158684ac261ef74de6f0093aef",
+      "query_count": 12576,
+      "query_order_sha256": "134be069148a2867194f4319a0ee826db46640673a38070def6515ad125d24c5",
+      "source": "Hugging Face xanhho/2WikiMultihopQA dev.parquet",
+      "source_group_count": 54957,
+      "source_input": "data/2wikimultihopqa/dev.parquet",
+      "source_input_sha256": "c0d8b60b9026b728fb07ad74c5252a0f188f6942e8ba5c02df4dfa369502ea8d",
+      "source_url": "https://huggingface.co/datasets/xanhho/2WikiMultihopQA",
+      "source_variant_count": 56687
+    },
+    {
+      "dataset": "musique",
+      "immutable_revision": "c8f4f8c9465fb69d31a8eae894c3fd509c4ca321",
+      "manifest": "manifests/source_groups/musique.csv.gz",
+      "manifest_sha256": "c289e7809f50205a9be4f6a67fc9098bc200f064f61e98b22f7b609cb8f46892",
+      "query_count": 2417,
+      "query_order_sha256": "a99435e0d49fab1d09b25ba8d8c756be11fffc5c13258da44916c822c4f399dd",
+      "source": "MuSiQue answerable v1.0 development JSONL",
+      "source_group_count": 17629,
+      "source_input": "data/musique/musique_ans_v1.0_dev.jsonl",
+      "source_input_sha256": "15fa63794d18a94ce12411aca6e2327e65b6e83b0b1490efab3f1962e48abf3b",
+      "source_url": "https://huggingface.co/datasets/dgslibisey/musique",
+      "source_variant_count": 21100
+    },
+    {
+      "dataset": "scifact",
+      "input_files": {
+        "data/beir/scifact/corpus.jsonl": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+        "data/beir/scifact/qrels/test.tsv": "0864bb985e0ca2367ba217977e72004d549054b2b06666ed9d4825ac7c21284c",
+        "data/beir/scifact/queries.jsonl": "8ff84a7c903f722981cd8d595c022660140c51867b27608a6d4910db86080313"
+      },
+      "manifest": "manifests/source_groups/scifact.csv.gz",
+      "manifest_sha256": "ea97c68c00fece35e4089d0536d04d048b3bb68b4a1e8b8c313b1dc179396c85",
+      "query_count": 300,
+      "query_order_sha256": "f454ba3f4706f9623699bdf722a170c1b97f28b74c325c927d428a2d81279b92",
+      "source": "BEIR SciFact corpus and test qrels",
+      "source_group_count": 5183,
+      "source_input": "data/beir/scifact/corpus.jsonl",
+      "source_input_sha256": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+      "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+      "source_variant_count": 5183
+    },
+    {
+      "dataset": "fiqa",
+      "input_files": {
+        "data/beir/fiqa/corpus.jsonl": "ff593e4df9933955dc3af83be0c3fa28ac7465f627e08c2e53593e734d506517",
+        "data/beir/fiqa/qrels/test.tsv": "6adc2a640dcdd22bb8b3858f89107adef2a7c3db20a63550dfa7a0f71e379e44",
+        "data/beir/fiqa/queries.jsonl": "eede1e61d4a0188940239b53ebc2da91f577a6a34679c812d1eb9090c29877bc"
+      },
+      "manifest": "manifests/source_groups/fiqa.csv.gz",
+      "manifest_sha256": "5edf1e9fd9d97c4f22845899e5fd9d657cdbbbbe1741495413a1ed579b271eff",
+      "query_count": 648,
+      "query_order_sha256": "74872dee8908360da98403affd8a4a8d68a70618d847456960fb69c0c574bd6a",
+      "source": "BEIR FiQA corpus and test qrels",
+      "source_group_count": 57638,
+      "source_input": "data/beir/fiqa/corpus.jsonl",
+      "source_input_sha256": "ff593e4df9933955dc3af83be0c3fa28ac7465f627e08c2e53593e734d506517",
+      "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fiqa.zip",
+      "source_variant_count": 57638
+    },
+    {
+      "dataset": "trec-covid",
+      "input_files": {
+        "data/beir/trec-covid/corpus.jsonl": "aded69896598665082316d00df487d22212cc5a8611db05db34eb40d04ed00d7",
+        "data/beir/trec-covid/qrels/test.tsv": "10669ab7d526cb04f52079139fd88c3d467a0776441b046567f540582798982b",
+        "data/beir/trec-covid/queries.jsonl": "78f4b76bfef251a0baf37a6cea5c4ba8376cb4536c34635709aaa4a2783b208c"
+      },
+      "manifest": "manifests/source_groups/trec-covid.csv.gz",
+      "manifest_sha256": "de8c3632fb90d403a353f501ce5d8fa3acb6213eaea6e4bdbb128e7c895de7ad",
+      "query_count": 50,
+      "query_order_sha256": "02d36ee22aefffbb3eac4f90f703dd0be636851031144132b43af85384a2afcd",
+      "source": "BEIR TREC-COVID corpus and test qrels",
+      "source_group_count": 171332,
+      "source_input": "data/beir/trec-covid/corpus.jsonl",
+      "source_input_sha256": "aded69896598665082316d00df487d22212cc5a8611db05db34eb40d04ed00d7",
+      "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/trec-covid.zip",
+      "source_variant_count": 171332
+    },
+    {
+      "dataset": "arguana",
+      "input_files": {
+        "data/beir/arguana/corpus.jsonl": "0627982cec4ee896df6dc98604ef6b499c83fd87a19eaaeb3f23b88bbef6cbce",
+        "data/beir/arguana/qrels/test.tsv": "0c47b481fa8b47fb9ca5e74bc8a017bdea14518c0e4a5d21345291180b3aca76",
+        "data/beir/arguana/queries.jsonl": "f8b7c903f95d9a2d291de3915a8fac25085e9db679f19f59fea4145bfd1df618"
+      },
+      "manifest": "manifests/source_groups/arguana.csv.gz",
+      "manifest_sha256": "74438c346b29b082a1ed2ddba4b58a5d554cdcb263f337f7689eab8b9282ab6b",
+      "query_count": 1406,
+      "query_order_sha256": "2d6f2e87d50b481e7fe86c796a99bae0aa667eda479d071dc6125a15bf1c80a3",
+      "source": "BEIR ArguAna corpus and test qrels",
+      "source_group_count": 8674,
+      "source_input": "data/beir/arguana/corpus.jsonl",
+      "source_input_sha256": "0627982cec4ee896df6dc98604ef6b499c83fd87a19eaaeb3f23b88bbef6cbce",
+      "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/arguana.zip",
+      "source_variant_count": 8674
+    },
+    {
+      "dataset": "webis-touche2020",
+      "input_files": {
+        "data/beir/webis-touche2020/corpus.jsonl": "52e5585b5c23164d37cf9a59cf5d3f55645e0efeec8cd8cdb6b0bd37e48ec111",
+        "data/beir/webis-touche2020/qrels/test.tsv": "cfaaa2e7820ae9a6913d2e6fe1bd23c8c8b2c4c7ecf102e780704344e35bc4e6",
+        "data/beir/webis-touche2020/queries.jsonl": "8658a223ac9ea050f0d37483dee7037c7c8854e58ce09d01d81a7d071d8caa0d"
+      },
+      "manifest": "manifests/source_groups/webis-touche2020.csv.gz",
+      "manifest_sha256": "2321137ad32d80ff822bed4760b3943443fdde7e3b8265c8c9f8beef1926ab13",
+      "query_count": 49,
+      "query_order_sha256": "b60ec01f522cfdc641345dde67af9078da372c72a739d7bdd40c539620df476a",
+      "source": "BEIR Webis-Touche2020 corpus and test qrels",
+      "source_group_count": 382545,
+      "source_input": "data/beir/webis-touche2020/corpus.jsonl",
+      "source_input_sha256": "52e5585b5c23164d37cf9a59cf5d3f55645e0efeec8cd8cdb6b0bd37e48ec111",
+      "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/webis-touche2020.zip",
+      "source_variant_count": 382545
+    }
+  ],
+  "format_version": 1,
+  "group_rule": "SHA256(namespace + NUL + native document ID); title is the native ID when the dataset exposes no passage ID",
+  "scope": "Original source-document identities. Per-query post-encoding candidate pools and transformed duplicate/chunk instances are separate execution-artifact artifacts.",
+  "variant_rule": "source_group_id + ':' + SHA256(title + NUL + text)"
+}

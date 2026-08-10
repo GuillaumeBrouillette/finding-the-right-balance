@@ -1,0 +1,478 @@
+{
+  "datasets": [
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 5924,
+          "validation": 1481
+        },
+        "1": {
+          "test": 5924,
+          "validation": 1481
+        },
+        "2": {
+          "test": 5924,
+          "validation": 1481
+        }
+      },
+      "dataset": "hotpotqa_fullwiki",
+      "dataset_split": "validation",
+      "historical_git_commit": "5126ee5",
+      "manifest": "manifests/splits/hotpotqa_fullwiki.csv",
+      "manifest_sha256": "bf3f3cc9a5c3fcd6992c357dd1233da92f53d270d24549762b734d6527f6806d",
+      "query_count": 7405,
+      "query_order_sha256": "fca76fdd9c605201472889b9567d5a92f61e3df71f3a55dd5637cbdc6387a769",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 5924,
+            "recovered_mean": 0.76648578642166,
+            "saved_rounded_mean": 0.7665
+          },
+          "1": {
+            "n_test": 5924,
+            "recovered_mean": 0.7661657757822729,
+            "saved_rounded_mean": 0.7662
+          },
+          "2": {
+            "n_test": 5924,
+            "recovered_mean": 0.762800300689982,
+            "saved_rounded_mean": 0.7628
+          }
+        },
+        "objective": "alpha-NDCG@k",
+        "summary": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "bceaabe606318e747edb066294d3a388e40c1c1cd6f5f1e5f54240cbbca1ea05",
+      "source_run_params": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/run_params.json",
+      "source_run_params_sha256": "fd2be0d514249a567e7bc207d9b2f6e5bd8fe624082ddcad7ca3fa7120f76a50",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/results_chunking_per_query.csv",
+          "sha256": "8d676757f4ffa8dfb4fa7b11a7f066efd2bf5f455e78d8d99130c3221e370444"
+        },
+        {
+          "path": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+          "sha256": "71e76280b8fa75abb12b0b6ad3212eb1cc8356bf23569fcfca0c06387a24a78d"
+        },
+        {
+          "path": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+          "sha256": "45a5f665489d7ce757e6b80e856aa9f1b76e0d60213085927f9ece25c802e564"
+        },
+        {
+          "path": "results/retained/2026-07-20_121145_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+          "sha256": "3cd16273c1909f6257af0d0adee214a1f87df25da6f3c40a24161c347d799217"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 240,
+          "validation": 60
+        },
+        "1": {
+          "test": 240,
+          "validation": 60
+        },
+        "2": {
+          "test": 240,
+          "validation": 60
+        }
+      },
+      "dataset": "scifact",
+      "dataset_split": "test",
+      "historical_git_commit": "5126ee5",
+      "manifest": "manifests/splits/scifact.csv",
+      "manifest_sha256": "238ee6b54b23506324c74891e124ba6b0b55e3219d865b71a4a7ad27aad33f5a",
+      "query_count": 300,
+      "query_order_sha256": "f454ba3f4706f9623699bdf722a170c1b97f28b74c325c927d428a2d81279b92",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 240,
+            "recovered_mean": 0.6722601440383082,
+            "saved_rounded_mean": 0.6723
+          },
+          "1": {
+            "n_test": 240,
+            "recovered_mean": 0.64878036807785,
+            "saved_rounded_mean": 0.6488
+          },
+          "2": {
+            "n_test": 240,
+            "recovered_mean": 0.6600811902285102,
+            "saved_rounded_mean": 0.6601
+          }
+        },
+        "objective": "alpha-NDCG@k",
+        "summary": "results/retained/2026-06-25_082550_redundancy_scifact/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-06-25_082550_redundancy_scifact/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "a99a465de2924ae04598bd3f5a3ddb60916c6259f21a9bd2ab6e1c5e0129ff34",
+      "source_run_params": "results/retained/2026-06-25_082550_redundancy_scifact/run_params.json",
+      "source_run_params_sha256": "ed5a9fac8c7ace6fe4ccd1a8beebd95165da1953f83781a46d7ff54c14982a43",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-06-25_082550_redundancy_scifact/results_chunking_per_query.csv",
+          "sha256": "e3c3db6f0ae2e86a4ed53c6d5c1364752521f4464e8817d241808ed3164251ba"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 519,
+          "validation": 129
+        },
+        "1": {
+          "test": 519,
+          "validation": 129
+        },
+        "2": {
+          "test": 519,
+          "validation": 129
+        }
+      },
+      "dataset": "fiqa",
+      "dataset_split": "test",
+      "historical_git_commit": "210cf2f",
+      "manifest": "manifests/splits/fiqa.csv",
+      "manifest_sha256": "ea2469e52c4ded141642ac1871081346e4bedcc4655e1b92ecfa399f6a42d10a",
+      "query_count": 648,
+      "query_order_sha256": "74872dee8908360da98403affd8a4a8d68a70618d847456960fb69c0c574bd6a",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 519,
+            "recovered_mean": 0.567327069205682,
+            "saved_rounded_mean": 0.5673
+          },
+          "1": {
+            "n_test": 519,
+            "recovered_mean": 0.5600674373795761,
+            "saved_rounded_mean": 0.5601
+          },
+          "2": {
+            "n_test": 519,
+            "recovered_mean": 0.5665359207266721,
+            "saved_rounded_mean": 0.5665
+          }
+        },
+        "objective": "S-Recall@k",
+        "summary": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "0eb8888b419012bc86ace379751a23d9d622cce37948dd39b071fff2928220b9",
+      "source_run_params": "results/retained/2026-07-23_104202_redundancy_fiqa/run_params.json",
+      "source_run_params_sha256": "ccb7c7a68dd9f8e840a0dcb54afdf1fa2d1811ea887bee0050ff80a3843d0ab7",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-07-28_095742_redundancy_fiqa/results_chunking_per_query.csv",
+          "sha256": "ec1957d41b38e46408b3adf99ad28bb758dd7f3eeabb8aaf3bae5ef83812bec0"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 40,
+          "validation": 10
+        },
+        "1": {
+          "test": 40,
+          "validation": 10
+        },
+        "2": {
+          "test": 40,
+          "validation": 10
+        }
+      },
+      "dataset": "trec-covid",
+      "dataset_split": "test",
+      "historical_git_commit": "2ef6f61",
+      "manifest": "manifests/splits/trec-covid.csv",
+      "manifest_sha256": "12fe397cb5058abbcb2520c0a3cbd7782d4f7d10ffb417a944fa3aea9750f39c",
+      "query_count": 50,
+      "query_order_sha256": "02d36ee22aefffbb3eac4f90f703dd0be636851031144132b43af85384a2afcd",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 40,
+            "recovered_mean": 0.18222464588601758,
+            "saved_rounded_mean": 0.1822
+          },
+          "1": {
+            "n_test": 40,
+            "recovered_mean": 0.19047546273658017,
+            "saved_rounded_mean": 0.1905
+          },
+          "2": {
+            "n_test": 40,
+            "recovered_mean": 0.18803106747627787,
+            "saved_rounded_mean": 0.188
+          }
+        },
+        "objective": "S-Recall@k",
+        "summary": "results/retained/2026-07-28_115804_redundancy_trec-covid/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-07-28_115804_redundancy_trec-covid/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "4d5d58a134f39a34041c9ea84d3e1a7bf7626b3d1da9c0823e94d5a41ffb781f",
+      "source_run_params": "results/retained/2026-07-28_115804_redundancy_trec-covid/run_params.json",
+      "source_run_params_sha256": "fc5da624fc2f8899abba421f1514aa4cc1b96be96be28ff2429cce5a81977260",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-07-16_095435_redundancy_trec-covid/results_chunking_per_query.csv",
+          "sha256": "3f28e02ad70ada1715f74f9717482f6f4c3d204f0a4d3e29f2e46bd37b3880c1"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 10061,
+          "validation": 2515
+        },
+        "1": {
+          "test": 10061,
+          "validation": 2515
+        },
+        "2": {
+          "test": 10061,
+          "validation": 2515
+        }
+      },
+      "dataset": "2wikimultihopqa",
+      "dataset_split": "validation",
+      "historical_git_commit": "350bde4",
+      "manifest": "manifests/splits/2wikimultihopqa.csv",
+      "manifest_sha256": "2377bc451b718ae96aaab31832eedd71eadd75551dfdfb713ceaa608c0d96161",
+      "query_count": 12576,
+      "query_order_sha256": "134be069148a2867194f4319a0ee826db46640673a38070def6515ad125d24c5",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 10061,
+            "recovered_mean": 0.8966554020475102,
+            "saved_rounded_mean": 0.8967
+          },
+          "1": {
+            "n_test": 10061,
+            "recovered_mean": 0.8973014610873671,
+            "saved_rounded_mean": 0.8973
+          },
+          "2": {
+            "n_test": 10061,
+            "recovered_mean": 0.8952887386939669,
+            "saved_rounded_mean": 0.8953
+          }
+        },
+        "objective": "S-Recall@k",
+        "summary": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "bfcbfa0948d3cf200293da30598785702627fc948651f459a09faf20fa45893a",
+      "source_run_params": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/run_params.json",
+      "source_run_params_sha256": "8702a611ce870cf9176bf38eef9573374a023afc4eb0a6e4f584d18816880c55",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/results_chunking_per_query.csv",
+          "sha256": "572a75b1375ef820983dc2bece93f393e389fcec5ce47db35f18d4e7a19edd44"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 1934,
+          "validation": 483
+        },
+        "1": {
+          "test": 1934,
+          "validation": 483
+        },
+        "2": {
+          "test": 1934,
+          "validation": 483
+        }
+      },
+      "dataset": "musique",
+      "dataset_split": "validation",
+      "historical_git_commit": "89eaca5",
+      "manifest": "manifests/splits/musique.csv",
+      "manifest_sha256": "335548db9d1efd73cf020d821ca12fd9fc98d1a474d312b546b5ef3067984571",
+      "query_count": 2417,
+      "query_order_sha256": "a99435e0d49fab1d09b25ba8d8c756be11fffc5c13258da44916c822c4f399dd",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 1934,
+            "recovered_mean": 0.7188038607376765,
+            "saved_rounded_mean": 0.7188
+          },
+          "1": {
+            "n_test": 1934,
+            "recovered_mean": 0.7174681144432954,
+            "saved_rounded_mean": 0.7175
+          },
+          "2": {
+            "n_test": 1934,
+            "recovered_mean": 0.7242330230954842,
+            "saved_rounded_mean": 0.7242
+          }
+        },
+        "objective": "S-Recall@k",
+        "summary": "results/retained/2026-07-28_154431_redundancy_musique/results_redundancy_per_seed_summary.csv"
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "source_per_query": "results/retained/2026-07-28_154431_redundancy_musique/results_redundancy_per_query.csv",
+      "source_per_query_sha256": "f5c9b2a90e974006a86b1c4f31e034294f8fa17a87f5d42642b8752baec842d1",
+      "source_run_params": "results/retained/2026-07-28_154431_redundancy_musique/run_params.json",
+      "source_run_params_sha256": "613846c5784290f8ce1fcc26ee3670b60d2c30dac3f0789da8fc80c2ba23783a",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": [
+        {
+          "path": "results/retained/2026-07-23_101022_redundancy_musique/results_chunking_per_query.csv",
+          "sha256": "765cdbebd5cfed13aea665d5cab37ed1fe1778df3ab5178fb58951c8269d7d87"
+        }
+      ]
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 5956,
+          "validation": 1488
+        }
+      },
+      "dataset": "nq",
+      "dataset_split": "validation",
+      "historical_git_commit": "8dccbec",
+      "manifest": "manifests/splits/nq.csv",
+      "manifest_sha256": "130d06e8f3bd2d6053ce16a6ce7eb4404050153361ce711e87f69d022c232c3e",
+      "query_count": 7444,
+      "query_order_sha256": "d8541faf69c7955675668c841f6b74eff815f085f151bc3b4a66002cfaf9827b",
+      "saved_summary_validation": {
+        "by_seed": {
+          "0": {
+            "n_test": 5956,
+            "recovered_mean": 0.9207521826729349,
+            "saved_rounded_mean": 0.9208
+          }
+        },
+        "objective": "S-Recall@k",
+        "summary": "results/retained/2026-06-16_094433_redundancy_nq/results_chunking_summary.csv"
+      },
+      "seeds": [
+        0
+      ],
+      "source_per_query": "results/retained/2026-06-16_094433_redundancy_nq/results_chunking_per_query.csv",
+      "source_per_query_sha256": "3f82bbbb1a1729b6733d975ec44279ca0c00dbcc0385095b0cc8cd5c83770a26",
+      "source_run_params": "results/retained/2026-06-16_094433_redundancy_nq/run_params.json",
+      "source_run_params_sha256": "e6abb45f1fe13394646a3cc426c0d3dc5b1dc21447d0b9bce6b684b5e4b2d3d6",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": []
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 1125,
+          "validation": 281
+        }
+      },
+      "dataset": "arguana",
+      "dataset_split": "test",
+      "historical_git_commit": "3106168",
+      "manifest": "manifests/splits/arguana.csv",
+      "manifest_sha256": "52c387138831d78d87c502e3c98f3282496b29ecec11d7908fbb2f19178c1fae",
+      "query_count": 1406,
+      "query_order_sha256": "2d6f2e87d50b481e7fe86c796a99bae0aa667eda479d071dc6125a15bf1c80a3",
+      "saved_summary_validation": {
+        "reason": "The early BEIR run retained summary rows but no per-query rows.",
+        "status": "not_available"
+      },
+      "seeds": [
+        0
+      ],
+      "source_qrels": "test.tsv",
+      "source_qrels_sha256": "0c47b481fa8b47fb9ca5e74bc8a017bdea14518c0e4a5d21345291180b3aca76",
+      "source_queries": "queries.jsonl",
+      "source_queries_sha256": "f8b7c903f95d9a2d291de3915a8fac25085e9db679f19f59fea4145bfd1df618",
+      "source_run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json",
+      "source_run_params_sha256": "7022eb1754a22416e10578d29045cc83cae68a4682873336b940112d68305592",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": []
+    },
+    {
+      "counts_by_seed": {
+        "0": {
+          "test": 40,
+          "validation": 9
+        }
+      },
+      "dataset": "webis-touche2020",
+      "dataset_split": "test",
+      "historical_git_commit": "3106168",
+      "manifest": "manifests/splits/webis-touche2020.csv",
+      "manifest_sha256": "e926aed403653ad5175ab5c468fc31c64e05d336028b75a1626dd9e3990e3ad6",
+      "query_count": 49,
+      "query_order_sha256": "b60ec01f522cfdc641345dde67af9078da372c72a739d7bdd40c539620df476a",
+      "saved_summary_validation": {
+        "reason": "The early BEIR run retained summary rows but no per-query rows.",
+        "status": "not_available"
+      },
+      "seeds": [
+        0
+      ],
+      "source_qrels": "test.tsv",
+      "source_qrels_sha256": "cfaaa2e7820ae9a6913d2e6fe1bd23c8c8b2c4c7ecf102e780704344e35bc4e6",
+      "source_queries": "queries.jsonl",
+      "source_queries_sha256": "8658a223ac9ea050f0d37483dee7037c7c8854e58ce09d01d81a7d071d8caa0d",
+      "source_run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json",
+      "source_run_params_sha256": "7022eb1754a22416e10578d29045cc83cae68a4682873336b940112d68305592",
+      "validation_fraction": 0.2,
+      "verified_same_query_order": []
+    }
+  ],
+  "format_version": 1,
+  "known_limitations": [
+    "The split and source-group manifests do not claim to contain the historical post-encoding per-query candidate rankings; those are reported separately as execution-artifact artifacts."
+  ],
+  "numpy_version_used_for_recovery": "2.4.6",
+  "source_group_manifests": "manifests/source_groups/metadata.json",
+  "split_algorithm": "numpy.random.default_rng(seed).permutation(n)"
+}

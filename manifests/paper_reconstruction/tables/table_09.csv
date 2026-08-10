@@ -1,0 +1,45 @@
+level,selector,S-Recall@k,trigger_rate
+0.0,always kNN,0.787137,
+0.0,always D*,0.727718,
+0.0,rule,0.787475,0.006527
+0.025,always kNN,0.770425,
+0.025,always D*,0.727071,
+0.025,rule,0.769469,0.032579
+0.05,always kNN,0.766627,
+0.05,always D*,0.730137,
+0.05,rule,0.759537,0.155413
+0.1,always kNN,0.711372,
+0.1,always D*,0.730025,
+0.1,rule,0.729237,0.809869
+0.15,always kNN,0.619626,
+0.15,always D*,0.731122,
+0.15,rule,0.731206,0.877504
+0.25,always kNN,0.544621,
+0.25,always D*,0.732979,
+0.25,rule,0.732275,0.899561
+0.5,always kNN,0.528866,
+0.5,always D*,0.736805,
+0.5,rule,0.735005,0.914416
+1.0,always kNN,0.525686,
+1.0,always D*,0.745977,
+1.0,rule,0.742882,0.929102
+pooled,always kNN,0.656795,
+pooled,always D*,0.732729,
+pooled,rule,0.748386,0.578121
+0.0,per-level tuned,0.789100,
+0.025,per-level tuned,0.775500,
+0.05,per-level tuned,0.774700,
+0.1,per-level tuned,0.762100,
+0.15,per-level tuned,0.745100,
+0.25,per-level tuned,0.733000,
+0.5,per-level tuned,0.736800,
+1.0,per-level tuned,0.746000,
+0.0,all-methods oracle,0.817800,
+0.025,all-methods oracle,0.812200,
+0.05,all-methods oracle,0.814200,
+0.1,all-methods oracle,0.808200,
+0.15,all-methods oracle,0.806400,
+0.25,all-methods oracle,0.803600,
+0.5,all-methods oracle,0.801800,
+1.0,all-methods oracle,0.808900,
+pooled,all-methods oracle,0.809100,

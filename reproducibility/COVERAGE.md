@@ -1,0 +1,16 @@
+# Reproducibility coverage
+
+This table maps the article's reproducibility materials to their published evidence.
+
+| Area | Published evidence | Coverage |
+|---|---|---|
+| Query identities and splits | Frozen query/split files in [`manifests/splits/`](../manifests/splits/) and immutable source groups in [`manifests/source_groups/`](../manifests/source_groups/). | Complete |
+| Algorithms, sources, and randomness | Frozen historical code, source links, run parameters, RNG call sites, and effective seeds in [`manifests/execution/`](../manifests/execution/). | Complete |
+| Candidate-pool invariants | Runtime assertions and validated per-query pool-size audits in [`manifests/pool_sizes/`](../manifests/pool_sizes/). | Complete |
+| Models and inference | Immutable model/tokenizer revisions, precision, batching, retrieval, reranking, and generation settings in [`manifests/models/`](../manifests/models/). | Complete |
+| Environment and hardware | Exact 111-package [`environment-lock.txt`](environment-lock.txt) and captured software/hardware details in [`METHODS.md`](METHODS.md). | Complete |
+| Per-query execution artifacts | Forty-two runs and 460 retained artifacts indexed in [`manifests/execution_artifacts/`](../manifests/execution_artifacts/), including 1,836,695 clean-pool memberships and 872,032 reconstructed trigger decisions. | All recoverable evidence published; historical embedding hashes, post-encoder rankings, and raw answer strings were never serialized. |
+| Statistical inference | 4,186,032 raw paired contrasts, 1,814,424 query-averaged contrasts, and 534 inferential rows in [`manifests/statistics/`](../manifests/statistics/). | All recoverable inference published; aggregate-only historical generation, ArguAna/Touché, and non-Hotpot cross-encoder cells remain descriptive. |
+| Paper reconstruction | Deterministic reconstruction of all 12 tables and all 8 figures from 53 checksummed inputs in [`manifests/paper_reconstruction/`](../manifests/paper_reconstruction/). | Complete |
+
+Detailed definitions, statistical procedures, validation rules, and limitations are in [`METHODS.md`](METHODS.md).

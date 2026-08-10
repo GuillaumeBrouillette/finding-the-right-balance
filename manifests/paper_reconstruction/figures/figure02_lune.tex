@@ -1,0 +1,9 @@
+\begin{tikzpicture}[scale=0.85]
+  \clip (-1.2,-2.8) rectangle (4.2,2.8);
+  \begin{scope} \clip (0,0) circle (3); \fill[blue!12] (3,0) circle (3); \end{scope}
+  \draw[gray] (0,0) circle (3); \draw[gray] (3,0) circle (3);
+  \node[circle,fill=black,inner sep=2pt,label=below left:$x$] at (0,0) {};
+  \node[circle,fill=black,inner sep=2pt,label=below right:$y$] at (3,0) {};
+  \node[circle,fill=blue,inner sep=2pt,label=above right:$z_1$] at (1.5,1.2) {};
+  \node[circle,draw,inner sep=2pt,label=above:$z_2$] at (0.5,-2.2) {};
+\end{tikzpicture}

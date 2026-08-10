@@ -58,6 +58,9 @@ from typing import Dict, List, Optional, Tuple
 from datasets import load_dataset
 
 
+_LOCAL_DATA_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 # ---------------------------------------------------------------------------
 # HotpotQA – distractor setting
 # ---------------------------------------------------------------------------
@@ -313,7 +316,18 @@ def load_2wikimultihopqa(
     max_samples : int, optional
         Cap on the number of examples returned.
     """
-    ds = load_dataset("xanhho/2WikiMultiHopQA", split=split)
+    local_dev = os.path.join(
+        _LOCAL_DATA_DIR, "2wikimultihopqa", "dev.parquet"
+    )
+    if split == "validation" and os.path.isfile(local_dev):
+        # Immutable snapshot recorded by the reproducibility manifest.
+        ds = load_dataset("parquet", data_files={split: local_dev}, split=split)
+    else:
+        ds = load_dataset(
+            "xanhho/2WikiMultiHopQA",
+            revision="612bc5039a457880d9e7d84c3b0a4cf154b70e4f",
+            split=split,
+        )
     if max_samples is not None:
         ds = ds.select(range(min(max_samples, len(ds))))
 
@@ -365,7 +379,18 @@ def load_musique(
     max_samples : int, optional
         Cap on the number of examples returned.
     """
-    ds = load_dataset("dgslibisey/musique", split=split)
+    local_dev = os.path.join(
+        _LOCAL_DATA_DIR, "musique", "musique_ans_v1.0_dev.jsonl"
+    )
+    if split == "validation" and os.path.isfile(local_dev):
+        # Immutable snapshot recorded by the reproducibility manifest.
+        ds = load_dataset("json", data_files={split: local_dev}, split=split)
+    else:
+        ds = load_dataset(
+            "dgslibisey/musique",
+            revision="c8f4f8c9465fb69d31a8eae894c3fd509c4ca321",
+            split=split,
+        )
     if max_samples is not None:
         ds = ds.select(range(min(max_samples, len(ds))))
 
