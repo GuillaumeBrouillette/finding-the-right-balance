@@ -1,0 +1,16 @@
+target,cleanDelta,heavyDelta,pooledDelta
+HotpotQA Qwen3-Emb (inj.),-0.003300,0.224600,0.097900
+HotpotQA MiniLM (inj.),-0.002200,0.136000,0.059100
+HotpotQA bge-m3 (chunking),-0.000100,0.013900,0.003700
+2WikiMultiHopQA (chunking),0.000300,0.031800,0.009700
+NQ-Open (chunking),0.000000,0.000000,0.000000
+MuSiQue (chunking),0.022700,0.099600,0.053600
+SciFact bge-m3 (inj.),-0.006700,0.017600,0.003800
+SciFact bge-m3 (chunking),-0.004200,0.003600,-0.000400
+TREC-COVID (chunking),-0.019500,0.041100,0.007100
+HotpotQA bge-m3 k=10 (inj.),-0.000000,0.241400,0.057000
+FiQA-2018 (inj.),-0.009600,0.092000,0.028600
+FiQA-2018 (chunking),-0.009500,0.003300,-0.002300
+TREC-COVID (inj.),-0.016700,0.129000,0.030900
+MuSiQue (inj.),0.007500,0.215100,0.055700
+2WikiMultiHopQA (inj.),0.000500,0.107200,0.014900

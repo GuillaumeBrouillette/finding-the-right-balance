@@ -1,0 +1,435 @@
+{
+  "inputs": [
+    {
+      "bytes": 1381819,
+      "path": "manifests/splits/hotpotqa_fullwiki.csv",
+      "sha256": "bf3f3cc9a5c3fcd6992c357dd1233da92f53d270d24549762b734d6527f6806d"
+    },
+    {
+      "bytes": 360,
+      "path": "reproducibility/table01_source.csv",
+      "sha256": "863a71d47885c8351ebd74627668c3e2079321c006ffc605155b2c86e666bae2"
+    },
+    {
+      "bytes": 27673,
+      "path": "results/retained/2026-06-04_124043_ce_musique/results_ce_musique_summary.csv",
+      "sha256": "5c252bb94f4a4038767edffa6b685981fa11115f34f86ba5a856923e5a68e42b"
+    },
+    {
+      "bytes": 27906,
+      "path": "results/retained/2026-06-05_102637_ce_2wikimultihopqa/results_ce_2wikimultihopqa_summary.csv",
+      "sha256": "5d411d482f419bfc94830b10921b52cda56232cdee808c5edb7986431a667e78"
+    },
+    {
+      "bytes": 47217,
+      "path": "results/retained/2026-06-05_200449_hotpotqa_fullwiki/results_generation.csv",
+      "sha256": "54a9c166b269ba72d945cd62220f5c3a72ec264963ecd2d9e37259726d161740"
+    },
+    {
+      "bytes": 27566,
+      "path": "results/retained/2026-06-06_205350_ce_nq/results_ce_nq_summary.csv",
+      "sha256": "cfb8f6aab742132777b063b90da5cd0bdc76c8294467650b27afd33a48f26cc8"
+    },
+    {
+      "bytes": 87129,
+      "path": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/results_beir_summary.csv",
+      "sha256": "62164e9707d1e9a7b40d2b6b2ed1f80f23c0fb5e934d3f197be7daba278f7226"
+    },
+    {
+      "bytes": 1748,
+      "path": "results/retained/2026-06-15_142100_redundancy_musique/analysis_summary.csv",
+      "sha256": "d162bec7a7810d8bbe589d8aba087bd2616590bd0dd8ae710a039efad888ec8d"
+    },
+    {
+      "bytes": 1774,
+      "path": "results/retained/2026-06-15_144227_redundancy_2wikimultihopqa/analysis_summary.csv",
+      "sha256": "c4201b64708adc04ead9cce054e1bea8085957ed5ac4872c2c515f4dae8c0723"
+    },
+    {
+      "bytes": 1755,
+      "path": "results/retained/2026-06-16_094433_redundancy_nq/analysis_summary.csv",
+      "sha256": "db4d39e26f4ac8536b473145faec3e0056bfd7086a89692fd6a50976ef398bfe"
+    },
+    {
+      "bytes": 595,
+      "path": "results/retained/2026-06-18_121117_redundancy_2wikimultihopqa/analysis_generation_frozen.csv",
+      "sha256": "477c43b3178b3ba66cffe4a4a1fb65f89fe232bd9e87775b371205cca936a646"
+    },
+    {
+      "bytes": 562,
+      "path": "results/retained/2026-06-18_173800_redundancy_hotpotqa_fullwiki/analysis_generation_frozen.csv",
+      "sha256": "8b224961ed9e91ddbd1b14c7fda9a22607588fc2e4e60e6b9dceaa1770210079"
+    },
+    {
+      "bytes": 17538,
+      "path": "results/retained/2026-06-22_211522_beir_scifact_fiqa_trec-covid/results_beir_summary.csv",
+      "sha256": "7e6030e1060e445c42daf03eb5d271a04f7ca9c0b27c60c2c6bcce79865fe60e"
+    },
+    {
+      "bytes": 13340,
+      "path": "results/retained/2026-06-24_064052_ce_hotpotqa_fullwiki/results_ce_hotpotqa_fullwiki_summary.csv",
+      "sha256": "26b73eb11077054786f93de9188659d67047053efd41bacf423f6a5a1aec77be"
+    },
+    {
+      "bytes": 1699,
+      "path": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/analysis_oracle.csv",
+      "sha256": "1fc0a2c82adce239be756875a81d59ae4d6c4816a110a331bfbee1f6cbf099b3"
+    },
+    {
+      "bytes": 3328,
+      "path": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/analysis_summary.csv",
+      "sha256": "fa2215b62da9bab38dca6f7959efa87cef08637a4d6483b9bbec75b01ff52b75"
+    },
+    {
+      "bytes": 2078,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_gate.csv",
+      "sha256": "855e032e20133a842a1e676327850bdd6f6069c628c082139a8d7a4ab272dd55"
+    },
+    {
+      "bytes": 2963,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_oracle.csv",
+      "sha256": "666a02a60089e564bdb3c12c83d2146713e4a81e677f2da83b845c634c208639"
+    },
+    {
+      "bytes": 3423,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_regret.csv",
+      "sha256": "64b3b20e6d70a0e3421de3cd0cfbc58a43807ce8a9083ca0a57623b9343e22f8"
+    },
+    {
+      "bytes": 6434,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_summary.csv",
+      "sha256": "6c48e7dd8270819e7cd7f9cd6a66d8ad4dc8cdbb1be95d65fd4e8c759590960a"
+    },
+    {
+      "bytes": 10777,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_summary_per_seed.csv",
+      "sha256": "9b06a54e36dc5db35128028a389162259817981c79ad11f12cac40f88e87a2ee"
+    },
+    {
+      "bytes": 3040,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_threshold.csv",
+      "sha256": "d8df0e4d7677e286f4cca09c9d6ee1e00ff7316bc5525edb845480121fb27e38"
+    },
+    {
+      "bytes": 154066,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_threshold_curve.csv",
+      "sha256": "e51a11f914a9640040b0521603bf55af90cc5a9106c20d7e36824f2250529722"
+    },
+    {
+      "bytes": 435,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_threshold_info.json",
+      "sha256": "8fa16a6d996a2c1b66d4c2def5984caf35c116da93e7248313ce16420e0562cc"
+    },
+    {
+      "bytes": 706589944,
+      "path": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "sha256": "bceaabe606318e747edb066294d3a388e40c1c1cd6f5f1e5f54240cbbca1ea05"
+    },
+    {
+      "bytes": 1875,
+      "path": "results/retained/2026-06-25_082550_redundancy_scifact/analysis_chunking_oracle.csv",
+      "sha256": "8b0642a4fd40f42298b6f7e64779f3f88b131b546f89c71d117c9ccb6ca05738"
+    },
+    {
+      "bytes": 3365,
+      "path": "results/retained/2026-06-25_082550_redundancy_scifact/analysis_chunking_summary.csv",
+      "sha256": "5e1a6659170ad705e780e1e4f9241332cac9b48004e77c5847be7494577ddb7c"
+    },
+    {
+      "bytes": 3687,
+      "path": "results/retained/2026-06-25_082550_redundancy_scifact/analysis_oracle.csv",
+      "sha256": "d3060aa5d8d178f48a61c2c517eb8531be1ffcc03fc71012062ebcc6cd17621b"
+    },
+    {
+      "bytes": 6487,
+      "path": "results/retained/2026-06-25_082550_redundancy_scifact/analysis_summary.csv",
+      "sha256": "8ca30f8c368450be1674ee36cb4fc5aff8a0c23256c0715f843a23e7992dd473"
+    },
+    {
+      "bytes": 10935,
+      "path": "results/retained/2026-06-25_082550_redundancy_scifact/analysis_summary_per_seed.csv",
+      "sha256": "deeb9a410ff81abdc59ab4028ff180410b6c413387d7d2b67f44d282debe5fd0"
+    },
+    {
+      "bytes": 6444,
+      "path": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/analysis_summary.csv",
+      "sha256": "3efe8c52136d95fa9575e03e89aa783bf3781f3722abdfc2349914a1551ebd72"
+    },
+    {
+      "bytes": 10824,
+      "path": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/analysis_summary_per_seed.csv",
+      "sha256": "a4e5fb1bff1b6e1b449bfdd2ffd4c23d7bb703cea5cff059f8657121d8a93e3b"
+    },
+    {
+      "bytes": 6431,
+      "path": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/analysis_summary.csv",
+      "sha256": "9818be6d26e7555f57a7f065bc2336501eb0694a02b2ae816dccf86997335f27"
+    },
+    {
+      "bytes": 10793,
+      "path": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/analysis_summary_per_seed.csv",
+      "sha256": "d66b8d3c5386ebefadf034e315a1773a89122f2e37d5fbf296c8ca7bf2c67ccf"
+    },
+    {
+      "bytes": 3225,
+      "path": "results/retained/2026-07-16_095435_redundancy_trec-covid/analysis_oracle.csv",
+      "sha256": "6064630887e48e2e7cb64debececd1de70b48f7a097e19fbdf31439527cf0196"
+    },
+    {
+      "bytes": 33214,
+      "path": "results/retained/2026-07-16_095435_redundancy_trec-covid/results_chunking_summary.csv",
+      "sha256": "db1a27567348d78511874b01216cc8cd1ecffe1d98105d6bf261984ed1a9dc2d"
+    },
+    {
+      "bytes": 2719,
+      "path": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/analysis_oracle.csv",
+      "sha256": "edd05bb54ec4cb0ca17dca2308707f8c9a6c35d402d8670bf0aaa11f2661abce"
+    },
+    {
+      "bytes": 4703,
+      "path": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/analysis_summary.csv",
+      "sha256": "0fd2719639b069be4cade8bbf92ab44f3bf0aca4ee4f8d405d8223771c9fcfe4"
+    },
+    {
+      "bytes": 2755,
+      "path": "results/retained/2026-07-23_101022_redundancy_musique/analysis_oracle.csv",
+      "sha256": "59df941d50890db12fa7dd15e620ab60924317fa886a35346d4f4306ddcbeff3"
+    },
+    {
+      "bytes": 28694,
+      "path": "results/retained/2026-07-23_101022_redundancy_musique/results_chunking_summary.csv",
+      "sha256": "1842d24bb01d070ae83d052e5d5ef2bbd51afc65eedd7f783cd54e89260b011c"
+    },
+    {
+      "bytes": 5421,
+      "path": "results/retained/2026-07-23_104202_redundancy_fiqa/analysis_oracle.csv",
+      "sha256": "6d34ce9c3ca8276faec1d06b1ade829b85395790b56f770be650a9c1f2177c3a"
+    },
+    {
+      "bytes": 157949,
+      "path": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_per_seed_summary.csv",
+      "sha256": "4ff34736f77b6d67d21d731ba901e44f7d2429379d54a54c3f9ab8cb7ab97edc"
+    },
+    {
+      "bytes": 56714,
+      "path": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_summary.csv",
+      "sha256": "86001c2a2341cc7d1810c20346ea12dd0cab46e600d0fda0072b699b88a4c3db"
+    },
+    {
+      "bytes": 3081,
+      "path": "results/retained/2026-07-28_095742_redundancy_fiqa/analysis_oracle.csv",
+      "sha256": "9fdd4132e2edb8de9beb5e362650bbc4806587f03b706e72953c64d5943ecd21"
+    },
+    {
+      "bytes": 28636,
+      "path": "results/retained/2026-07-28_095742_redundancy_fiqa/results_chunking_summary.csv",
+      "sha256": "84592fe7c8d9ebee5e16ea3d0f7c2550499fbdb8b37f7d808f676a605f960763"
+    },
+    {
+      "bytes": 5644,
+      "path": "results/retained/2026-07-28_115804_redundancy_trec-covid/analysis_oracle.csv",
+      "sha256": "116bbda44013dd57138d10a80c3eab07ad5f2284adb4591bd974a8a6a364a7bb"
+    },
+    {
+      "bytes": 57626,
+      "path": "results/retained/2026-07-28_115804_redundancy_trec-covid/results_redundancy_summary.csv",
+      "sha256": "4422a8c49e937f7bea63dd50c09a95cb72258837b904efefcb061e40f0784cf2"
+    },
+    {
+      "bytes": 2041,
+      "path": "results/retained/2026-07-28_152156_hotpotqa_fullwiki/results_generation.csv",
+      "sha256": "0d8adcd18e6c57f73c7bf880618600fba9045168e5fa3f7c86038488c4c525e4"
+    },
+    {
+      "bytes": 5512,
+      "path": "results/retained/2026-07-28_154431_redundancy_musique/analysis_oracle.csv",
+      "sha256": "2e5d6a2fbc22113003f7e5a49fcc2379f11513db6be6a2189e2c1d636f3b4619"
+    },
+    {
+      "bytes": 57494,
+      "path": "results/retained/2026-07-28_154431_redundancy_musique/results_redundancy_summary.csv",
+      "sha256": "087f4496a69034122505158914b628c28ae78469e8b1fd2968aca4dbd49e32d6"
+    },
+    {
+      "bytes": 5035,
+      "path": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/analysis_oracle.csv",
+      "sha256": "1e58c59a596b080a0c3fbe4b35afefc32c50d063cba9f2cf3ee6c8c65aa46d45"
+    },
+    {
+      "bytes": 57719,
+      "path": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/results_redundancy_summary.csv",
+      "sha256": "85bfac146c6a402fde467501f886bf5bd27fd410392d5453da99976b89a5f26d"
+    },
+    {
+      "bytes": 16574,
+      "path": "results/retained/frozen_rule_transfer_summary.csv",
+      "sha256": "1613aaae2ed6c02ea537d7d9507ecf0c452f27f2a627df52f3306e7631ff6d07"
+    }
+  ],
+  "outputs": [
+    {
+      "bytes": 16202,
+      "path": "figures/figure01.pdf",
+      "sha256": "850a741e5f5a86e8dd71be6a9fa753b0db8281249670aa49055593bf8599cad2"
+    },
+    {
+      "bytes": 541,
+      "path": "figures/figure02_lune.tex",
+      "sha256": "284d810699b64a17f630d4192dd4ae81010b33ba33a14cd6379f3333b1d0dc1d"
+    },
+    {
+      "bytes": 1214,
+      "path": "figures/figure02_rng_graph.tex",
+      "sha256": "f701088d2ed8a24552e5f5cda3bfb06fb9b343335a66e2c2e25954eb1426503e"
+    },
+    {
+      "bytes": 2777,
+      "path": "figures/figure03_selections.tex",
+      "sha256": "f827137a6020d264d3c80d30fb8e3de4b0506799fe833256ef16fae9ef2d60ac"
+    },
+    {
+      "bytes": 18324,
+      "path": "figures/figure04.pdf",
+      "sha256": "5670882a6a63559fbd89008cce7f88f95132382ab5824bd0e7a7d90342da16dc"
+    },
+    {
+      "bytes": 13288,
+      "path": "figures/figure04_a.pdf",
+      "sha256": "6f5af0a11eb7f127631a2de2d337dc33633e9e2c1d32b962844fe020a6d832c1"
+    },
+    {
+      "bytes": 11327,
+      "path": "figures/figure04_b.pdf",
+      "sha256": "d818a6fddbcf723662680c5b3accc0e3090cc02b021cc93a4af20ae7c8055e36"
+    },
+    {
+      "bytes": 11870,
+      "path": "figures/figure04_c.pdf",
+      "sha256": "adf7000ffc75f4ca48e19c20ec123b29f905fc6cb515dc4ab5ac41c6d771e28c"
+    },
+    {
+      "bytes": 15847,
+      "path": "figures/figure05.pdf",
+      "sha256": "7a8e024a0af685e921ea77f828824f3a18b873078f17c68227c5a4ca7f144a0a"
+    },
+    {
+      "bytes": 13299,
+      "path": "figures/figure05_a.pdf",
+      "sha256": "a0fb862859390329750796469c7bda8c2e1f08e53c5f6e8889195b4bcb0844b9"
+    },
+    {
+      "bytes": 11340,
+      "path": "figures/figure05_b.pdf",
+      "sha256": "49a4c09ff6e28a178ba2fc95a4389f36e5426a79e407ba8732b0542eb8bbb09a"
+    },
+    {
+      "bytes": 16168,
+      "path": "figures/figure06_a.pdf",
+      "sha256": "f3ee4006c39c2acd3428f37a7dd26d81e44695f8fc1ecb7b940bd03f17a16e20"
+    },
+    {
+      "bytes": 15602,
+      "path": "figures/figure06_b.pdf",
+      "sha256": "27783f25ae7f761181308405c929219b7faa3690ee899bda058633d9b96f4f68"
+    },
+    {
+      "bytes": 21524,
+      "path": "figures/figure07.pdf",
+      "sha256": "8a73f2f5e9d2a7f1adbd19b57c795239ac9278fedbe1d8af4c08dd7dc0196882"
+    },
+    {
+      "bytes": 18235,
+      "path": "figures/figure07_a.pdf",
+      "sha256": "d9738731589be141c868bc79adfdfab35e87d8333ef7ea14299b3fd2c24ce7b2"
+    },
+    {
+      "bytes": 18044,
+      "path": "figures/figure07_b.pdf",
+      "sha256": "1769bc4dc7e51cf75c36713cf3aeeb8c03221a62050d458320b588e437b9bbaf"
+    },
+    {
+      "bytes": 19416,
+      "path": "figures/figure08.pdf",
+      "sha256": "6c6ce07d525162df55a70cf989019443aa85debf34aea2fcc5c706086dd60aae"
+    },
+    {
+      "bytes": 16961,
+      "path": "figures/figure08_a.pdf",
+      "sha256": "0b0291fe19411f055da87546897809f8a4dbe4d96661c4a57966d70b5d067372"
+    },
+    {
+      "bytes": 13981,
+      "path": "figures/figure08_b.pdf",
+      "sha256": "1009d10888997f84d8bb7b03ddd5384851dd4260e67dab121860d0b5e745ab4d"
+    },
+    {
+      "bytes": 360,
+      "path": "tables/table_01.csv",
+      "sha256": "863a71d47885c8351ebd74627668c3e2079321c006ffc605155b2c86e666bae2"
+    },
+    {
+      "bytes": 712,
+      "path": "tables/table_02.csv",
+      "sha256": "c27127221dab2799365ecce2be6d255394260a2a64739f59464cfae577b704f0"
+    },
+    {
+      "bytes": 692,
+      "path": "tables/table_03.csv",
+      "sha256": "7e361724ca03d8a9b04469913ab2ad35206976cb3ef5f9aca20660598216ed53"
+    },
+    {
+      "bytes": 921,
+      "path": "tables/table_04.csv",
+      "sha256": "e7fb6ae42a9dc3c56e9676545e694d676dfa7f27b52459fe67c10f8b142918fa"
+    },
+    {
+      "bytes": 319,
+      "path": "tables/table_05.csv",
+      "sha256": "7166ec42243357d8093579a8ea36bcaf7c6686a8dcb6946f947b9c2f6f9bdf49"
+    },
+    {
+      "bytes": 1555,
+      "path": "tables/table_06.csv",
+      "sha256": "19e6bafc750d401218e99f4c754487f68e1ef325ce25ca55efe3ae88952263f4"
+    },
+    {
+      "bytes": 2274,
+      "path": "tables/table_07.csv",
+      "sha256": "356eb778c1895dc1295d4a821a242582cf8eb51acd643747d75078257fb08813"
+    },
+    {
+      "bytes": 1306,
+      "path": "tables/table_08.csv",
+      "sha256": "d283a725a4fbd604c7f59557a09c631d8eb4dcdc0316d3811ebb1a98a045def1"
+    },
+    {
+      "bytes": 1297,
+      "path": "tables/table_09.csv",
+      "sha256": "d4e5c9bd2dceec54db20f475c518c40e81964f400e5537adef3da554dc0d4f44"
+    },
+    {
+      "bytes": 791,
+      "path": "tables/table_10.csv",
+      "sha256": "457a395deb4821c7f9763d275f405d313949620247364e6e2f997048dd47974f"
+    },
+    {
+      "bytes": 378,
+      "path": "tables/table_11.csv",
+      "sha256": "6f7f619c5b801ec5a71e5a511c558d6a109f17bb8865b2b0a5b4a2a4c7197747"
+    },
+    {
+      "bytes": 249,
+      "path": "tables/table_12.csv",
+      "sha256": "6d4a5a72f01c33d98d9883f8a1e628a75f58e870019f72c4ddb854c1b43037bc"
+    }
+  ],
+  "rendering_note": "All numerical cells and curves are rebuilt from retained files. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.",
+  "results_root": "results/retained",
+  "schema_version": 1,
+  "scope": {
+    "figures": 8,
+    "model_execution": false,
+    "tables": 12
+  },
+  "status": "complete"
+}

@@ -1,0 +1,512 @@
+{
+  "corrected_policy": "fixed_clean_pool_size_per_query",
+  "corrected_rerun_artifacts": [
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-06_152319_redundancy_trec-covid/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "a7ecb3ca37bb0561dec5676dcd40db98cbdcfebd96332c26ca412ee6b5bc6bb2",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 1200,
+      "run_id": "2026-08-06_152319_redundancy_trec-covid",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-06_160000_redundancy_musique/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "836fa20c3b62787dd8f109ce36e9c53599dd0d0c6f0f812038d046b3e9681884",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 58008,
+      "run_id": "2026-08-06_160000_redundancy_musique",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-06_164145_redundancy_musique/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "09bd8d299b337b29a1a037338f2821ce4fceab14163f740d34751b0a7916b683",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 29004,
+      "run_id": "2026-08-06_164145_redundancy_musique",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-06_170200_redundancy_trec-covid/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "ccc557e90a69006dcbcc82982290c994c482a7176915468f00b6c92b3ee0629b",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 600,
+      "run_id": "2026-08-06_170200_redundancy_trec-covid",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_031430_redundancy_2wikimultihopqa/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "68966b2974613af41f092be13801ab74e2fbb5f674f24802d37f554f315519e3",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 150912,
+      "run_id": "2026-08-07_031430_redundancy_2wikimultihopqa",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_040842_redundancy_2wikimultihopqa/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "9d1a2caf016815316bb758a7cd9b2056e0a6445ab507bf825f7276d9b22ec0fb",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 301824,
+      "run_id": "2026-08-07_040842_redundancy_2wikimultihopqa",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_060658_redundancy_fiqa/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "8d37c37db746b9da9ca3cdea5ca8f59523395f832c48b23404b490bbffc063a1",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 7776,
+      "run_id": "2026-08-07_060658_redundancy_fiqa",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "01a873bcf488de4631fe500d163aa8829577da0da3f0a0883739b868a54d6d42",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 3600,
+      "run_id": "2026-08-07_072703_redundancy_scifact",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "54fa7fc0dc45771cc55a2e172255ec8bc04d3b9d350f1bea367a4cee12c5e935",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 7200,
+      "run_id": "2026-08-07_072703_redundancy_scifact",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_113533_redundancy_hotpotqa_fullwiki/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "54ea841dbb04e442adb2e802f2120f0303f243d8ad9075be90ecd1e7e824ba18",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 88860,
+      "run_id": "2026-08-07_113533_redundancy_hotpotqa_fullwiki",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_154506_redundancy_fiqa/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "9974fd8fcb36de21a7d17212f1ab1adc4be8783d748cfefd5619503f8b7e817a",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 15552,
+      "run_id": "2026-08-07_154506_redundancy_fiqa",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-07_230907_redundancy_hotpotqa_fullwiki/results_redundancy_pool_size_audit.csv",
+      "artifact_sha256": "0f048eaa34f3d9e35b93ad02c7ea77dfbe706990d6e3d143726232d2d6e934e7",
+      "experiment": "redundancy",
+      "levels": [
+        "0.0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1.0"
+      ],
+      "row_count": 177720,
+      "run_id": "2026-08-07_230907_redundancy_hotpotqa_fullwiki",
+      "seeds": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "all_assertions_pass": true,
+      "all_candidate_sizes_match_targets": true,
+      "artifact": "results/reproducibility_reruns/2026-08-08_070150_redundancy_nq/results_chunking_pool_size_audit.csv",
+      "artifact_sha256": "b1b8c8d5b4e6521046250ed749b5421b9664d1b59d3e168f1cb14c58ecab79fd",
+      "experiment": "chunking",
+      "levels": [
+        "0.0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "row_count": 29776,
+      "run_id": "2026-08-08_070150_redundancy_nq",
+      "seeds": [
+        0
+      ]
+    }
+  ],
+  "corrected_rerun_summary": {
+    "audit_artifacts": 13,
+    "audit_rows": 872032,
+    "failed_assertions": 0,
+    "source_configurations": 12
+  },
+  "format_version": 1,
+  "historical_artifacts": [
+    {
+      "artifact": "results/retained/2026-06-12_173713_redundancy_scifact/results_redundancy_per_query.csv",
+      "artifact_sha256": "1405073cf40c377b7a7e116e57f75336711598096e188cba7a6a09aaed3f25d3",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-12_173713_redundancy_scifact"
+    },
+    {
+      "artifact": "results/retained/2026-06-12_204158_redundancy_hotpotqa/results_redundancy_per_query.csv",
+      "artifact_sha256": "1b4b24fdeff7d6205017db89686beb33d78d418e2fb4e8300a7cbd8a972cb67e",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-12_204158_redundancy_hotpotqa"
+    },
+    {
+      "artifact": "results/retained/2026-06-15_142100_redundancy_musique/results_chunking_per_query.csv",
+      "artifact_sha256": "bb1e71d767013059cb3909a4d73a7e9d2ca27a1fca4d101e28d2310dfb1963ca",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-15_142100_redundancy_musique"
+    },
+    {
+      "artifact": "results/retained/2026-06-15_144227_redundancy_2wikimultihopqa/results_chunking_per_query.csv",
+      "artifact_sha256": "10ea769853e857ea8d2523a6a3172913cabefa3ef145978a9d229231f43675bc",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-15_144227_redundancy_2wikimultihopqa"
+    },
+    {
+      "artifact": "results/retained/2026-06-16_094433_redundancy_nq/results_chunking_per_query.csv",
+      "artifact_sha256": "3f82bbbb1a1729b6733d975ec44279ca0c00dbcc0385095b0cc8cd5c83770a26",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-16_094433_redundancy_nq"
+    },
+    {
+      "artifact": "results/retained/2026-06-18_121117_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+      "artifact_sha256": "d993efc1ae930a535fe923f501e129ea47bad62128ef366e61931be7c6aed914",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-18_121117_redundancy_2wikimultihopqa"
+    },
+    {
+      "artifact": "results/retained/2026-06-18_173800_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "artifact_sha256": "00ffd49dc8879709156b483aa73144c3e15e44e4280a7d62ce47b1a2f26a52ca",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-18_173800_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/results_chunking_per_query.csv",
+      "artifact_sha256": "8d676757f4ffa8dfb4fa7b11a7f066efd2bf5f455e78d8d99130c3221e370444",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-24_083656_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "artifact_sha256": "bceaabe606318e747edb066294d3a388e40c1c1cd6f5f1e5f54240cbbca1ea05",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-24_230733_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-06-25_082550_redundancy_scifact/results_chunking_per_query.csv",
+      "artifact_sha256": "e3c3db6f0ae2e86a4ed53c6d5c1364752521f4464e8817d241808ed3164251ba",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-25_082550_redundancy_scifact"
+    },
+    {
+      "artifact": "results/retained/2026-06-25_082550_redundancy_scifact/results_redundancy_per_query.csv",
+      "artifact_sha256": "a99a465de2924ae04598bd3f5a3ddb60916c6259f21a9bd2ab6e1c5e0129ff34",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-25_082550_redundancy_scifact"
+    },
+    {
+      "artifact": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "artifact_sha256": "71e76280b8fa75abb12b0b6ad3212eb1cc8356bf23569fcfca0c06387a24a78d",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-25_172848_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "artifact_sha256": "45a5f665489d7ce757e6b80e856aa9f1b76e0d60213085927f9ece25c802e564",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-06-28_094117_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-07-16_095435_redundancy_trec-covid/results_chunking_per_query.csv",
+      "artifact_sha256": "3f28e02ad70ada1715f74f9717482f6f4c3d204f0a4d3e29f2e46bd37b3880c1",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-16_095435_redundancy_trec-covid"
+    },
+    {
+      "artifact": "results/retained/2026-07-20_121145_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "artifact_sha256": "3cd16273c1909f6257af0d0adee214a1f87df25da6f3c40a24161c347d799217",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-20_121145_redundancy_hotpotqa_fullwiki"
+    },
+    {
+      "artifact": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/results_chunking_per_query.csv",
+      "artifact_sha256": "572a75b1375ef820983dc2bece93f393e389fcec5ce47db35f18d4e7a19edd44",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-23_085711_redundancy_2wikimultihopqa"
+    },
+    {
+      "artifact": "results/retained/2026-07-23_101022_redundancy_musique/results_chunking_per_query.csv",
+      "artifact_sha256": "765cdbebd5cfed13aea665d5cab37ed1fe1778df3ab5178fb58951c8269d7d87",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-23_101022_redundancy_musique"
+    },
+    {
+      "artifact": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_per_query.csv",
+      "artifact_sha256": "0eb8888b419012bc86ace379751a23d9d622cce37948dd39b071fff2928220b9",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-23_104202_redundancy_fiqa"
+    },
+    {
+      "artifact": "results/retained/2026-07-28_095742_redundancy_fiqa/results_chunking_per_query.csv",
+      "artifact_sha256": "ec1957d41b38e46408b3adf99ad28bb758dd7f3eeabb8aaf3bae5ef83812bec0",
+      "historical_assertion_status": "not_recorded",
+      "level": "overlap",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-28_095742_redundancy_fiqa"
+    },
+    {
+      "artifact": "results/retained/2026-07-28_115804_redundancy_trec-covid/results_redundancy_per_query.csv",
+      "artifact_sha256": "4d5d58a134f39a34041c9ea84d3e1a7bf7626b3d1da9c0823e94d5a41ffb781f",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-28_115804_redundancy_trec-covid"
+    },
+    {
+      "artifact": "results/retained/2026-07-28_154431_redundancy_musique/results_redundancy_per_query.csv",
+      "artifact_sha256": "f5c9b2a90e974006a86b1c4f31e034294f8fa17a87f5d42642b8752baec842d1",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-28_154431_redundancy_musique"
+    },
+    {
+      "artifact": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+      "artifact_sha256": "bfcbfa0948d3cf200293da30598785702627fc948651f459a09faf20fa45893a",
+      "historical_assertion_status": "not_recorded",
+      "level": "rho",
+      "recorded_pool_size_columns": [],
+      "rerun_required_for_pool_size_proof": true,
+      "run_id": "2026-07-28_170313_redundancy_2wikimultihopqa"
+    }
+  ],
+  "historical_conclusion": "Existing result files do not contain pool-size proof and were produced under the dynamic policy. They must not be labelled pool-size compliant.",
+  "historical_policy": "min(top_m, TransformedPoolSize), which can grow with rho or overlap",
+  "required_invariant": "For each query q, CandidatePoolSize(q, level, seed) == min(top_m, OriginalPoolSize(q)) at every level and seed.",
+  "rerun_required": false,
+  "runtime_proof": {
+    "audit_output_pattern": "results_<experiment>_pool_size_audit.csv",
+    "execution_driver": "evaluate_redundancy.py",
+    "execution_driver_sha256": "1983201891c4578a139041773dd2f06cce2fe0fd2522d90ee021edcdfa7f0cb8",
+    "implementation": "pool_size_invariants.py",
+    "implementation_sha256": "1dc771b2a2034bc859be85a9a52ba2ed45cfaa7331bdf2bcfc402804b6535f84",
+    "per_query_columns": [
+      "OriginalPoolSize",
+      "TransformedPoolSize",
+      "CandidatePoolTarget",
+      "CandidatePoolSize",
+      "PoolSizeAssertion"
+    ]
+  }
+}

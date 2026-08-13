@@ -2,16 +2,37 @@
 
 Code for the paper **"Finding the Right Balance: Relevance and Diversity in
 LLM Retrieval"** (Guillaume Brouillette and Faustin Kagabo).
-It measures the geometric **RNG-Score** / **Seg-Score** rerankers against
+It measures the geometric **RNG-Score** reranker against
 diversification baselines (MMR, Maxmin, Greedy-DPP, cross-encoder pipelines)
 and, more centrally, characterises *when* diversification helps: redundancy
 injection and chunk-overlap sweeps, per-query oracle headroom, and a label-free
 decision rule with a relevant-set-size gate.
 
-Smoke tests run on a laptop CPU; the full-scale revision runs are GPU
-(`--device cuda`). **The authoritative list of commands to reproduce the paper
-is the [Experiments to run](#experiments-to-run-revision-runbook) section
-below.**
+Smoke tests run on a laptop CPU; full-scale experiments can use a GPU through
+`--device cuda`. The complete artifact and validation workflow is documented
+in the [reproducibility package](#reproducibility-package).
+
+## Reproducibility package
+
+The article's reproducibility materials are under
+[`reproducibility/`](reproducibility/). Start with:
+
+- [`README.md`](reproducibility/README.md) — artifact, rebuild, and validation
+  workflow;
+- [`COVERAGE.md`](reproducibility/COVERAGE.md) — evidence coverage and known
+  archival limitations;
+- [`METHODS.md`](reproducibility/METHODS.md) — detailed technical protocols;
+  and
+- [`manifests/`](manifests/) — frozen identifiers, provenance, statistical
+  evidence, reconstructed tables/figures, and integrity hashes.
+
+Statistical analyses, tables, and figures can be reproduced from the archived
+results without rerunning the model experiments.
+
+Large evidence and retained-result files are distributed as versioned assets
+in the [reproducibility release](https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/tag/reproducibility-v1).
+Download, checksum, and extraction commands are in the
+[`reproducibility/README.md`](reproducibility/README.md).
 
 ---
 
@@ -93,8 +114,9 @@ regret, oracle, decision rule, generation) plus an explicit **crossover
 location with a 95% CI** (`analysis_crossover.csv`).
 
 Holm–Bonferroni adjustment for a family of comparisons is available
-(`stats.holm_bonferroni`); the paper reports uncorrected p-values because the
-comparisons are few, pre-specified, and the effects extreme.
+(`stats.holm_bonferroni`). The archived paired analysis in
+[`METHODS.md`](reproducibility/METHODS.md) publishes both
+raw and Holm-adjusted p-values using the corrected query-clustered design.
 
 ---
 
@@ -329,121 +351,6 @@ Transfer verified 2026-06-12 on the MiniLM fine-grid replications
 (`results/2026-06-12_*`): HotpotQA distractor +2.5 S-Recall
 pooled (above kNN at every level); SciFact (k=10, tau=4.62) within 1 point
 of kNN everywhere, +0.2 pooled.
-
----
-
-## Experiments to run (revision runbook)
-
-This block is the **authoritative, copy-pasteable list of commands** for the
-revision. It maps the reviewer's required runs to exact commands; everything is
-turnkey on the DGX (`--device cuda`). All runs write per-query CSVs consumed by
-`analyze_regimes.py`; per-query PoolRedundancy is logged automatically. Each
-command is labelled with the reviewer comment it answers.
-
-**Run the 3-seed protocol (`--seeds 0 1 2`) for every comparison below** —
-this is reviewer major-comment 1 (no seed variance / missing significance).
-The summaries then carry across-seed 95% CIs and Wilcoxon p-values, and
-`analyze_regimes.py` emits the crossover location with its CI.
-
-```bash
-# ── Reviewer major 1: seeds + CIs on the crossover and Tables 2–4 ──────────
-
-# A. Refined injection grid to localize the crossover rho*, 3 seeds.
-#    analyze_regimes.py then writes analysis_crossover.csv (mean ± 95% CI).
-python evaluate_redundancy.py --experiment redundancy --dataset hotpotqa_fullwiki \
-    --encoder_model bge-m3 --device cuda --max_samples all --seeds 0 1 2 \
-    --rho_grid 0 0.025 0.05 0.1 0.15 0.25 0.5 1.0 --objective S-Recall@k
-
-# B. SciFact injection + oracle (BM25 pools), 3 seeds, k=10.
-python evaluate_redundancy.py --experiment all --dataset scifact --split test \
-    --encoder_model bge-m3 --device cuda --max_samples all --top_k 10 \
-    --seeds 0 1 2 --objective S-Recall@k
-
-# C. BEIR table (Table 3) with across-seed CIs + Wilcoxon vs kNN.
-#    --objective tunes alpha* on a TASK metric (instrumental credit): alpha_ndcg
-#    (default; intent-aware coverage, the metric the table reports) or s_recall
-#    (parity with the QA tuning). NOT apd/vendi (those tune for raw spread).
-#    --index_dir caches each task's FAISS index so seeds 1,2 skip the re-encode.
-python evaluate_beir.py --tasks scifact fiqa trec-covid --max_queries all \
-    --encoder_model bge-m3 --device cuda --seeds 0 1 2 --save_per_query \
-    --objective alpha_ndcg --index_dir results/indices
-
-# D. Cross-encoder table (Table 4) with across-seed CIs + Wilcoxon vs CE-topk.
-#    Same objective rule (alpha_ndcg / s_recall, or em/f1 with generation).
-python evaluate_cross_encoder.py --dataset hotpotqa_fullwiki --max_samples all \
-    --encoder_model bge-m3 --ce_model bge-reranker-v2-m3 --device cuda \
-    --seeds 0 1 2 --save_per_query --objective alpha_ndcg
-
-# ── Reviewer major 2: close the loop with a MODERN instruction-tuned reader ─
-#    qwen3-4b (Qwen/Qwen3-4B-Instruct-2507) keeps the whole strong stack in the
-#    Qwen3 family (Qwen3-Embedding-4B encoder, Qwen3-Reranker-4B CE) and runs
-#    ~2x faster / lighter than qwen3-8b while still addressing the reviewer's
-#    "modern instruction-tuned generator" point; swap to qwen3-8b to confirm the
-#    conclusion does not flip with scale. Causal LMs are prompted with their
-#    native chat template automatically. EM/F1 per (level, seed, query) for kNN
-#    and the fallback diversifier; the rule's answer quality is reconstructed by
-#    analyze_regimes.py. Run on HotpotQA fullwiki + a 2nd multi-hop set.
-#    Cheaper without weakening the claim: --gen_max_samples 500 and/or a coarser
-#    --rho_grid 0 0.25 0.5 1.0 (the clean-vs-redundant contrast is what matters).
-python evaluate_redundancy.py --experiment redundancy --dataset hotpotqa_fullwiki \
-    --encoder_model bge-m3 --device cuda --max_samples all --seeds 0 1 2 \
-    --rho_grid 0 0.1 0.25 0.5 1.0 --objective S-Recall@k \
-    --run_generation --generator_model qwen3-4b \
-    --gen_methods kNN "MMR(0.7)" --gen_max_samples 1000
-python evaluate_redundancy.py --experiment redundancy --dataset 2wikimultihopqa \
-    --encoder_model bge-m3 --device cuda --max_samples all --seeds 0 1 2 \
-    --rho_grid 0 0.1 0.25 0.5 1.0 --objective S-Recall@k \
-    --run_generation --generator_model qwen3-4b \
-    --gen_methods kNN "MMR(0.7)" --gen_max_samples 1000
-
-# ── Reviewer major 4: chunk-overlap sweep is the externally-valid mechanism ─
-python evaluate_redundancy.py --experiment chunking --dataset hotpotqa_fullwiki \
-    --encoder_model bge-m3 --device cuda --max_samples all --seeds 0 1 2 \
-    --objective S-Recall@k
-
-# ── Encoder-robustness of the crossover (paper RQ1/RQ4): strong + weak stack ─
-python evaluate_redundancy.py --experiment both --dataset hotpotqa_fullwiki \
-    --encoder_model Qwen/Qwen3-Embedding-4B --device cuda --max_samples all \
-    --seeds 0 1 2 --objective S-Recall@k
-python evaluate_redundancy.py --experiment both --dataset hotpotqa_fullwiki \
-    --encoder_model all-MiniLM-L6-v2 --device cuda --max_samples all \
-    --seeds 0 1 2 --objective S-Recall@k
-
-# After each redundancy/chunking run (auto-detects the seed column and writes
-# the across-seed CIs, analysis_crossover.csv, analysis_generation.csv):
-python analyze_regimes.py --per_query <run_dir>/results_redundancy_per_query.csv \
-    --objective S-Recall@k   # add --level_col overlap for chunking sweeps
-# Rule-transfer claim (paper RQ6): evaluate the frozen rule on another sweep.
-python analyze_regimes.py --per_query <run_dir>/results_*_per_query.csv \
-    --objective S-Recall@k --freeze_tau 2.31 --freeze_d "MMR(0.7)"
-```
-
-The **relevant-set-size gate** (reviewer minor) is now evaluated automatically:
-`evaluate_redundancy.py` logs `RelSetSize` per query and `analyze_regimes.py`
-writes `analysis_gate.csv` (see the section above). For the SciFact single-hop
-recovery claim, run grid B and read the gate table:
-
-```bash
-python analyze_regimes.py \
-    --per_query <scifact_run>/results_redundancy_per_query.csv \
-    --objective S-Recall@k --top_k 10 --gate_min_rel 2
-# Expect: gated_rule ≥ kNN at every level where the ungated rule dipped below.
-```
-
-**Still needs code, not just a DGX run** (separate reviewer items):
-- *Paraphrase-level injection* (reviewer major 4): `--dup_noise` currently
-  offers `exact`/`light`/`heavy` (sentence-shuffle), not model-paraphrase.
-  Add a `paraphrase` mode (e.g. a small seq2seq paraphraser) to
-  `_perturb_text` in `evaluate_redundancy.py`, then re-run grid A with it.
-- *Verify the recent-citation setups* (reviewer major 5): a bibliography/setup
-  audit, no code.
-
-Dropped from scope after the experiment audit: Qwen3-Reranker replication (the
-weak/strong CE contrast already varies the cross-encoder), 2Wiki/MuSiQue/NQ
-single-stage tables (covered by the RQ2 cross-encoder table), and the TREC Web
-Track diversity task (ClueWeb licensing; intrinsic credit is scoped to
-recommendation). The MovieLens recsys experiment (former RQ7) was dropped from
-the paper and is not included in this repository.
 
 ---
 

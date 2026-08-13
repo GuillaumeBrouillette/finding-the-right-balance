@@ -17,6 +17,20 @@ data/beir/
 data/dpr/
 data/mdr/
 
+/data/2wikimultihopqa
+/data/musique
+/data/beir
+/data/dpr
+/data/mdr
+
+# Retained and corrected reproducibility results (publish separately)
+/results/retained/
+/results/reproducibility_reruns/
+/manifests/**/*.csv.gz
+/reproducibility_run_logs/
+/finding-the-right-balance-evidence-*.tar.zst
+/finding-the-right-balance-retained-results-*.tar.zst
+
 # Large per-query evaluation tables (can exceed GitHub's 100 MB file limit)
 results/*/*_per_query.csv
 

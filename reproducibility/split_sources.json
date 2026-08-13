@@ -1,0 +1,87 @@
+[
+  {
+    "dataset": "hotpotqa_fullwiki",
+    "dataset_split": "validation",
+    "per_query": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/results_chunking_per_query.csv",
+      "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "results/retained/2026-07-20_121145_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "scifact",
+    "dataset_split": "test",
+    "per_query": "results/retained/2026-06-25_082550_redundancy_scifact/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-06-25_082550_redundancy_scifact/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-06-25_082550_redundancy_scifact/results_chunking_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "fiqa",
+    "dataset_split": "test",
+    "per_query": "results/retained/2026-07-23_104202_redundancy_fiqa/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-07-23_104202_redundancy_fiqa/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-07-28_095742_redundancy_fiqa/results_chunking_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "trec-covid",
+    "dataset_split": "test",
+    "per_query": "results/retained/2026-07-28_115804_redundancy_trec-covid/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-07-28_115804_redundancy_trec-covid/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-07-16_095435_redundancy_trec-covid/results_chunking_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "2wikimultihopqa",
+    "dataset_split": "validation",
+    "per_query": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/results_chunking_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "musique",
+    "dataset_split": "validation",
+    "per_query": "results/retained/2026-07-28_154431_redundancy_musique/results_redundancy_per_query.csv",
+    "run_params": "results/retained/2026-07-28_154431_redundancy_musique/run_params.json",
+    "level_column": "rho",
+    "verification_files": [
+      "results/retained/2026-07-23_101022_redundancy_musique/results_chunking_per_query.csv"
+    ]
+  },
+  {
+    "dataset": "nq",
+    "dataset_split": "validation",
+    "per_query": "results/retained/2026-06-16_094433_redundancy_nq/results_chunking_per_query.csv",
+    "run_params": "results/retained/2026-06-16_094433_redundancy_nq/run_params.json",
+    "level_column": "overlap",
+    "verification_files": []
+  },
+  {
+    "dataset": "arguana",
+    "dataset_split": "test",
+    "source_type": "beir_qrels",
+    "beir_task": "arguana",
+    "run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json"
+  },
+  {
+    "dataset": "webis-touche2020",
+    "dataset_split": "test",
+    "source_type": "beir_qrels",
+    "beir_task": "webis-touche2020",
+    "run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json"
+  }
+]

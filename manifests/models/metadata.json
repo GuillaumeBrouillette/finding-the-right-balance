@@ -1,0 +1,1680 @@
+{
+  "created_at": "2026-08-10T22:08:54.713187+00:00",
+  "format_version": 1,
+  "model_registry": {
+    "BAAI/bge-m3": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+      "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+      "weight_precision": "float32"
+    },
+    "BAAI/bge-reranker-v2-m3": {
+      "loader": "sentence_transformers.CrossEncoder",
+      "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+      "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+      "weight_precision": "float32"
+    },
+    "Qwen/Qwen3-Embedding-4B": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates the archived run and has not changed since",
+      "tokenizer_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+      "upstream_last_modified": "2025-06-20T09:30:56+00:00",
+      "weight_precision": "bfloat16"
+    },
+    "google/flan-t5-base": {
+      "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+      "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+      "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+      "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+      "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+      "weight_precision": "float32"
+    },
+    "sentence-transformers/all-MiniLM-L6-v2": {
+      "loader": "sentence_transformers.SentenceTransformer",
+      "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "revision_evidence": "Hugging Face repository SHA; identical to the recovered local cache ref and predates the archived runs",
+      "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "upstream_last_modified": "2026-06-01T06:29:13+00:00",
+      "weight_precision": "float32"
+    }
+  },
+  "revision_rule": "Model and tokenizer were loaded from the same Hugging Face model identifier without separate revision arguments. The registered immutable repository SHA therefore identifies both. Every upstream revision predates its associated run.",
+  "runs": [
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "cross_encoder": {
+          "max_length_tokens": 512,
+          "raw_score_storage_precision": "float32",
+          "score_transform": "sigmoid"
+        },
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "BAAI/bge-reranker-v2-m3",
+          "loader": "sentence_transformers.CrossEncoder",
+          "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "name_as_recorded": "BAAI/bge-reranker-v2-m3",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "cross_encoder",
+          "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-04_124043_ce_musique",
+      "run_params": "results/retained/2026-06-04_124043_ce_musique/run_params.json",
+      "run_params_sha256": "583e1b86ae3078aefb34ded4681100fb90f1708127e3d403a1e78569773916f0"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "cross_encoder": {
+          "max_length_tokens": 512,
+          "raw_score_storage_precision": "float32",
+          "score_transform": "sigmoid"
+        },
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "BAAI/bge-reranker-v2-m3",
+          "loader": "sentence_transformers.CrossEncoder",
+          "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "name_as_recorded": "BAAI/bge-reranker-v2-m3",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "cross_encoder",
+          "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-05_102637_ce_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-05_102637_ce_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "56dc9c4b1cafdbe16ed6636775080c7fe04b5f307482582925f3fad37f9c0155"
+    },
+    {
+      "inference_settings": {
+        "model_inference": false,
+        "status": "analysis-only run"
+      },
+      "models": [],
+      "result_collection": "retained",
+      "run_id": "2026-06-05_200449_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-05_200449_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "63dbdf3a11cb5cde8e52fa1f53e817c4082969514c9e55126f8eace38a089569"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "cross_encoder": {
+          "max_length_tokens": 512,
+          "raw_score_storage_precision": "float32",
+          "score_transform": "sigmoid"
+        },
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "BAAI/bge-reranker-v2-m3",
+          "loader": "sentence_transformers.CrossEncoder",
+          "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "name_as_recorded": "BAAI/bge-reranker-v2-m3",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "cross_encoder",
+          "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-06_205350_ce_nq",
+      "run_params": "results/retained/2026-06-06_205350_ce_nq/run_params.json",
+      "run_params_sha256": "f05a539cf8ebaf03f34aae1c4714540d38797876cb592a7b1f8eb14353448d54"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "cross_encoder": {
+          "max_length_tokens": 512,
+          "raw_score_storage_precision": "float32",
+          "score_transform": "sigmoid"
+        },
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "BAAI/bge-reranker-v2-m3",
+          "loader": "sentence_transformers.CrossEncoder",
+          "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "name_as_recorded": "BAAI/bge-reranker-v2-m3",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "cross_encoder",
+          "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020",
+      "run_params": "results/retained/2026-06-08_053252_beir_scifact_fiqa_trec-covid_arguana_webis-touche2020/run_params.json",
+      "run_params_sha256": "7022eb1754a22416e10578d29045cc83cae68a4682873336b940112d68305592"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cpu",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "sentence-transformers/all-MiniLM-L6-v2",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "name_as_recorded": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision_evidence": "Hugging Face repository SHA; identical to the recovered local cache ref and predates the archived runs",
+          "role": "encoder",
+          "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "upstream_last_modified": "2026-06-01T06:29:13+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-12_173713_redundancy_scifact",
+      "run_params": "results/retained/2026-06-12_173713_redundancy_scifact/run_params.json",
+      "run_params_sha256": "bedf458866714880799f163343f7d6b3b63990aa54afa456bc91a65eeafd8f53"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cpu",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "sentence-transformers/all-MiniLM-L6-v2",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "name_as_recorded": "sentence-transformers/all-MiniLM-L6-v2",
+          "revision_evidence": "Hugging Face repository SHA; identical to the recovered local cache ref and predates the archived runs",
+          "role": "encoder",
+          "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "upstream_last_modified": "2026-06-01T06:29:13+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-12_204158_redundancy_hotpotqa",
+      "run_params": "results/retained/2026-06-12_204158_redundancy_hotpotqa/run_params.json",
+      "run_params_sha256": "5a79500ff2095c8a5b768b03729a5a6a4ce2ed0c89052ae8740b3afd5f236792"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-15_142100_redundancy_musique",
+      "run_params": "results/retained/2026-06-15_142100_redundancy_musique/run_params.json",
+      "run_params_sha256": "65b178b2b92ce6d8a26db018068dba0ebe287364ca77b6954cba74c061d3c7ec"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-15_144227_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-15_144227_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "2711ed2144b826e44723fc8587379dd531a01294bd3a1e92c8c0cf550e4ec532"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-16_094433_redundancy_nq",
+      "run_params": "results/retained/2026-06-16_094433_redundancy_nq/run_params.json",
+      "run_params_sha256": "e6abb45f1fe13394646a3cc426c0d3dc5b1dc21447d0b9bce6b684b5e4b2d3d6"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-18_121117_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-06-18_121117_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "320560b6dc8f079d8d9b3a1085574f264b795f8c7e10e0f9469978bfa677ff22"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-18_173800_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-18_173800_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "c98ffff6b9ba7858620699d6e5997a306f3e2508f822a749420ab7ca4f2952ce"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-22_211522_beir_scifact_fiqa_trec-covid",
+      "run_params": "results/retained/2026-06-22_211522_beir_scifact_fiqa_trec-covid/run_params.json",
+      "run_params_sha256": "6304803ef7d2db04515494e03f2ae7d54aea8561ac5fe788fa8d3411d6d656fd"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "cross_encoder": {
+          "max_length_tokens": 512,
+          "raw_score_storage_precision": "float32",
+          "score_transform": "sigmoid"
+        },
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "generator": {
+          "do_sample": false,
+          "early_stopping": true,
+          "max_input_tokens": 512,
+          "max_new_tokens": 64,
+          "num_beams": 4,
+          "skip_special_tokens": true,
+          "tokenizer_truncation": true
+        },
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "BAAI/bge-reranker-v2-m3",
+          "loader": "sentence_transformers.CrossEncoder",
+          "model_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "name_as_recorded": "BAAI/bge-reranker-v2-m3",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "cross_encoder",
+          "tokenizer_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+          "upstream_last_modified": "2024-06-24T14:08:45+00:00",
+          "weight_precision": "float32"
+        },
+        {
+          "canonical_name": "google/flan-t5-base",
+          "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
+          "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "name_as_recorded": "google/flan-t5-base",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates every archived run and has not changed since",
+          "role": "generator",
+          "tokenizer_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+          "upstream_last_modified": "2023-07-17T12:48:39+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-24_064052_ce_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_064052_ce_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "653f0959614e0ea89174f2223a1918a8a432b454c99e3171e85b0abcb1cc7253"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-24_083656_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_083656_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "7229f8be8ed1792b5938299ed5b8f99e1302bc8e935a5cbd8ed7ee148c8b6354"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-24_230733_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-24_230733_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "fd2be0d514249a567e7bc207d9b2f6e5bd8fe624082ddcad7ca3fa7120f76a50"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-25_082550_redundancy_scifact",
+      "run_params": "results/retained/2026-06-25_082550_redundancy_scifact/run_params.json",
+      "run_params_sha256": "ed5a9fac8c7ace6fe4ccd1a8beebd95165da1953f83781a46d7ff54c14982a43"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "Qwen/Qwen3-Embedding-4B",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+          "name_as_recorded": "Qwen/Qwen3-Embedding-4B",
+          "revision_evidence": "Hugging Face repository SHA; upstream main predates the archived run and has not changed since",
+          "role": "encoder",
+          "tokenizer_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+          "upstream_last_modified": "2025-06-20T09:30:56+00:00",
+          "weight_precision": "bfloat16"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-25_172848_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-25_172848_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "220b4b820729b07a1495ccda00f4bbdc1595313e66401c9b22d975e34c48e548"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "sentence-transformers/all-MiniLM-L6-v2",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "name_as_recorded": "all-MiniLM-L6-v2",
+          "revision_evidence": "Hugging Face repository SHA; identical to the recovered local cache ref and predates the archived runs",
+          "role": "encoder",
+          "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+          "upstream_last_modified": "2026-06-01T06:29:13+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-06-28_094117_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-06-28_094117_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "44a97c60939cb01d7a4539aa5696e2d5ebab06288d7253ecccc4a5f1fbd5f674"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-02_103328_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-02_103328_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "516b72ed6b4de06197582b5eaa824a9ec0035993ecc1ff5896fe656b2ff4e67d"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cpu",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-16_095435_redundancy_trec-covid",
+      "run_params": "results/retained/2026-07-16_095435_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "81fa34bf2b24eba4bec170ecd27d93cf7c43bd672d212851fa660cbca24c2826"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-20_121145_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-07-20_121145_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "f397a87badfa877761f1ed8603864ee65ccc01d583e9202d390da179b733c024"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-23_085711_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-07-23_085711_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "d54fa6ca044da65a83e78dc06b206169f4c6271cd8b3e52cf1df44e462ed97c0"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-23_101022_redundancy_musique",
+      "run_params": "results/retained/2026-07-23_101022_redundancy_musique/run_params.json",
+      "run_params_sha256": "4a71bd4e48199155b1edf6d6eefb3c5284423e7979c7fc17f038c0e957c00bcb"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-23_104202_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-23_104202_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "ccb7c7a68dd9f8e840a0dcb54afdf1fa2d1811ea887bee0050ff80a3843d0ab7"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-28_095742_redundancy_fiqa",
+      "run_params": "results/retained/2026-07-28_095742_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "a4fd304effc51f7e7797d4ae84fdfe3dc73231c2b3c7a47aebe8faf17b5e4268"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-28_115804_redundancy_trec-covid",
+      "run_params": "results/retained/2026-07-28_115804_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "fc5da624fc2f8899abba421f1514aa4cc1b96be96be28ff2429cce5a81977260"
+    },
+    {
+      "inference_settings": {
+        "model_inference": false,
+        "status": "analysis-only run"
+      },
+      "models": [],
+      "result_collection": "retained",
+      "run_id": "2026-07-28_152156_hotpotqa_fullwiki",
+      "run_params": "results/retained/2026-07-28_152156_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "1d35f2ee397db1da35b8786e13db5ffc59a3144ce672170eefd4090b8c15370c"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-28_154431_redundancy_musique",
+      "run_params": "results/retained/2026-07-28_154431_redundancy_musique/run_params.json",
+      "run_params_sha256": "613846c5784290f8ce1fcc26ee3670b60d2c30dac3f0789da8fc80c2ba23783a"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "retained",
+      "run_id": "2026-07-28_170313_redundancy_2wikimultihopqa",
+      "run_params": "results/retained/2026-07-28_170313_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "8702a611ce870cf9176bf38eef9573374a023afc4eb0a6e4f584d18816880c55"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-06_152319_redundancy_trec-covid",
+      "run_params": "results/reproducibility_reruns/2026-08-06_152319_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "a67884ace0d99d8d90defc8747361c3c88f006810981687c62e0cbdec184aa1f"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-06_160000_redundancy_musique",
+      "run_params": "results/reproducibility_reruns/2026-08-06_160000_redundancy_musique/run_params.json",
+      "run_params_sha256": "95f709eec0ab15d80738eefebd7de49f46adf7506d8973b4f9fd48fb111f7944"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-06_164145_redundancy_musique",
+      "run_params": "results/reproducibility_reruns/2026-08-06_164145_redundancy_musique/run_params.json",
+      "run_params_sha256": "64837a2e31cd212c2d69e6dac71b3015be94c339959e5e26129847df25ef7ceb"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cpu",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-06_170200_redundancy_trec-covid",
+      "run_params": "results/reproducibility_reruns/2026-08-06_170200_redundancy_trec-covid/run_params.json",
+      "run_params_sha256": "c02c0616eda3437ea5976cd16701e6a89579f695c2c5c6f948ae2d2f3af7c47b"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_031430_redundancy_2wikimultihopqa",
+      "run_params": "results/reproducibility_reruns/2026-08-07_031430_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "167d0a5161a54c086d6b8cac36f2743d98e953ffd92c61b9d183afe25abae8b0"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_040842_redundancy_2wikimultihopqa",
+      "run_params": "results/reproducibility_reruns/2026-08-07_040842_redundancy_2wikimultihopqa/run_params.json",
+      "run_params_sha256": "eb5ef45310c864d648213b25a26c82374bbf12b5e1a1c9b2237b398d1a75659b"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_060658_redundancy_fiqa",
+      "run_params": "results/reproducibility_reruns/2026-08-07_060658_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "fcfa5a277a066449e57bf4805f82412332194a69c4d269372b233045875d5e44"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_072703_redundancy_scifact",
+      "run_params": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/run_params.json",
+      "run_params_sha256": "0f4a830317b13805d6600413cb40375f9cd0d74bd709316ee5b41c602e2685f7"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_113533_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/reproducibility_reruns/2026-08-07_113533_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "307b560f350747816c88533a5d6df4e2959a5ce8a1563641398fa2432630a263"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 10,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_154506_redundancy_fiqa",
+      "run_params": "results/reproducibility_reruns/2026-08-07_154506_redundancy_fiqa/run_params.json",
+      "run_params_sha256": "d44864c37c81479900351df777cb4ac842f560e8a2d9c5b52a98ae0a19561545"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-07_230907_redundancy_hotpotqa_fullwiki",
+      "run_params": "results/reproducibility_reruns/2026-08-07_230907_redundancy_hotpotqa_fullwiki/run_params.json",
+      "run_params_sha256": "1233fcd53f89a1ba16f179cbdf4e6a96b72dbbb23c2f4f8b1e35fb0c1ce2ac7a"
+    },
+    {
+      "inference_settings": {
+        "autograd": "disabled for embedding/generation inference",
+        "automatic_mixed_precision": false,
+        "batch_size": 64,
+        "device": "cuda",
+        "encoder": {
+          "candidate_depth": 100,
+          "convert_to_numpy": true,
+          "normalize_embeddings": true,
+          "output_depth": 5,
+          "similarity_metric": "cosine",
+          "stored_embedding_precision": "float32"
+        },
+        "evaluation_mode": true,
+        "model_inference": true
+      },
+      "models": [
+        {
+          "canonical_name": "BAAI/bge-m3",
+          "loader": "sentence_transformers.SentenceTransformer",
+          "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "name_as_recorded": "BAAI/bge-m3",
+          "revision_evidence": "Hugging Face repository SHA; identical to the local cache ref used by the reproducibility reruns",
+          "role": "encoder",
+          "tokenizer_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+          "upstream_last_modified": "2024-07-03T14:50:10+00:00",
+          "weight_precision": "float32"
+        }
+      ],
+      "result_collection": "reproducibility_reruns",
+      "run_id": "2026-08-08_070150_redundancy_nq",
+      "run_params": "results/reproducibility_reruns/2026-08-08_070150_redundancy_nq/run_params.json",
+      "run_params_sha256": "dda9ae15a4afb337714708527fb9f30f64512105b582eaa730aadf74af9dc826"
+    }
+  ],
+  "runtime_packages": {
+    "faiss-cpu": "1.14.2",
+    "numpy": "2.4.6",
+    "sentence-transformers": "5.5.1",
+    "tokenizers": "0.22.2",
+    "torch": "2.12.0",
+    "transformers": "5.9.0"
+  },
+  "scope": "All archived run parameter files and all pool-size reruns present when this manifest was generated"
+}

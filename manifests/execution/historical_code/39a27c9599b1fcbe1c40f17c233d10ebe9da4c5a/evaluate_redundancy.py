@@ -76,7 +76,7 @@ import argparse
 import os
 import re
 import sys
-from typing import Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Callable, Dict, List, Optional, Sequence
 
 import numpy as np
 
@@ -106,20 +106,12 @@ from evaluation.metrics import (
     vendi_score,
 )
 from generation.generator import load_generator
-from pool_size_invariants import (
-    assert_candidate_pool,
-    assert_encoded_pool,
-    assert_pool_collection,
-    clean_pool_target,
-)
 from retrieval.precompute import _format_passage, encode_queries_and_passages
 from retrieval.rerankers import (
-    rerank_dedup,
     rerank_greedy_dpp,
     rerank_knn,
     rerank_maxmin,
     rerank_mmr,
-    rerank_vendi_greedy,
     rerank_rng_score,
     rerank_rng_score2,
 )
@@ -136,13 +128,11 @@ from run_utils import (
     resolve_model,
     save_csv,
 )
-from stats import (
-    add_seed_arg,
-    aggregate_seed_rows,
-    as_float,
-    paired_wilcoxon_p,
-    resolve_seeds,
-)
+
+try:
+    from scipy.stats import wilcoxon as _wilcoxon
+except ImportError:  # pragma: no cover
+    _wilcoxon = None
 
 
 LOADERS: Dict[str, Callable] = {
@@ -165,14 +155,9 @@ LOADERS: Dict[str, Callable] = {
 # the coarse sweep showed the entire regime flip happening inside (0, 0.25),
 # with the curves flat from 0.25 onward, so the resolution goes where the
 # action is and the stable tail keeps only {0.25, 0.5, 1.0}.
-# -2.0 is the fallback sentinel: under cosine distance it deactivates every
-# obstruction penalty (Prop. knnlimit), so the sweep grid contains the exact
-# k-NN operating point by construction (-0.3 deviates from k-NN on ~1% of
-# clean fullwiki queries and is an active operating point under injection).
-DEFAULT_ALPHA_GRID = [-2.0, -0.3, -0.2, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3,
+DEFAULT_ALPHA_GRID = [-0.3, -0.2, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3,
                       0.5, 1.0]
 DEFAULT_LAMBDA_GRID = [0.3, 0.5, 0.7, 0.9]
-DEFAULT_DEDUP_GRID = [0.85, 0.9, 0.95]
 DEFAULT_RHO_GRID = [0.0, 0.025, 0.05, 0.1, 0.15, 0.25, 0.5, 1.0]
 DEFAULT_OVERLAP_GRID = [0.0, 0.25, 0.5, 0.75]
 
@@ -291,24 +276,6 @@ def inject_duplicates(
     return pool
 
 
-def relevant_set_size(gold_titles: Sequence[str], single_subtopic: bool) -> int:
-    """Number of distinct relevant subtopics for a query.
-
-    This is the gate variable for the decision rule: a single-hop query has
-    one relevant subtopic (one piece of evidence), so diversification can only
-    displace the answer; a multi-hop query has two or more distinct gold
-    documents that genuinely need covering.  Counted from the query's gold
-    set (pool-independent), matching the subtopic convention of
-    :func:`evaluation.metrics.subtopic_coverage_sets`: distinct normalised
-    gold titles, or 1 under ``single_subtopic`` (all golds collapse to one).
-    """
-    if not gold_titles:
-        return 0
-    if single_subtopic:
-        return 1
-    return len({t.lower().strip() for t in gold_titles})
-
-
 def pool_redundancy(p_embs: np.ndarray) -> float:
     """Fraction of passage pairs whose cosine similarity exceeds NEAR_DUP_SIM.
 
@@ -381,7 +348,6 @@ def method_selections(
     metric: str,
     alpha_grid: Sequence[float],
     lambda_grid: Sequence[float],
-    dedup_grid: Sequence[float] = DEFAULT_DEDUP_GRID,
 ) -> Dict[str, List[int]]:
     """Run every reranker on one pool and return {method_name: selection}.
 
@@ -391,17 +357,13 @@ def method_selections(
     """
     sims = p_embs @ q_emb
     out: Dict[str, List[int]] = {"kNN": rerank_knn(sims, k)}
-    for t in dedup_grid:
-        out[f"Dedup({t:g})"] = rerank_dedup(p_embs, sims, k, threshold=t)
     for lam in lambda_grid:
         out[f"MMR({lam:g})"] = rerank_mmr(p_embs, q_emb, sims, k, lambda_=lam)
     out["Maxmin"] = rerank_maxmin(p_embs, sims, k)
     out["Greedy-DPP"] = rerank_greedy_dpp(p_embs, sims, k)
-    for lam in lambda_grid:
-        out[f"VendiG({lam:g})"] = rerank_vendi_greedy(p_embs, sims, k, lambda_=lam)
     for a in alpha_grid:
         out[f"RNG({a:g})"] = rerank_rng_score(p_embs, q_emb, k, alpha=a, metric=metric)
-        # Seg-Score excluded (2026-07-16)
+        out[f"Seg({a:g})"] = rerank_rng_score2(p_embs, q_emb, k, alpha=a, metric=metric)
     return out
 
 
@@ -429,165 +391,60 @@ def _pad_rows(rows: List[Dict]) -> List[Dict]:
 # Experiment 1 — redundancy injection
 # ---------------------------------------------------------------------------
 
-_SWEEP_METRIC_COLS = ["PoolRedundancy", "Recall@k", "NDCG@k", "MRR",
-                      "alpha-NDCG@k", "S-Recall@k", "ERR-IA@k", "APD", "Vendi"]
-
-
-def _seed_summary_rows(
-    per_method: Dict[str, List[Dict[str, float]]],
-    n_examples: int,
-    cfg: Dict,
-    level: float,
-    level_col: str,
-    mean_red: float,
-    seed: int,
-    objective: str,
-) -> List[Dict]:
-    """Validation-tuned test-split summary for one (level, seed).
-
-    Resolves each parameterised family to the grid member that maximises the
-    objective on this seed's validation split, then reports test-split means
-    for every metric plus a Wilcoxon p-value against kNN.  The reported
-    ``Method`` label is the *stable* family name (``MMR*``, ``RNG*``,
-    ``Seg*``); the selected member is recorded separately in ``Chosen`` so
-    rows aggregate across seeds even when the tuned member differs.
-    """
-    alpha_grid = cfg["alpha_grid"]
-    lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
-
-    n_val = max(1, int(cfg["val_fraction"] * n_examples))
-    order = np.random.default_rng(seed).permutation(n_examples)
-    val_ids, test_ids = order[:n_val], order[n_val:]
-    if len(test_ids) == 0:
-        test_ids = val_ids
-
-    def _mean(name: str, ids: np.ndarray, key: str) -> float:
-        return float(np.mean([per_method[name][int(i)][key] for i in ids]))
-
-    report: List[Tuple[str, str]] = [("kNN", "kNN"), ("Maxmin", "Maxmin"),
-                                     ("Greedy-DPP", "Greedy-DPP")]
-    for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
-                         ("VendiG", lambda_grid),
-                         ("RNG", alpha_grid)]:
-        members = [m for m in _grid_members(prefix, grid) if m in per_method]
-        if not members:
-            continue
-        best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
-        report.append((f"{prefix}*", best))
-
-    knn_test = [per_method["kNN"][int(i)][objective] for i in test_ids]
-    rows: List[Dict] = []
-    for label, name in report:
-        row: Dict[str, object] = {level_col: level, "seed": seed,
-                                  "Method": label, "Chosen": name,
-                                  "PoolRedundancy": round(mean_red, 4)}
-        for key in per_method[name][0]:
-            row[key] = round(_mean(name, test_ids, key), 4)
-        if name != "kNN":
-            vals = [per_method[name][int(i)][objective] for i in test_ids]
-            p = paired_wilcoxon_p(vals, knn_test)
-            row[f"p({objective} vs kNN)"] = "" if p is None else round(p, 6)
-        rows.append(row)
-    return rows
-
-
-def _aggregate_sweep_summary(
-    per_seed_rows: List[Dict], level_col: str, objective: str,
-) -> List[Dict]:
-    """Collapse per-(level, seed) summary rows to per-(level, method) rows
-    with across-seed mean +/- 95% CI on every metric.
-
-    The tuned member (``Chosen``) is carried through, collapsed to the single
-    value when stable across seeds and to a ``;``-joined list when it varied
-    (an honest signal that the tuning is seed-sensitive).  The Wilcoxon
-    p-values are summarised by their across-seed median and max (the
-    conservative bound), rather than by a CI.
-    """
-    agg = aggregate_seed_rows(
-        per_seed_rows, key_cols=[level_col, "Method"],
-        metric_cols=_SWEEP_METRIC_COLS, seed_col="seed",
-    )
-    pcol = f"p({objective} vs kNN)"
-    groups: Dict[Tuple, List[Dict]] = {}
-    for r in per_seed_rows:
-        groups.setdefault((r[level_col], r["Method"]), []).append(r)
-    for row in agg:
-        grp = groups.get((row[level_col], row["Method"]), [])
-        chosen = list(dict.fromkeys(g.get("Chosen") for g in grp))
-        row["Chosen"] = chosen[0] if len(chosen) == 1 else ";".join(map(str, chosen))
-        ps = [as_float(g.get(pcol)) for g in grp]
-        ps = [p for p in ps if p is not None]
-        if ps:
-            row["p_median(vs kNN)"] = round(float(np.median(ps)), 6)
-            row["p_max(vs kNN)"] = round(float(np.max(ps)), 6)
-    return agg
-
-
 def _run_pool_sweep(
     examples: List[Dict],
     encoder: DenseRetriever,
     cfg: Dict,
     run_dir: str,
     levels: Sequence[float],
-    make_pools: Callable[[float, int], List[List[Dict]]],
+    make_pools: Callable[[float], List[List[Dict]]],
     level_col: str,
     file_tag: str,
     generator=None,
 ) -> None:
-    """Shared sweep driver: for each level and each seed, build pools with
-    *make_pools(level, seed)*, encode, truncate to top-m, run every reranker,
-    evaluate, tune parameterised methods on the validation fraction and report
-    test means.  Used by both the synthetic injection sweep (level = rho) and
-    the natural chunk-overlap sweep (level = overlap).
+    """Shared sweep driver: for each level, build pools with *make_pools*,
+    encode, truncate to top-m, run every reranker, evaluate, tune
+    parameterised methods on the validation fraction and report test means
+    with Wilcoxon significance against kNN. Used by both the synthetic
+    injection sweep (level = rho) and the natural chunk-overlap sweep
+    (level = overlap).
 
-    Seeds and confidence intervals
-    ------------------------------
-    The whole sweep is repeated once per seed in ``cfg["seeds"]``.  For the
-    injection sweep the seed controls *which* near-duplicates land in each
-    pool (and the validation/test split); for the chunking sweep the pools are
-    deterministic and only the split moves.  Per-(level, seed) test summaries
-    are aggregated to a mean with a 95% across-seed CI on every metric, written
-    to ``results_<tag>_summary.csv``; the raw per-seed rows are kept alongside
-    in ``results_<tag>_per_seed_summary.csv``, and ``results_<tag>_per_query.csv``
-    carries a ``seed`` column so the downstream analyses can recompute their
-    own across-seed intervals.
-
-    Encoding is cached across seeds and levels: queries are encoded once per
-    sweep, and passage embeddings are kept in a text-keyed cache so that each
-    (level, seed) only encodes texts not seen before (the original passages
-    recur everywhere; the chunked pools are seed-independent, so after the
-    first seed of a chunking level the chunks are cache hits).  Non-original
-    entries are evicted after each level, so the steady-state cache holds
-    roughly one embedding per original passage plus the current level's
-    duplicates.  Disable with --no_encode_cache if memory is tighter than
-    encoder throughput."""
+    Encoding is cached across levels: queries are encoded once per sweep,
+    and passage embeddings are kept in a text-keyed cache so that each level
+    only encodes texts not seen before (the original passages recur at every
+    level; with exact-copy noise even the duplicates are cache hits).
+    Non-original entries are evicted after each level, so the steady-state
+    cache holds exactly one embedding per original passage. Disable with
+    --no_encode_cache if memory is tighter than encoder throughput."""
     k = cfg["top_k"]
     m = cfg["top_m"]
     metric = cfg["metric"]
     alpha_grid = cfg["alpha_grid"]
     lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
     objective = cfg["objective"]
     use_cache = bool(cfg.get("encode_cache", True))
-    seeds = cfg["seeds"]
 
-    per_seed_summary: List[Dict] = []
+    summary_rows: List[Dict] = []
     per_query_rows: List[Dict] = []
     gen_rows: List[Dict] = []
-    pool_size_rows: List[Dict] = []
 
-    query_ids = [str(ex["id"]) for ex in examples]
-    original_sizes = [len(ex["passages"]) for ex in examples]
-    candidate_targets = [
-        clean_pool_target(size, m, k) for size in original_sizes
-    ]
-
+    # Generation subset: a seeded sample of examples on which answers are
+    # generated for the selected gen_methods (decorrelated from the split
+    # permutation by offsetting the seed). The decision rule's answer quality
+    # is reconstructed offline in analyze_regimes.py from the per-query EM/F1
+    # of kNN and the fallback diversifier plus the kNN Vendi trigger.
     gen_methods = list(cfg.get("gen_methods") or [])
-    do_gen = generator is not None and bool(gen_methods)
-    if do_gen:
-        print(f"   Generation on for {gen_methods} per (level, seed) "
-              f"(reader {cfg.get('generator_model')}).")
+    if generator is not None and gen_methods:
+        gn = cfg.get("gen_max_samples") or len(examples)
+        gn = len(examples) if gn == "all" else min(int(gn), len(examples))
+        gen_idx = set(
+            np.random.default_rng(cfg["seed"] + 1)
+            .permutation(len(examples))[:gn].tolist()
+        )
+        print(f"   Generation on for {gen_methods} over {len(gen_idx)} queries "
+              f"per level (reader {cfg.get('generator_model')}).")
+    else:
+        gen_idx = set()
 
     questions = [ex["question"] for ex in examples]
     q_embs: Optional[np.ndarray] = None
@@ -596,162 +453,125 @@ def _run_pool_sweep(
 
     for level in levels:
         print(f"\n── {level_col} = {level:g} ──")
-        for seed in seeds:
-            print(f"   · seed {seed}")
-            pools = make_pools(level, seed)
-            assert_pool_collection(
-                query_ids=query_ids,
-                pools=pools,
-                original_sizes=original_sizes,
-                targets=candidate_targets,
-                level_name=level_col,
-                level=level,
-                seed=seed,
+        pools = make_pools(level)
+        gen_jobs: Dict[str, List] = {}
+
+        if not use_cache:
+            q_embs, p_flat, p_off = encode_queries_and_passages(
+                encoder, questions, pools)
+        else:
+            if q_embs is None:
+                print(f"   Encoding {len(questions)} queries …")
+                q_embs = encoder.encode(questions, normalize=True,
+                                        show_progress=True)
+            p_off = np.zeros(len(questions) + 1, dtype=np.int64)
+            for i, pool in enumerate(pools):
+                p_off[i + 1] = p_off[i] + len(pool)
+            flat_texts = [_format_passage(p) for pool in pools for p in pool]
+            unique_texts = list(dict.fromkeys(flat_texts))
+            miss = [t for t in unique_texts if t not in cache]
+            n_cached = len(unique_texts) - len(miss)
+            n_repeats = len(flat_texts) - len(unique_texts)
+            print(f"   {len(flat_texts)} passage instances: "
+                  f"{len(miss)} unique to encode, "
+                  f"{n_repeats} repeated within this level, "
+                  f"{n_cached} cached from previous levels …")
+            if miss:
+                new_embs = encoder.encode(miss, normalize=True,
+                                          show_progress=True)
+                for t, emb in zip(miss, new_embs):
+                    cache[t] = emb
+            p_flat = np.stack([cache[t] for t in flat_texts])
+
+        per_method: Dict[str, List[Dict[str, float]]] = {}
+        redundancies: List[float] = []
+
+        for i, ex in enumerate(examples):
+            s, e = int(p_off[i]), int(p_off[i + 1])
+            q_emb = q_embs[i]
+            p_embs = p_flat[s:e]
+            pool = pools[i]
+
+            # First-stage truncation: top-m by query similarity, as in evaluate.py.
+            sims = p_embs @ q_emb
+            keep = np.argsort(-sims)[: min(m, len(pool))]
+            pool_m = [pool[j] for j in keep]
+            p_embs_m = p_embs[keep]
+
+            redundancies.append(pool_redundancy(p_embs_m))
+
+            selections = method_selections(
+                p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid
             )
-            gen_jobs: Dict[str, List] = {}
-
-            if not use_cache:
-                q_embs_l, p_flat, p_off = encode_queries_and_passages(
-                    encoder, questions, pools)
-            else:
-                if q_embs is None:
-                    print(f"   Encoding {len(questions)} queries …")
-                    q_embs = encoder.encode(questions, normalize=True,
-                                            show_progress=True)
-                q_embs_l = q_embs
-                p_off = np.zeros(len(questions) + 1, dtype=np.int64)
-                for i, pool in enumerate(pools):
-                    p_off[i + 1] = p_off[i] + len(pool)
-                flat_texts = [_format_passage(p) for pool in pools for p in pool]
-                unique_texts = list(dict.fromkeys(flat_texts))
-                miss = [t for t in unique_texts if t not in cache]
-                n_cached = len(unique_texts) - len(miss)
-                n_repeats = len(flat_texts) - len(unique_texts)
-                print(f"   {len(flat_texts)} passage instances: "
-                      f"{len(miss)} unique to encode, "
-                      f"{n_repeats} repeated within this level, "
-                      f"{n_cached} cached from previous (level, seed)s …")
-                if miss:
-                    new_embs = encoder.encode(miss, normalize=True,
-                                              show_progress=True)
-                    for t, emb in zip(miss, new_embs):
-                        cache[t] = emb
-                p_flat = np.stack([cache[t] for t in flat_texts])
-
-            # Generation subset for this seed (decorrelated from the split
-            # permutation by offsetting the seed). The decision rule's answer
-            # quality is reconstructed offline in analyze_regimes.py.
-            if do_gen:
-                gn = cfg.get("gen_max_samples") or len(examples)
-                gn = len(examples) if gn == "all" else min(int(gn), len(examples))
-                gen_idx = set(
-                    np.random.default_rng(seed + 1)
-                    .permutation(len(examples))[:gn].tolist()
-                )
-            else:
-                gen_idx = set()
-
-            per_method: Dict[str, List[Dict[str, float]]] = {}
-            redundancies: List[float] = []
-
-            for i, ex in enumerate(examples):
-                s, e = int(p_off[i]), int(p_off[i + 1])
-                q_emb = q_embs_l[i]
-                p_embs = p_flat[s:e]
-                pool = pools[i]
-                target = candidate_targets[i]
-                assert_encoded_pool(
-                    query_id=query_ids[i],
-                    transformed_size=len(pool),
-                    encoded_size=len(p_embs),
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
+            for name, sel in selections.items():
+                res = evaluate_selection(sel, pool_m, p_embs_m, ex["gold_titles"] or [], k,
+                                         single_subtopic=cfg.get("single_subtopic", False))
+                per_method.setdefault(name, []).append(res)
+                per_query_rows.append(
+                    {level_col: level, "qid": ex["id"], "Method": name,
+                     "PoolRedundancy": round(redundancies[-1], 4), **res}
                 )
 
-                # Fixed-size first-stage truncation. ``top_m`` is an upper
-                # bound; a query whose clean attached pool is smaller freezes
-                # that clean size across every redundancy/overlap level.
-                sims = p_embs @ q_emb
-                keep = np.argsort(-sims)[:target]
-                pool_m = [pool[j] for j in keep]
-                p_embs_m = p_embs[keep]
-                assert_candidate_pool(
-                    query_id=query_ids[i],
-                    candidate_size=len(pool_m),
-                    target=target,
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
-                pool_size_rows.append({
-                    level_col: level,
-                    "seed": seed,
-                    "qid": ex["id"],
-                    "OriginalPoolSize": original_sizes[i],
-                    "TransformedPoolSize": len(pool),
-                    "CandidatePoolTarget": target,
-                    "CandidatePoolSize": len(pool_m),
-                    "PoolSizeAssertion": "pass",
-                })
+            if i in gen_idx:
+                answers = ex.get("answers") or []
+                for gm in gen_methods:
+                    if gm in selections:
+                        sel_passages = [pool_m[j] for j in selections[gm]]
+                        gen_jobs.setdefault(gm, []).append(
+                            (ex["id"], ex["question"], answers, sel_passages))
 
-                redundancies.append(pool_redundancy(p_embs_m))
-                rel_size = relevant_set_size(
-                    ex["gold_titles"] or [], cfg.get("single_subtopic", False))
+        # Answer generation for the sampled queries at this level.
+        if generator is not None and gen_jobs:
+            for gm, jobs in gen_jobs.items():
+                preds = generator.generate_batch(
+                    [j[1] for j in jobs], [j[3] for j in jobs],
+                    batch_size=cfg.get("batch_size", 32))
+                for (qid, _q, answers, sel_passages), pred in zip(jobs, preds):
+                    em = max((exact_match(pred, a) for a in answers), default=0.0)
+                    f1 = max((f1_score_single(pred, a) for a in answers), default=0.0)
+                    hall = hallucination_rate(pred, [p["text"] for p in sel_passages])
+                    gen_rows.append(
+                        {level_col: level, "qid": qid, "Method": gm,
+                         "EM": round(em, 4), "F1": round(f1, 4),
+                         "Halluc": round(hall, 4)})
 
-                selections = method_selections(
-                    p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid,
-                    dedup_grid,
-                )
-                for name, sel in selections.items():
-                    res = evaluate_selection(
-                        sel, pool_m, p_embs_m, ex["gold_titles"] or [], k,
-                        single_subtopic=cfg.get("single_subtopic", False))
-                    per_method.setdefault(name, []).append(res)
-                    per_query_rows.append(
-                        {level_col: level, "seed": seed, "qid": ex["id"],
-                         "Method": name,
-                         "PoolRedundancy": round(redundancies[-1], 4),
-                         "OriginalPoolSize": original_sizes[i],
-                         "TransformedPoolSize": len(pool),
-                         "CandidatePoolTarget": target,
-                         "CandidatePoolSize": len(pool_m),
-                         "RelSetSize": rel_size, **res}
+        mean_red = float(np.mean(redundancies))
+
+        # Resolve parameterised methods into a fixed validation-tuned point.
+        n_val = max(1, int(cfg["val_fraction"] * len(examples)))
+        order = np.random.default_rng(cfg["seed"]).permutation(len(examples))
+        val_ids, test_ids = order[:n_val], order[n_val:]
+        if len(test_ids) == 0:
+            test_ids = val_ids
+
+        def _mean(name: str, ids: np.ndarray, key: str) -> float:
+            vals = [per_method[name][int(i)][key] for i in ids]
+            return float(np.mean(vals))
+
+        report: Dict[str, str] = {"kNN": "kNN", "Maxmin": "Maxmin",
+                                  "Greedy-DPP": "Greedy-DPP"}
+        for prefix, grid in [("MMR", lambda_grid), ("RNG", alpha_grid), ("Seg", alpha_grid)]:
+            members = _grid_members(prefix, grid)
+            best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
+            report[f"{prefix}* [{best}]"] = best
+
+        knn_test = [per_method["kNN"][int(i)][objective] for i in test_ids]
+        for label, name in report.items():
+            row: Dict[str, object] = {level_col: level,
+                                      "PoolRedundancy": round(mean_red, 4),
+                                      "Method": label}
+            for key in per_method[name][0]:
+                row[key] = round(_mean(name, test_ids, key), 4)
+            if _wilcoxon is not None and name != "kNN":
+                vals = [per_method[name][int(i)][objective] for i in test_ids]
+                diffs = np.array(vals) - np.array(knn_test)
+                if np.any(diffs != 0.0):
+                    row[f"p({objective} vs kNN)"] = round(
+                        float(_wilcoxon(vals, knn_test).pvalue), 5
                     )
-
-                if i in gen_idx:
-                    answers = ex.get("answers") or []
-                    for gm in gen_methods:
-                        if gm in selections:
-                            sel_passages = [pool_m[j] for j in selections[gm]]
-                            gen_jobs.setdefault(gm, []).append(
-                                (ex["id"], ex["question"], answers, sel_passages))
-
-            # Answer generation for the sampled queries at this (level, seed).
-            if generator is not None and gen_jobs:
-                for gm, jobs in gen_jobs.items():
-                    preds = generator.generate_batch(
-                        [j[1] for j in jobs], [j[3] for j in jobs],
-                        batch_size=cfg.get("batch_size", 32),
-                        show_progress=True,
-                        desc=f"   generating {gm} ({level_col}={level:g}, seed={seed})")
-                    for (qid, _q, answers, sel_passages), pred in zip(jobs, preds):
-                        em = max((exact_match(pred, a) for a in answers), default=0.0)
-                        f1 = max((f1_score_single(pred, a) for a in answers), default=0.0)
-                        hall = hallucination_rate(pred, [p["text"] for p in sel_passages])
-                        gen_rows.append(
-                            {level_col: level, "seed": seed, "qid": qid,
-                             "Method": gm, "EM": round(em, 4),
-                             "F1": round(f1, 4), "Halluc": round(hall, 4),
-                             # Raw prediction kept so scoring can be audited
-                             # and re-run offline (answer extraction, judge
-                             # models) without re-generating.
-                             "Prediction": pred[:2000]})
-
-            mean_red = float(np.mean(redundancies))
-            per_seed_summary.extend(_seed_summary_rows(
-                per_method, len(examples), cfg, level, level_col,
-                mean_red, seed, objective))
+                else:
+                    row[f"p({objective} vs kNN)"] = 1.0
+            summary_rows.append(row)
 
         if use_cache:
             # Evict per-level texts (perturbed duplicates, level-specific
@@ -759,21 +579,16 @@ def _run_pool_sweep(
             for t in [tt for tt in cache if tt not in protected]:
                 del cache[t]
 
-    summary_rows = _aggregate_sweep_summary(per_seed_summary, level_col, objective)
-    save_csv(attach_run_params(_pad_rows(summary_rows), cfg),
+    summary_rows = attach_run_params(_pad_rows(summary_rows), cfg)
+    save_csv(summary_rows,
              os.path.join(run_dir, f"results_{file_tag}_summary.csv"))
-    save_csv(attach_run_params(_pad_rows(per_seed_summary), cfg),
-             os.path.join(run_dir, f"results_{file_tag}_per_seed_summary.csv"))
     save_csv(per_query_rows,
              os.path.join(run_dir, f"results_{file_tag}_per_query.csv"))
-    save_csv(attach_run_params(pool_size_rows, cfg),
-             os.path.join(run_dir, f"results_{file_tag}_pool_size_audit.csv"))
-    print(f"   {len(seeds)} seed(s); summary carries 95% across-seed CIs.")
     if gen_rows:
         save_csv(attach_run_params(_pad_rows(gen_rows), cfg),
                  os.path.join(run_dir, f"results_{file_tag}_gen_per_query.csv"))
         print(f"   Saved generation EM/F1 for {len(gen_rows)} "
-              f"(level, seed, query, method) rows.")
+              f"(level, query, method) rows.")
 
 
 def run_redundancy_experiment(
@@ -785,15 +600,14 @@ def run_redundancy_experiment(
 ) -> None:
     """Sweep the injected-redundancy level rho and evaluate every reranker.
 
-    For each (rho, seed) the full pipeline is repeated from the text level:
-    duplicate injection, encoding, top-m pool truncation, reranking, and
-    evaluation.  The injection RNG is seeded per seed, so the across-seed CIs
-    in the summary capture the run-to-run variance of *which* near-duplicates
-    land in each pool.  Per-query rows (with a ``seed`` column) are saved so
-    paired significance tests against kNN can be computed.
+    For each rho the full pipeline is repeated from the text level: duplicate
+    injection, encoding, top-m pool truncation, reranking, and evaluation.
+    Per-query rows are saved so paired significance tests against kNN can be
+    computed (Wilcoxon signed-rank, reported in the summary when scipy is
+    available).
     """
-    def make_pools(rho: float, seed: int) -> List[List[Dict]]:
-        rng = np.random.default_rng(seed)
+    def make_pools(rho: float) -> List[List[Dict]]:
+        rng = np.random.default_rng(cfg["seed"])
         return [
             inject_duplicates(
                 ex["passages"], ex["gold_titles"] or [], rho, rng,
@@ -870,9 +684,7 @@ def run_chunking_experiment(
     """
     window = cfg["chunk_window"]
 
-    def make_pools(overlap: float, seed: int) -> List[List[Dict]]:
-        # Chunking is deterministic: the pools do not depend on the seed, so
-        # the across-seed CIs here reflect only the validation/test split.
+    def make_pools(overlap: float) -> List[List[Dict]]:
         stride = max(1, int(round(window * (1.0 - overlap))))
         return [chunk_pool(ex["passages"], window, stride) for ex in examples]
 
@@ -909,7 +721,6 @@ def run_oracle_experiment(
     metric = cfg["metric"]
     alpha_grid = cfg["alpha_grid"]
     lambda_grid = cfg["lambda_grid"]
-    dedup_grid = cfg["dedup_grid"]
     objective = cfg["objective"]
 
     questions = [ex["question"] for ex in examples]
@@ -930,8 +741,7 @@ def run_oracle_experiment(
         pool_m = [pool[j] for j in keep]
         p_embs_m = p_embs[keep]
 
-        selections = method_selections(p_embs_m, q_emb, k, metric, alpha_grid,
-                                       lambda_grid, dedup_grid)
+        selections = method_selections(p_embs_m, q_emb, k, metric, alpha_grid, lambda_grid)
         row: Dict[str, object] = {"qid": ex["id"]}
         for name, sel in selections.items():
             res = evaluate_selection(sel, pool_m, p_embs_m, ex["gold_titles"] or [], k,
@@ -940,100 +750,71 @@ def run_oracle_experiment(
             row[f"{name}:{objective}"] = round(res[objective], 4)
         per_query_rows.append(row)
 
-    # The per-query metrics above are deterministic (no injection in the
-    # oracle experiment); only the validation/test split depends on the seed.
-    # We therefore reuse one per_method computation and loop seeds over the
-    # split alone, then aggregate the headroom across seeds with a 95% CI.
-    seeds = cfg["seeds"]
-    obj_metrics = [key for key in per_method["kNN"][0] if key != objective]
+    n_val = max(1, int(cfg["val_fraction"] * len(examples)))
+    order = np.random.default_rng(cfg["seed"]).permutation(len(examples))
+    val_ids, test_ids = order[:n_val], order[n_val:]
+    if len(test_ids) == 0:
+        test_ids = val_ids
 
     def _mean(name: str, ids: np.ndarray, key: str) -> float:
         return float(np.mean([per_method[name][int(i)][key] for i in ids]))
 
-    per_seed_rows: List[Dict] = []
-    for seed in seeds:
-        n_val = max(1, int(cfg["val_fraction"] * len(examples)))
-        order = np.random.default_rng(seed).permutation(len(examples))
-        val_ids, test_ids = order[:n_val], order[n_val:]
-        if len(test_ids) == 0:
-            test_ids = val_ids
+    summary_rows: List[Dict] = []
 
-        def _report(label: str, chosen: str, values_per_query: List[float],
-                    extra: Optional[Dict[str, float]] = None) -> None:
-            test_vals = [values_per_query[int(i)] for i in test_ids]
-            row = {"Method": label, "Chosen": chosen, "seed": seed,
-                   objective: round(float(np.mean(test_vals)), 4)}
-            if extra:
-                row.update({kk: round(vv, 4) for kk, vv in extra.items()})
-            per_seed_rows.append(row)
+    def _report(label: str, values_per_query: List[float],
+                extra: Optional[Dict[str, float]] = None) -> None:
+        test_vals = [values_per_query[int(i)] for i in test_ids]
+        row = {"Method": label, objective: round(float(np.mean(test_vals)), 4)}
+        if extra:
+            row.update({kk: round(vv, 4) for kk, vv in extra.items()})
+        summary_rows.append(row)
 
-        knn_obj = [r[objective] for r in per_method["kNN"]]
-        _report("kNN", "kNN", knn_obj,
-                {key: _mean("kNN", test_ids, key) for key in obj_metrics})
+    # Baseline.
+    knn_obj = [r[objective] for r in per_method["kNN"]]
+    _report("kNN", knn_obj,
+            {key: _mean("kNN", test_ids, key) for key in per_method["kNN"][0]
+             if key != objective})
 
-        for prefix, grid in [("Dedup", dedup_grid), ("MMR", lambda_grid),
-                             ("VendiG", lambda_grid),
-                             ("RNG", alpha_grid)]:
-            members = [m for m in _grid_members(prefix, grid)
-                       if m in per_method]
-            if not members:
-                continue
+    for prefix, grid in [("MMR", lambda_grid), ("RNG", alpha_grid), ("Seg", alpha_grid)]:
+        members = _grid_members(prefix, grid)
 
-            # Fixed operating point tuned on this seed's validation fraction.
-            best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
-            fixed_obj = [r[objective] for r in per_method[best]]
-            _report(f"{prefix} fixed", best, fixed_obj,
-                    {key: _mean(best, test_ids, key) for key in obj_metrics})
+        # Fixed operating point tuned on the validation fraction.
+        best = max(members, key=lambda nm: _mean(nm, val_ids, objective))
+        fixed_obj = [r[objective] for r in per_method[best]]
+        _report(f"{prefix} fixed [{best}]", fixed_obj,
+                {key: _mean(best, test_ids, key) for key in per_method[best][0]
+                 if key != objective})
 
-            # Per-query oracle over the same grid (seed-independent, but the
-            # reported mean is over this seed's test split).
-            oracle_obj: List[float] = []
-            oracle_choice: List[str] = []
-            for qi in range(len(examples)):
-                vals = {nm: per_method[nm][qi][objective] for nm in members}
-                nm_best = max(vals, key=vals.get)
-                oracle_obj.append(vals[nm_best])
-                oracle_choice.append(nm_best)
-            _report(f"{prefix} oracle (per-query)", f"{prefix}-oracle", oracle_obj)
+        # Per-query oracle over the same grid.
+        oracle_obj: List[float] = []
+        oracle_choice: List[str] = []
+        for qi in range(len(examples)):
+            vals = {nm: per_method[nm][qi][objective] for nm in members}
+            nm_best = max(vals, key=vals.get)
+            oracle_obj.append(vals[nm_best])
+            oracle_choice.append(nm_best)
+        _report(f"{prefix} oracle (per-query)", oracle_obj)
 
-            # Headroom rows: what adaptivity could add, and what
-            # diversification adds over plain kNN even with oracle knowledge.
-            test_o = np.array([oracle_obj[int(i)] for i in test_ids])
-            test_f = np.array([fixed_obj[int(i)] for i in test_ids])
-            test_k = np.array([knn_obj[int(i)] for i in test_ids])
-            per_seed_rows.append({
-                "Method": f"{prefix} headroom", "Chosen": "", "seed": seed,
-                objective: "",
-                "oracle - fixed": round(float(np.mean(test_o - test_f)), 4),
-                "oracle - kNN": round(float(np.mean(test_o - test_k)), 4),
-                "% queries where oracle beats kNN":
-                    round(float(np.mean(test_o > test_k)) * 100.0, 1),
-            })
+        # Headroom rows: what adaptivity could add, and what diversification
+        # adds over plain kNN even with oracle knowledge.
+        test_o = np.array([oracle_obj[int(i)] for i in test_ids])
+        test_f = np.array([fixed_obj[int(i)] for i in test_ids])
+        test_k = np.array([knn_obj[int(i)] for i in test_ids])
+        summary_rows.append({
+            "Method": f"{prefix} headroom",
+            objective: "",
+            "oracle - fixed": round(float(np.mean(test_o - test_f)), 4),
+            "oracle - kNN": round(float(np.mean(test_o - test_k)), 4),
+            "% queries where oracle beats kNN":
+                round(float(np.mean(test_o > test_k)) * 100.0, 1),
+        })
 
-            if seed == seeds[0]:
-                for qi, row in enumerate(per_query_rows):
-                    row[f"{prefix} oracle choice"] = oracle_choice[qi]
+        for qi, row in enumerate(per_query_rows):
+            row[f"{prefix} oracle choice"] = oracle_choice[qi]
 
-    # Aggregate across seeds: mean +/- 95% CI on the objective and the headroom
-    # quantities; the tuned member (Chosen) is collapsed when stable.
-    oracle_metric_cols = [objective, "oracle - fixed", "oracle - kNN",
-                          "% queries where oracle beats kNN"] + obj_metrics
-    summary_rows = aggregate_seed_rows(
-        per_seed_rows, key_cols=["Method"], metric_cols=oracle_metric_cols,
-        seed_col="seed")
-    groups: Dict[str, List[Dict]] = {}
-    for r in per_seed_rows:
-        groups.setdefault(r["Method"], []).append(r)
-    for row in summary_rows:
-        chosen = list(dict.fromkeys(g.get("Chosen") for g in groups.get(row["Method"], [])))
-        row["Chosen"] = chosen[0] if len(chosen) == 1 else ";".join(map(str, chosen))
-
-    save_csv(attach_run_params(_pad_rows(summary_rows), cfg),
-             os.path.join(run_dir, "results_oracle_summary.csv"))
-    save_csv(attach_run_params(_pad_rows(per_seed_rows), cfg),
-             os.path.join(run_dir, "results_oracle_per_seed_summary.csv"))
+    summary_rows = attach_run_params(_pad_rows(summary_rows), cfg)
+    save_csv(summary_rows, os.path.join(run_dir, "results_oracle_summary.csv"))
     save_csv(per_query_rows, os.path.join(run_dir, "results_oracle_per_query.csv"))
-    print(f"   {len(seeds)} seed(s); oracle summary carries 95% across-seed CIs.")
 
 
 # ---------------------------------------------------------------------------
@@ -1080,10 +861,6 @@ def _parse_args() -> argparse.Namespace:
                         "and significance tests.")
     p.add_argument("--alpha_grid", type=float, nargs="+", default=DEFAULT_ALPHA_GRID)
     p.add_argument("--lambda_grid", type=float, nargs="+", default=DEFAULT_LAMBDA_GRID)
-    p.add_argument("--dedup_grid", type=float, nargs="+", default=DEFAULT_DEDUP_GRID,
-                   help="Cosine thresholds t for the Dedup(t) baseline "
-                        "(greedy near-duplicate removal, then top-k by "
-                        "relevance).")
     p.add_argument("--rho_grid", type=float, nargs="+", default=DEFAULT_RHO_GRID,
                    help="Injected-redundancy levels (duplicates / pool size).")
     p.add_argument("--overlap_grid", type=float, nargs="+",
@@ -1123,16 +900,13 @@ def _parse_args() -> argparse.Namespace:
                    help="Disable cross-level embedding caching (re-encode "
                         "everything at every sweep level, as before). Use "
                         "when RAM is tighter than encoder throughput.")
-    p.add_argument("--seed", type=int, default=0,
-                   help="Single-run seed (used when --seeds is not given).")
-    add_seed_arg(p)
+    p.add_argument("--seed", type=int, default=0)
     p.add_argument("--output_dir", default="results")
     return p.parse_args()
 
 
 def main() -> None:
     args = _parse_args()
-    seeds = resolve_seeds(args)
     device = normalize_device(args.device)
     encoder_name = resolve_model(
         args.encoder_model or default_encoder(device), ENCODER_ALIASES
@@ -1152,13 +926,11 @@ def main() -> None:
         "encoder_model": encoder_name,
         "device": device,
         "top_m": args.top_m,
-        "candidate_pool_policy": "fixed_clean_pool_size_per_query",
         "top_k": args.top_k,
         "metric": args.metric,
         "objective": args.objective,
         "alpha_grid": list(args.alpha_grid),
         "lambda_grid": list(args.lambda_grid),
-        "dedup_grid": list(args.dedup_grid),
         "rho_grid": list(args.rho_grid),
         "overlap_grid": list(args.overlap_grid),
         "chunk_window": args.chunk_window,
@@ -1172,8 +944,7 @@ def main() -> None:
         "gen_methods": list(args.gen_methods) if args.run_generation else [],
         "gen_max_samples": args.gen_max_samples,
         "batch_size": args.batch_size,
-        "seed": seeds[0],
-        "seeds": seeds,
+        "seed": args.seed,
     }
 
     print(f"── Loading {args.dataset} ({args.split}) ──")

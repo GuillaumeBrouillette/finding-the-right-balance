@@ -1,0 +1,739 @@
+{
+  "archival_limitations": [
+    "No frozen query-family identifier links questions that may share source documents; query_id is therefore the finest available sampling unit.",
+    "Historical Table 2 generation has aggregate-only outputs, so raw EM/F1 paired contrasts cannot be recovered.",
+    "Historical Table 3 ArguAna and Touch\u00e9 outputs are aggregate-only, so raw paired contrasts cannot be recovered.",
+    "Historical Table 4 non-Hotpot cross-encoder outputs are aggregate-only, so raw paired contrasts cannot be recovered."
+  ],
+  "artifacts": [
+    {
+      "bytes": 177810,
+      "path": "paired_inference.csv",
+      "sha256": "28d0e3c6953d94f7702ea1e5357faae81b9d512628c7686e983f1e61959423bc"
+    },
+    {
+      "bytes": 44040,
+      "path": "query_averaged_contrasts/2026-08-06_152319_redundancy_trec-covid__redundancy.csv.gz",
+      "sha256": "dd04f4f0dc35bcd4a9f6952b096e5782fe543d49db5260b88603d6f8c95382bd"
+    },
+    {
+      "bytes": 752388,
+      "path": "query_averaged_contrasts/2026-08-06_160000_redundancy_musique__redundancy.csv.gz",
+      "sha256": "d12722d7c0dac7a164901a6eb2dde4c7b5592de5adc00ffe2b7f34999c888f5f"
+    },
+    {
+      "bytes": 366576,
+      "path": "query_averaged_contrasts/2026-08-06_164145_redundancy_musique__chunking.csv.gz",
+      "sha256": "d0b6bb89ce390980644a5535208811e40822823efccdbc745970afed382325fe"
+    },
+    {
+      "bytes": 16103,
+      "path": "query_averaged_contrasts/2026-08-06_170200_redundancy_trec-covid__chunking.csv.gz",
+      "sha256": "40cb28d26c9d10a44a23608f3928168789441fbd66f370d928b28009481f09a7"
+    },
+    {
+      "bytes": 1901509,
+      "path": "query_averaged_contrasts/2026-08-07_031430_redundancy_2wikimultihopqa__chunking.csv.gz",
+      "sha256": "ad3c4ae889b629e4d6be64a51b26e8abdab75ea910406c133d65d7cc9be34b0b"
+    },
+    {
+      "bytes": 3971154,
+      "path": "query_averaged_contrasts/2026-08-07_040842_redundancy_2wikimultihopqa__redundancy.csv.gz",
+      "sha256": "1bd1b4df2d7a78e1c92212f9bc7a1a001f1046f824e8973e01cc585520ed3bad"
+    },
+    {
+      "bytes": 81079,
+      "path": "query_averaged_contrasts/2026-08-07_060658_redundancy_fiqa__chunking.csv.gz",
+      "sha256": "1e32523959d9040a0760c88c57bbc54141f199a52979f00e5e207729cfcc4939"
+    },
+    {
+      "bytes": 32224,
+      "path": "query_averaged_contrasts/2026-08-07_072703_redundancy_scifact__chunking.csv.gz",
+      "sha256": "1bf67be37a3e934165489b42bb317d038c09ea7634c203575a31852738e385b3"
+    },
+    {
+      "bytes": 65599,
+      "path": "query_averaged_contrasts/2026-08-07_072703_redundancy_scifact__redundancy.csv.gz",
+      "sha256": "b7a7ee059c0c6374708be5f0f53036c09a2029af843be58af4f5663cda2f8102"
+    },
+    {
+      "bytes": 1020304,
+      "path": "query_averaged_contrasts/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking.csv.gz",
+      "sha256": "b5f04e33af9565756acf676f48a24dd199d97e8d57d86d1d271e30d25b168655"
+    },
+    {
+      "bytes": 168864,
+      "path": "query_averaged_contrasts/2026-08-07_154506_redundancy_fiqa__redundancy.csv.gz",
+      "sha256": "6160a1a6383f401ed9da349566c5782fc53000ec7b80b3ab76fee45114720bf6"
+    },
+    {
+      "bytes": 2110594,
+      "path": "query_averaged_contrasts/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy.csv.gz",
+      "sha256": "a1b399cce1a8f7fb57842df73ab195e565f2dda53b7739e9648c5d6988ccc19d"
+    },
+    {
+      "bytes": 427506,
+      "path": "query_averaged_contrasts/2026-08-08_070150_redundancy_nq__chunking.csv.gz",
+      "sha256": "9ad6c62d4c933b3a88e67abbbb1803faaf28cf39facfd831f71b34e62f985c23"
+    },
+    {
+      "bytes": 64261,
+      "path": "raw_seed_contrasts/2026-08-06_152319_redundancy_trec-covid__redundancy.csv.gz",
+      "sha256": "51948477e59a79dfae77ccc8fcc795a45ccdd18fb339a40ccab16ece60d804c0"
+    },
+    {
+      "bytes": 1513773,
+      "path": "raw_seed_contrasts/2026-08-06_160000_redundancy_musique__redundancy.csv.gz",
+      "sha256": "4d885f18a150b07faeb9f7b3862fddd1d99e3a5e5a47a0947f147ef64565faec"
+    },
+    {
+      "bytes": 762112,
+      "path": "raw_seed_contrasts/2026-08-06_164145_redundancy_musique__chunking.csv.gz",
+      "sha256": "25e30778bfa42ffdb819637032d06d416394345038e8233e522219bfd2a4b8fc"
+    },
+    {
+      "bytes": 29915,
+      "path": "raw_seed_contrasts/2026-08-06_170200_redundancy_trec-covid__chunking.csv.gz",
+      "sha256": "5505a1a23d2ac762dcda5680819b3fdb89e311b1631e5063e1eaa5793a5bdfdd"
+    },
+    {
+      "bytes": 4172484,
+      "path": "raw_seed_contrasts/2026-08-07_031430_redundancy_2wikimultihopqa__chunking.csv.gz",
+      "sha256": "dd65d0775abbaceb9773ab30fc1c60d749ccb3ac2e6d36ea2a0329fc830246db"
+    },
+    {
+      "bytes": 8253405,
+      "path": "raw_seed_contrasts/2026-08-07_040842_redundancy_2wikimultihopqa__redundancy.csv.gz",
+      "sha256": "ced64483ca219fa4879a489a86f0cdc49b81461297ed2a008f2351b4644c63b9"
+    },
+    {
+      "bytes": 156386,
+      "path": "raw_seed_contrasts/2026-08-07_060658_redundancy_fiqa__chunking.csv.gz",
+      "sha256": "b910ee5ccc86d6e0a0c68371a3cb8b1299f501c241dc7e533fbadf44f6adab8e"
+    },
+    {
+      "bytes": 61775,
+      "path": "raw_seed_contrasts/2026-08-07_072703_redundancy_scifact__chunking.csv.gz",
+      "sha256": "0c88a29d7c3b0537a54fb24d78fc4b0ba3ecc695be67101abc6582bb613e80d0"
+    },
+    {
+      "bytes": 124102,
+      "path": "raw_seed_contrasts/2026-08-07_072703_redundancy_scifact__redundancy.csv.gz",
+      "sha256": "91ba82e22175883bd2a860ef0c6f95907872d002ec65a443fbadcf1da1b1d77c"
+    },
+    {
+      "bytes": 2600864,
+      "path": "raw_seed_contrasts/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking.csv.gz",
+      "sha256": "e8bf8f208553e27f265e7f64140e9b5c4d3981d66092d8eac1424e914833b1ab"
+    },
+    {
+      "bytes": 314676,
+      "path": "raw_seed_contrasts/2026-08-07_154506_redundancy_fiqa__redundancy.csv.gz",
+      "sha256": "5a2cded1004126e4609ace88371c1984249b8bc6c2f5bed5a868b18467fb3f3e"
+    },
+    {
+      "bytes": 5200368,
+      "path": "raw_seed_contrasts/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy.csv.gz",
+      "sha256": "2a5341e2beda89d474ba0b19dcbaba9f3b8fdb6910440dec736b4a841d66bbba"
+    },
+    {
+      "bytes": 449821,
+      "path": "raw_seed_contrasts/2026-08-08_070150_redundancy_nq__chunking.csv.gz",
+      "sha256": "10085307f38ad62cb33340e8ae95ddd30ed273157ce758c23d7b47198dfb042b"
+    },
+    {
+      "bytes": 224197,
+      "path": "validation_selections.csv",
+      "sha256": "36a055ebf3337de3b65dc1d1f64f19d1230aff67a405f0c7fc83e2328725ba09"
+    }
+  ],
+  "baseline": "kNN",
+  "confidence_interval": {
+    "confidence": 0.95,
+    "method": "ordinary nonparametric query-cluster percentile bootstrap",
+    "resamples": 1999,
+    "seed": 20260809,
+    "trajectory_preservation": "one multinomial query-weight vector is shared across every method and redundancy level in a run"
+  },
+  "execution_workers": 3,
+  "format_version": 1,
+  "hypothesis_tests": {
+    "finite_monte_carlo_correction": "(extreme+1)/(B+1)",
+    "level_effects": "two-sided centered cluster-bootstrap test of mean(method-kNN)=0",
+    "primary_interactions": "one-sided centered cluster-bootstrap test that (heavy-clean method effect)>0"
+  },
+  "multiplicity": {
+    "interaction_family": "six prespecified heavy-minus-clean method interactions within one corrected run",
+    "level_family": "all six method-by-level primary-objective contrasts within one corrected run",
+    "method": "Holm step-down familywise correction"
+  },
+  "primary_objective": "S-Recall@k for every corrected sweep artifact",
+  "reported_method_families": [
+    "Maxmin",
+    "Greedy-DPP",
+    "Dedup*",
+    "MMR*",
+    "VendiG*",
+    "RNG*"
+  ],
+  "runs": [
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "trec-covid",
+      "experiment": "redundancy",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-06_152319_redundancy_trec-covid/results_redundancy_per_query.csv",
+          "sha256": "9e3533d6efec5fb513fc3dbe8ec556fe3f59de431112ca48daa5ff1ebcf1af7b"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-06_152319_redundancy_trec-covid/results_redundancy_per_seed_summary.csv",
+          "sha256": "997da8ddb7abef9098097a387619b19df02e95111c85d71b65692fe7cbfcef74"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-06_152319_redundancy_trec-covid/run_params.json",
+          "sha256": "a67884ace0d99d8d90defc8747361c3c88f006810981687c62e0cbdec184aa1f"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/trec-covid.csv",
+          "sha256": "12fe397cb5058abbcb2520c0a3cbd7782d4f7d10ffb417a944fa3aea9750f39c"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-06_152319_redundancy_trec-covid__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-06_152319_redundancy_trec-covid__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 2400,
+      "raw_seed_contrast_rows": 5760,
+      "run": "2026-08-06_152319_redundancy_trec-covid__redundancy",
+      "source_group_count": 1200,
+      "unique_query_ids": 50,
+      "validation_groups_excluded": 240
+    },
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "musique",
+      "experiment": "redundancy",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-06_160000_redundancy_musique/results_redundancy_per_query.csv",
+          "sha256": "5943a0f82d6f6791bb436076df80ec0506c0410fafabac0d55debe4e9d37b921"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-06_160000_redundancy_musique/results_redundancy_per_seed_summary.csv",
+          "sha256": "6a870c649bd0d59915144ba08dba8ede8a81f60aef3ad98e7aa553aaf6692194"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-06_160000_redundancy_musique/run_params.json",
+          "sha256": "95f709eec0ab15d80738eefebd7de49f46adf7506d8973b4f9fd48fb111f7944"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/musique.csv",
+          "sha256": "335548db9d1efd73cf020d821ca12fd9fc98d1a474d312b546b5ef3067984571"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-06_160000_redundancy_musique__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-06_160000_redundancy_musique__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 115200,
+      "raw_seed_contrast_rows": 278496,
+      "run": "2026-08-06_160000_redundancy_musique__redundancy",
+      "source_group_count": 58008,
+      "unique_query_ids": 2400,
+      "validation_groups_excluded": 11592
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "musique",
+      "experiment": "chunking",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-06_164145_redundancy_musique/results_chunking_per_query.csv",
+          "sha256": "a0d6a89226ea4a4e0ff72e8bd724e60b2bf72315542139e06b33a5c912732269"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-06_164145_redundancy_musique/results_chunking_per_seed_summary.csv",
+          "sha256": "aae2fd3afe634b755c6ce666f647ba33f73837d686b41195e02f784cbae34d05"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-06_164145_redundancy_musique/run_params.json",
+          "sha256": "64837a2e31cd212c2d69e6dac71b3015be94c339959e5e26129847df25ef7ceb"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/musique.csv",
+          "sha256": "335548db9d1efd73cf020d821ca12fd9fc98d1a474d312b546b5ef3067984571"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-06_164145_redundancy_musique__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-06_164145_redundancy_musique__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 57600,
+      "raw_seed_contrast_rows": 139248,
+      "run": "2026-08-06_164145_redundancy_musique__chunking",
+      "source_group_count": 29004,
+      "unique_query_ids": 2400,
+      "validation_groups_excluded": 5796
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "trec-covid",
+      "experiment": "chunking",
+      "historical_objective": "alpha-NDCG@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-06_170200_redundancy_trec-covid/results_chunking_per_query.csv",
+          "sha256": "ae41fdd01de2bfd503e6316d462f7890393a1ffc58093565001b1bf4acfb1e8f"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-06_170200_redundancy_trec-covid/results_chunking_per_seed_summary.csv",
+          "sha256": "8f5645f93af6f89c854a39623dbcec0575e2bfccc74116dfbe812fd163168078"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-06_170200_redundancy_trec-covid/run_params.json",
+          "sha256": "c02c0616eda3437ea5976cd16701e6a89579f695c2c5c6f948ae2d2f3af7c47b"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/trec-covid.csv",
+          "sha256": "12fe397cb5058abbcb2520c0a3cbd7782d4f7d10ffb417a944fa3aea9750f39c"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-06_170200_redundancy_trec-covid__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-06_170200_redundancy_trec-covid__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 1200,
+      "raw_seed_contrast_rows": 2880,
+      "run": "2026-08-06_170200_redundancy_trec-covid__chunking",
+      "source_group_count": 600,
+      "unique_query_ids": 50,
+      "validation_groups_excluded": 120
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "2wikimultihopqa",
+      "experiment": "chunking",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_031430_redundancy_2wikimultihopqa/results_chunking_per_query.csv",
+          "sha256": "04eb1b6ee15aa4ef37fec08267c9816d953d9195855e9e4de0b0f8802b257654"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_031430_redundancy_2wikimultihopqa/results_chunking_per_seed_summary.csv",
+          "sha256": "3b8cef1f79b2a343918fc99c1095dabad4cb2ecaf0cd11747d7443b9ebaffb86"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_031430_redundancy_2wikimultihopqa/run_params.json",
+          "sha256": "167d0a5161a54c086d6b8cac36f2743d98e953ffd92c61b9d183afe25abae8b0"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/2wikimultihopqa.csv",
+          "sha256": "2377bc451b718ae96aaab31832eedd71eadd75551dfdfb713ceaa608c0d96161"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_031430_redundancy_2wikimultihopqa__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_031430_redundancy_2wikimultihopqa__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 299328,
+      "raw_seed_contrast_rows": 724392,
+      "run": "2026-08-07_031430_redundancy_2wikimultihopqa__chunking",
+      "source_group_count": 150912,
+      "unique_query_ids": 12472,
+      "validation_groups_excluded": 30180
+    },
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "2wikimultihopqa",
+      "experiment": "redundancy",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_040842_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+          "sha256": "568e9cdbaa32905fa8a342681024fadcdf9b0c05e22d1ee637551468402d9346"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_040842_redundancy_2wikimultihopqa/results_redundancy_per_seed_summary.csv",
+          "sha256": "2f4b8c1fb3f06426c21e69b08a06b452b973a900ae0d386ce7ac8d3d8ce4d493"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_040842_redundancy_2wikimultihopqa/run_params.json",
+          "sha256": "eb5ef45310c864d648213b25a26c82374bbf12b5e1a1c9b2237b398d1a75659b"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/2wikimultihopqa.csv",
+          "sha256": "2377bc451b718ae96aaab31832eedd71eadd75551dfdfb713ceaa608c0d96161"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_040842_redundancy_2wikimultihopqa__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_040842_redundancy_2wikimultihopqa__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 598656,
+      "raw_seed_contrast_rows": 1448784,
+      "run": "2026-08-07_040842_redundancy_2wikimultihopqa__redundancy",
+      "source_group_count": 301824,
+      "unique_query_ids": 12472,
+      "validation_groups_excluded": 60360
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "fiqa",
+      "experiment": "chunking",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_060658_redundancy_fiqa/results_chunking_per_query.csv",
+          "sha256": "6501c189dd2cc516a7f3f409b330404268ccd5f56466171232d62640ba6761f5"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_060658_redundancy_fiqa/results_chunking_per_seed_summary.csv",
+          "sha256": "bfa5ddee6e3ec916254ea79d91c0d80c4ca5af59e25d65ea2835287b8508ef2d"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_060658_redundancy_fiqa/run_params.json",
+          "sha256": "fcfa5a277a066449e57bf4805f82412332194a69c4d269372b233045875d5e44"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/fiqa.csv",
+          "sha256": "ea2469e52c4ded141642ac1871081346e4bedcc4655e1b92ecfa399f6a42d10a"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_060658_redundancy_fiqa__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_060658_redundancy_fiqa__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 15432,
+      "raw_seed_contrast_rows": 37368,
+      "run": "2026-08-07_060658_redundancy_fiqa__chunking",
+      "source_group_count": 7776,
+      "unique_query_ids": 643,
+      "validation_groups_excluded": 1548
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "scifact",
+      "experiment": "chunking",
+      "historical_objective": "alpha-NDCG@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_chunking_per_query.csv",
+          "sha256": "bd4502a0068a5bc3e8046b6a2b9398d0f4138d1c18e9370109ed0c5b69618515"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_chunking_per_seed_summary.csv",
+          "sha256": "ff26f6ff16a1eedfbbf76275da633e5b1d0d340b828a3700b65d10474e50b1fd"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/run_params.json",
+          "sha256": "0f4a830317b13805d6600413cb40375f9cd0d74bd709316ee5b41c602e2685f7"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/scifact.csv",
+          "sha256": "238ee6b54b23506324c74891e124ba6b0b55e3219d865b71a4a7ad27aad33f5a"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_072703_redundancy_scifact__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_072703_redundancy_scifact__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 7152,
+      "raw_seed_contrast_rows": 17280,
+      "run": "2026-08-07_072703_redundancy_scifact__chunking",
+      "source_group_count": 3600,
+      "unique_query_ids": 298,
+      "validation_groups_excluded": 720
+    },
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "scifact",
+      "experiment": "redundancy",
+      "historical_objective": "alpha-NDCG@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_redundancy_per_query.csv",
+          "sha256": "79ecd86d785d09b5a3c2fc22dc3b2ed1bfc0c374e852d98370a488ec407a7ac0"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/results_redundancy_per_seed_summary.csv",
+          "sha256": "654217d29d03575f071ffa3e9889949b4c251597c138d4af0c4e82d815caf3ce"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_072703_redundancy_scifact/run_params.json",
+          "sha256": "0f4a830317b13805d6600413cb40375f9cd0d74bd709316ee5b41c602e2685f7"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/scifact.csv",
+          "sha256": "238ee6b54b23506324c74891e124ba6b0b55e3219d865b71a4a7ad27aad33f5a"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_072703_redundancy_scifact__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_072703_redundancy_scifact__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 14304,
+      "raw_seed_contrast_rows": 34560,
+      "run": "2026-08-07_072703_redundancy_scifact__redundancy",
+      "source_group_count": 7200,
+      "unique_query_ids": 298,
+      "validation_groups_excluded": 1440
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "hotpotqa_fullwiki",
+      "experiment": "chunking",
+      "historical_objective": "alpha-NDCG@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_113533_redundancy_hotpotqa_fullwiki/results_chunking_per_query.csv",
+          "sha256": "41df97b046a2e8dbba2b8904a6e4e14319af4696bf4ad89d2b3456e6be5951ef"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_113533_redundancy_hotpotqa_fullwiki/results_chunking_per_seed_summary.csv",
+          "sha256": "5760c5dcdf9f8b991ed8c2da59d06a1d9fc988381a60c316d8da6318287d1f73"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_113533_redundancy_hotpotqa_fullwiki/run_params.json",
+          "sha256": "307b560f350747816c88533a5d6df4e2959a5ce8a1563641398fa2432630a263"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/hotpotqa_fullwiki.csv",
+          "sha256": "bf3f3cc9a5c3fcd6992c357dd1233da92f53d270d24549762b734d6527f6806d"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 176448,
+      "raw_seed_contrast_rows": 426528,
+      "run": "2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking",
+      "source_group_count": 88860,
+      "unique_query_ids": 7352,
+      "validation_groups_excluded": 17772
+    },
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "fiqa",
+      "experiment": "redundancy",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_154506_redundancy_fiqa/results_redundancy_per_query.csv",
+          "sha256": "c8107a11b3851476fb52c053d6c1e2b6190407b1822a00e4339bb2f5d9cce906"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_154506_redundancy_fiqa/results_redundancy_per_seed_summary.csv",
+          "sha256": "c4504b9985cdb343c36c43286965aa80746fd7bc5a6e75f66ba4872ef69337c3"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_154506_redundancy_fiqa/run_params.json",
+          "sha256": "d44864c37c81479900351df777cb4ac842f560e8a2d9c5b52a98ae0a19561545"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/fiqa.csv",
+          "sha256": "ea2469e52c4ded141642ac1871081346e4bedcc4655e1b92ecfa399f6a42d10a"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_154506_redundancy_fiqa__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_154506_redundancy_fiqa__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 30864,
+      "raw_seed_contrast_rows": 74736,
+      "run": "2026-08-07_154506_redundancy_fiqa__redundancy",
+      "source_group_count": 15552,
+      "unique_query_ids": 643,
+      "validation_groups_excluded": 3096
+    },
+    {
+      "conditions": [
+        "0",
+        "0.025",
+        "0.05",
+        "0.1",
+        "0.15",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "dataset": "hotpotqa_fullwiki",
+      "experiment": "redundancy",
+      "historical_objective": "alpha-NDCG@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-07_230907_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+          "sha256": "3d7adcf17c35f80fa5e3fdbf538222b139292c5bb0ac9035218b805921cf35f4"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-07_230907_redundancy_hotpotqa_fullwiki/results_redundancy_per_seed_summary.csv",
+          "sha256": "fab2e4225373b68184bf95fe4e2f88ad26e87046ab1ec714a1594b5e99b11044"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-07_230907_redundancy_hotpotqa_fullwiki/run_params.json",
+          "sha256": "1233fcd53f89a1ba16f179cbdf4e6a96b72dbbb23c2f4f8b1e35fb0c1ce2ac7a"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/hotpotqa_fullwiki.csv",
+          "sha256": "bf3f3cc9a5c3fcd6992c357dd1233da92f53d270d24549762b734d6527f6806d"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy.csv.gz"
+      },
+      "query_averaged_contrast_rows": 352896,
+      "raw_seed_contrast_rows": 853056,
+      "run": "2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy",
+      "source_group_count": 177720,
+      "unique_query_ids": 7352,
+      "validation_groups_excluded": 35544
+    },
+    {
+      "conditions": [
+        "0",
+        "0.25",
+        "0.5",
+        "0.75"
+      ],
+      "dataset": "nq",
+      "experiment": "chunking",
+      "historical_objective": "S-Recall@k",
+      "inputs": {
+        "per_query": {
+          "path": "results/reproducibility_reruns/2026-08-08_070150_redundancy_nq/results_chunking_per_query.csv",
+          "sha256": "0842b0e8c2621eabfbb7e8545c0ed342ee24917deb1ee5f3034d04c3561eb4a6"
+        },
+        "per_seed_summary": {
+          "path": "results/reproducibility_reruns/2026-08-08_070150_redundancy_nq/results_chunking_per_seed_summary.csv",
+          "sha256": "4493cf0d49a936448829ed4aa30726e9578fc8d42a5bee22063ca53c93690c97"
+        },
+        "run_params": {
+          "path": "results/reproducibility_reruns/2026-08-08_070150_redundancy_nq/run_params.json",
+          "sha256": "dda9ae15a4afb337714708527fb9f30f64512105b582eaa730aadf74af9dc826"
+        },
+        "split_manifest": {
+          "path": "manifests/splits/nq.csv",
+          "sha256": "130d06e8f3bd2d6053ce16a6ce7eb4404050153361ce711e87f69d022c232c3e"
+        }
+      },
+      "objective": "S-Recall@k",
+      "outputs": {
+        "query_averaged_contrasts": "query_averaged_contrasts/2026-08-08_070150_redundancy_nq__chunking.csv.gz",
+        "raw_seed_contrasts": "raw_seed_contrasts/2026-08-08_070150_redundancy_nq__chunking.csv.gz"
+      },
+      "query_averaged_contrast_rows": 142944,
+      "raw_seed_contrast_rows": 142944,
+      "run": "2026-08-08_070150_redundancy_nq__chunking",
+      "source_group_count": 29776,
+      "unique_query_ids": 5956,
+      "validation_groups_excluded": 5952
+    }
+  ],
+  "sampling_unit": "frozen query_id; repeated test-seed observations averaged within query",
+  "scope": "primary objective contrasts for all 13 corrected injection/chunking sweep artifacts",
+  "selection": "each parameterized family is re-tuned per seed and level on frozen validation S-Recall; first maximum in frozen grid order breaks exact ties",
+  "status": "addressed_with_archival_limitation",
+  "totals": {
+    "corrected_sweep_artifacts": 13,
+    "inference_rows": 534,
+    "level_effect_rows": 456,
+    "primary_interaction_rows": 78,
+    "query_averaged_contrast_rows": 1814424,
+    "raw_seed_contrast_rows": 4186032,
+    "validation_selection_rows": 1320
+  },
+  "units": "paired effects and confidence intervals are percentage points"
+}
