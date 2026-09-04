@@ -30,13 +30,21 @@ def resolve_published_path(path: str, results: Path) -> Path:
     return ROOT / logical
 
 
-def validate(results: Path) -> None:
+def validate(results: Path = DEFAULT_RESULTS) -> None:
     path = MANIFEST_DIR / "metadata.json"
     metadata = json.loads(path.read_text(encoding="utf-8"))
     run_dirs = {
         item.parent.name
         for item in results.glob("*/run_params.json")
     }
+    qwen_manifest = ROOT / "manifests" / "qwen38" / "metadata.json"
+    extension_runs = set()
+    if qwen_manifest.is_file():
+        extension_runs = {
+            run["run_id"]
+            for run in json.loads(qwen_manifest.read_text(encoding="utf-8"))["runs"]
+        }
+    run_dirs -= extension_runs
     runs = {run["run_id"]: run for run in metadata["runs"]}
     assert set(runs) == run_dirs
     assert len(runs) == 30

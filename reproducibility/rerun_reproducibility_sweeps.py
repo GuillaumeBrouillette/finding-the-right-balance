@@ -81,7 +81,7 @@ def command(source_run: str, experiment: str) -> tuple[list[str], Path]:
     params_path = RESULTS / source_run / "run_params.json"
     params = json.loads(params_path.read_text(encoding="utf-8"))
     cmd = [
-        sys.executable, "-u", str(ROOT / "evaluate_redundancy.py"),
+        sys.executable, "-u", "-m", "experiments.evaluate_redundancy",
         "--experiment", experiment,
     ]
     for key in SCALAR_KEYS:

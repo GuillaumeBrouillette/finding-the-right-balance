@@ -15,22 +15,28 @@ not in the Git history:
   (624 MiB) restores the compressed manifests under `manifests/`;
 - [`finding-the-right-balance-retained-results-2026-08-10.tar.zst`](https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-retained-results-2026-08-10.tar.zst)
   (934 MiB) restores `results/retained/` and
-  `results/reproducibility_reruns/`.
+  `results/reproducibility_reruns/`;
+- [`finding-the-right-balance-qwen38-results-2026-09-03.tar.zst`](https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-qwen38-results-2026-09-03.tar.zst)
+  (18 MiB) adds the Qwen3.8-27B generation results.
 
 ```text
 Evidence SHA-256: 4603be6aa3463986f390eb3acebf19448b161952bcf6feb6c4378ddf12720a64
 Retained-results SHA-256: d32892e10ee8cb0516eb89c6fdbb9993701c8550156f0b3d4f24494114770da8
 ```
 
-From the repository root, download, verify, and extract both assets:
+From the repository root, download, verify, and extract the assets:
 
 ```bash
-curl -L -O https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-evidence-2026-08-10.tar.zst
-curl -L -O https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-retained-results-2026-08-10.tar.zst
+mkdir -p artifacts
+curl -L -o artifacts/finding-the-right-balance-evidence-2026-08-10.tar.zst https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-evidence-2026-08-10.tar.zst
+curl -L -o artifacts/finding-the-right-balance-retained-results-2026-08-10.tar.zst https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-retained-results-2026-08-10.tar.zst
+curl -L -o artifacts/finding-the-right-balance-qwen38-results-2026-09-03.tar.zst https://github.com/GuillaumeBrouillette/finding-the-right-balance/releases/download/reproducibility-v1/finding-the-right-balance-qwen38-results-2026-09-03.tar.zst
 sha256sum --check reproducibility/EVIDENCE_ARTIFACT_SHA256
 sha256sum --check reproducibility/COMPANION_ARTIFACT_SHA256
-tar --use-compress-program=unzstd -xf finding-the-right-balance-evidence-2026-08-10.tar.zst
-tar --use-compress-program=unzstd -xf finding-the-right-balance-retained-results-2026-08-10.tar.zst
+sha256sum --check reproducibility/QWEN38_ARTIFACT_SHA256
+tar --use-compress-program=unzstd -xf artifacts/finding-the-right-balance-evidence-2026-08-10.tar.zst
+tar --use-compress-program=unzstd -xf artifacts/finding-the-right-balance-retained-results-2026-08-10.tar.zst
+tar --use-compress-program=unzstd -xf artifacts/finding-the-right-balance-qwen38-results-2026-09-03.tar.zst
 ```
 
 The evidence archive is sufficient to inspect the published large manifests.
@@ -67,6 +73,24 @@ python reproducibility/create_statistical_archive.py --workers 3 --bootstrap-sam
 python reproducibility/validate_statistical_archive.py
 python reproducibility/reconstruct_paper.py
 python reproducibility/validate_paper_reconstruction.py
+python reproducibility/create_qwen38_manifest.py
+python reproducibility/validate_qwen38_manifest.py
+```
+
+The Qwen3.8 extension is reconstructed from existing retained outputs; these
+commands perform no model inference. Its exact reader protocol, environment,
+resumable runner and standalone table builders are documented in
+[`QWEN38_GENERATION.md`](QWEN38_GENERATION.md). The dedicated manifest marks
+the clean eight-method run as pool-policy equivalent and keeps the earlier
+clean/heavy runs explicitly identified as using the pre-correction draft pool
+truncation policy.
+
+The staged release asset is
+`artifacts/finding-the-right-balance-qwen38-results-2026-09-03.tar.zst`;
+verify it with:
+
+```bash
+sha256sum --check reproducibility/QWEN38_ARTIFACT_SHA256
 ```
 
 `metadata.json` records the source result file, its SHA-256 digest, the source
@@ -144,7 +168,7 @@ identified rather than assigned unrecoverable query-level statistics.
 ## Table and figure reconstruction
 
 `manifests/paper_reconstruction/` and [`METHODS.md`](METHODS.md) provide one
-deterministic entry point that reconstructs all 12 numbered
-tables and all 8 numbered figures from 53 checksummed retained inputs. The
+deterministic entry point that reconstructs all 12 numbered tables and all 8
+numbered figures from 56 checksummed retained inputs. The
 validator checks manuscript-value anchors and proves a second clean build is
 byte-identical, including the generated PDFs.

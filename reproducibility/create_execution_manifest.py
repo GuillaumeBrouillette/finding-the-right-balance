@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESULTS = ROOT / "results" / "retained"
 ARCHIVE_RESULTS_ROOT = Path("results/retained")
 OUTPUT = ROOT / "manifests" / "execution"
+QWEN38_MANIFEST = ROOT / "manifests" / "qwen38" / "metadata.json"
 RNG_PATTERN = re.compile(
     r"default_rng\(([^)]*)\)|manual_seed\(([^)]*)\)|random\.seed\(([^)]*)\)"
 )
@@ -22,6 +23,14 @@ TRANSFORMATION_KEYS = [
     "experiment", "rho_grid", "overlap_grid", "chunk_window",
     "dup_noise", "dup_target",
 ]
+
+
+def extension_run_ids() -> set[str]:
+    """Runs documented by a dedicated extension manifest, not the legacy archive."""
+    if not QWEN38_MANIFEST.is_file():
+        return set()
+    metadata = json.loads(QWEN38_MANIFEST.read_text(encoding="utf-8"))
+    return {str(run["run_id"]) for run in metadata.get("runs", [])}
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -112,8 +121,11 @@ def create(historical_repo: Path | None, output: Path, results: Path) -> None:
 
     runs = []
     snapshots: dict[tuple[str, str], dict] = {}
+    excluded_runs = extension_run_ids()
     for params_path in sorted(results.glob("*/run_params.json")):
         run_dir = params_path.parent
+        if run_dir.name in excluded_runs:
+            continue
         params = json.loads(params_path.read_text(encoding="utf-8"))
         short_commit = str(params["git_commit"])
         script = str(params["script"])
@@ -157,7 +169,7 @@ def create(historical_repo: Path | None, output: Path, results: Path) -> None:
         datasets = source_datasets(params)
         missing_sources = set(datasets).difference(available_sources)
         # The exploratory distractor HotpotQA run is not part of the seven
-        # headline datasets and consequently has no source-identity source registry.
+        # registered datasets and consequently has no source-identity registry.
         if missing_sources.difference({"hotpotqa"}):
             raise ValueError(f"Missing source identities for {sorted(missing_sources)}")
         source_identity_status = (

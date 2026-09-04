@@ -91,13 +91,26 @@ def inference_settings(params: dict, models: list[dict]) -> dict:
     if "generator" in roles:
         settings["generator"] = {
             "max_input_tokens": 512,
-            "max_new_tokens": params.get("max_new_tokens", 64),
-            "num_beams": params.get("num_beams", 4),
+            "max_new_tokens": params.get(
+                "generator_max_new_tokens", params.get("max_new_tokens", 64)),
+            "num_beams": params.get(
+                "generator_num_beams", params.get("num_beams", 4)),
             "do_sample": False,
             "early_stopping": True,
             "tokenizer_truncation": True,
             "skip_special_tokens": True,
         }
+        if params.get("generator_backend") == "openai-compatible":
+            settings["generator"].update({
+                "backend": "openai-compatible",
+                "model_revision": params.get("generator_revision"),
+                "temperature": params.get("generator_temperature"),
+                "top_p": params.get("generator_top_p"),
+                "seed": params.get("generator_seed"),
+                "thinking": params.get("generator_thinking"),
+                "prompt_version": params.get("generator_prompt_version"),
+                "concurrent_requests": params.get("generator_batch_size"),
+            })
     return settings
 
 
@@ -117,12 +130,21 @@ def create() -> None:
                     models.append(model_record(role, str(value), registry))
             timestamp = run_timestamp(params_path.parent.name)
             for model in models:
-                modified = datetime.fromisoformat(model["upstream_last_modified"])
-                if modified > timestamp:
+                modified_raw = model.get("upstream_last_modified")
+                modified = datetime.fromisoformat(modified_raw) if modified_raw else None
+                if modified is not None and modified > timestamp:
                     raise ValueError(
                         f"{model['canonical_name']} revision postdates "
                         f"{params_path.parent.name}"
                     )
+            protocol_status = "historical"
+            if params.get("generator_model") == "Qwen/Qwen3.8-27B":
+                if params.get("candidate_pool_policy") == "fixed_clean_pool_size_per_query":
+                    protocol_status = "fixed_clean_pool_size"
+                elif set(params.get("rho_grid", [])) == {0.0}:
+                    protocol_status = "clean_only_policy_equivalent"
+                else:
+                    protocol_status = "legacy_unfixed_candidate_pool_excluded"
             runs.append({
                 "run_id": params_path.parent.name,
                 "result_collection": result_root.name,
@@ -130,6 +152,7 @@ def create() -> None:
                 "run_params_sha256": sha256_file(params_path),
                 "models": models,
                 "inference_settings": inference_settings(params, models),
+                "protocol_status": protocol_status,
             })
 
     OUTPUT.mkdir(parents=True, exist_ok=True)

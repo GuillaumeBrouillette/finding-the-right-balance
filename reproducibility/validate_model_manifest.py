@@ -23,7 +23,7 @@ def sha256_file(path: Path) -> str:
 def validate() -> None:
     metadata = json.loads((MANIFEST / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["format_version"] == 1
-    assert len(metadata["model_registry"]) == 5
+    assert len(metadata["model_registry"]) == 6
     run_keys = set()
     for run in metadata["runs"]:
         key = (run["result_collection"], run["run_id"])
@@ -42,7 +42,9 @@ def validate() -> None:
             assert len(model["model_revision"]) == 40
             assert len(model["tokenizer_revision"]) == 40
             assert model["model_revision"] == model["tokenizer_revision"]
-            assert model["weight_precision"] in {"float32", "bfloat16"}
+            assert model["weight_precision"] in {
+                "float32", "bfloat16", "server-managed"
+            }
     expected = {}
     for line in (MANIFEST / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
         digest, name = line.split("  ", 1)

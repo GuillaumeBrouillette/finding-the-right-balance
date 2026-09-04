@@ -1,26 +1,4 @@
-"""
-alpha_selection.py  –  shared utility for finding and persisting optimal α
-
-Provides:
-  find_optimal_alpha()   – best alpha from a val-split accumulator dict
-  find_optimal_blend()   – best (alpha, beta) pair for S1-Blend
-  save_alphas()          – write results to JSON
-  load_alphas()          – read results from JSON
-    lookup_alpha()         – retrieve a result by
-                                                     (score_type, setting, objective, generator_model)
-
-All evaluate scripts import from here so the logic stays in one place.
-
-Objective names
----------------
-  recall          Recall@k
-  ndcg            NDCG@k
-  alpha_ndcg      alpha-NDCG@k (intent-aware; requires subtopic info)
-  vendi           Vendi score (diversity only)
-  recall_vendi    0.5*recall + 0.5*(vendi/max_vendi)  combined
-  em              Exact Match (requires generation)
-    f1              Token-level F1 (requires generation)
-"""
+"""Select, persist, and retrieve validation-tuned reranking parameters."""
 
 from __future__ import annotations
 

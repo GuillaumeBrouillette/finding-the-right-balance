@@ -1,28 +1,4 @@
-r"""
-Generate the paper's geometric figures as TikZ snippets (vector, consistent
-with the hand-drawn lune/obstruction figures in RNGscore_regimes.tex).
-
-Two outputs, written to ``plots/`` and ``\input`` by the paper inside figure
-environments (the document preamble defines the node styles qnode/cand/
-selnode/activenode and the figblue/figred/figgray colours used here):
-
-  fig_rng_graph.tex      A real relative neighbourhood graph over a seeded 2D
-                         point set, edges computed by the empty-lune test.
-                         Replaces the oversimplified 5-point path.
-
-  fig_knn_rng_mmr.tex    Three side-by-side panels over ONE shared point set
-                         (a query with a tight near-duplicate cluster plus
-                         scattered candidates): the top-k selected by k-NN, by
-                         the RNG-Score, and by MMR. Shows k-NN spending the
-                         budget on the near-duplicate cluster while the
-                         RNG-Score keeps one representative and disperses, and
-                         MMR pushing further out (onto less relevant points).
-
-Everything is Euclidean planar geometry (the natural reading of the lune /
-RNG figures); this is illustration, not the cosine production code. Run:
-
-    python plot_geometry.py --out_dir ../plots
-"""
+r"""Generate deterministic TikZ illustrations of the reranking geometry."""
 
 from __future__ import annotations
 
@@ -150,7 +126,7 @@ def emit_knn_rng_mmr(path: str, k: int = 5, alpha: float = 0.0,
     # (k-NN grabs all five).
     cluster = [(1.00, 0.00), (1.16, 0.13), (1.07, -0.15), (0.90, 0.11),
                (1.19, -0.04)]
-    # 4 distinct points just beyond the cluster, in directions AWAY from it
+    # Four distinct points just beyond the cluster, directed away from it
     # (so the obstruction penalty does not fire on them): the RNG-Score
     # disperses here after keeping one cluster representative.
     near = [(0.10, 1.40), (0.00, -1.45), (-1.35, 0.20), (-0.90, 1.05)]

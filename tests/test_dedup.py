@@ -1,14 +1,4 @@
-"""Sanity tests for the Dedup(t) baseline (rerank_dedup).
-
-Dedup(t) is greedy near-duplicate removal followed by top-k by relevance:
-candidates are visited in descending relevance order and kept iff their max
-cosine similarity to every already-kept candidate is below t.  On a clean
-pool (no pair at or above t) it must reproduce kNN exactly; when the pool is
-exhausted with fewer than k kept, the skipped near-duplicates backfill the
-remaining slots in relevance order.
-
-Run with pytest, or directly:  python tests/test_dedup.py
-"""
+"""Behavioral tests for the greedy near-duplicate baseline."""
 
 import os
 import sys
@@ -22,7 +12,7 @@ from retrieval.rerankers import rerank_dedup, rerank_knn
 
 def test_dedup_equals_knn_on_clean_pool():
     # Random pool: with high probability no cosine pair reaches 0.95, so
-    # Dedup must return exactly the kNN ranking.  Verified explicitly.
+    # Dedup must return the exact kNN ranking.
     rng = np.random.default_rng(0)
     embs = rng.standard_normal((30, 16))
     q = rng.standard_normal(16)

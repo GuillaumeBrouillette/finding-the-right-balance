@@ -1,0 +1,5 @@
+# Exact packages recorded inside the NVIDIA vLLM 26.08 evaluation container.
+# This file documents the run; NVIDIA's build is distributed through its
+# container rather than the default PyPI index.
+vllm==0.27.1+93523f72.nv26.8.64249418
+transformers==5.14.1

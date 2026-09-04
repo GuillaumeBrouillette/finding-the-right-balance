@@ -1,45 +1,5 @@
 #!/usr/bin/env python3
-"""
-learn_alpha.py  –  Find the optimal α for RNG-Score / Seg-Score (and CE variants)
-==================================================================================
-
-Performs a fine-grained grid search over α (and β for S1-Blend) on a held-out
-validation split.  Saves the best hyper-parameters to a JSON file so that
-evaluate.py, evaluate_beir.py, and evaluate_cross_encoder.py can load them
-directly rather than repeating the sweep.
-
-Supported settings
-------------------
-  Embedding-based retrieval (no cross-encoder):
-    RNG-Score, Seg-Score
-  Cross-encoder pipeline (requires --ce_model):
-    S1-Blend(α, β), S2-V1(α), S2-V2(α), S2-V3(α)
-
-Supported datasets
-------------------
-  hotpotqa, squad  (passages already attached)
-  beir/<task>      e.g. beir/scifact, beir/fiqa, beir/trec-covid
-
-Usage
------
-    # Standard α sweep on HotpotQA val set (default objective: apd)
-    python learn_alpha.py --dataset hotpotqa --objective apd
-
-    # Fine grid
-    python learn_alpha.py --alpha_min -0.5 --alpha_max 0.5 --alpha_step 0.05
-
-    # With cross-encoder
-    python learn_alpha.py --ce_model cross-encoder/ms-marco-MiniLM-L-6-v2
-
-    # On a BEIR task
-    python learn_alpha.py --dataset beir/scifact --objective ndcg
-
-Output
-------
-    results/alpha_results.json   (default --output_json)
-    results/alpha_results_run_params.json   (same run parameters)
-    console table of all (α, objective) pairs
-"""
+"""Tune reranking parameters on a held-out validation split."""
 
 from __future__ import annotations
 
@@ -52,9 +12,9 @@ import numpy as np
 from tqdm import tqdm
 
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from alpha_selection import (
+from ftrb.alpha_selection import (
     AlphaResult,
     OBJECTIVES,
     accumulate_alpha,
@@ -86,7 +46,7 @@ from retrieval.rerankers import (
     rerank_rng_score2,
 )
 from retrieval.retriever import DenseRetriever
-from run_utils import (
+from ftrb.run_utils import (
     CE_ALIASES,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
@@ -740,7 +700,7 @@ def main() -> None:
     save_alphas(results, output_json)
 
     print(f"\nDone. Load with:")
-    print(f"  from alpha_selection import load_alphas, lookup_alpha")
+    print("  from ftrb.alpha_selection import load_alphas, lookup_alpha")
     print(f"  alphas = load_alphas({output_json!r})")
     print(f"  r = lookup_alpha(alphas, 'RNG-Score', setting={setting!r})")
     print(f"  print(r.alpha_star)")

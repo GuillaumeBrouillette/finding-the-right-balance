@@ -261,9 +261,24 @@
       "sha256": "85bfac146c6a402fde467501f886bf5bd27fd410392d5453da99976b89a5f26d"
     },
     {
+      "bytes": 140281444,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_gen_per_query.csv",
+      "sha256": "6b3ba1d39dddad2e55f604bb4d7b87947b200157cffc1d32659fc310ad67de6c"
+    },
+    {
       "bytes": 16574,
       "path": "results/retained/frozen_rule_transfer_summary.csv",
       "sha256": "1613aaae2ed6c02ea537d7d9507ecf0c452f27f2a627df52f3306e7631ff6d07"
+    },
+    {
+      "bytes": 272,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_generation.csv",
+      "sha256": "d3e3e2bbefa34562260912c5c1627da882a6d5a02d6123309aca923784d5ee6c"
+    },
+    {
+      "bytes": 275,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_generation.csv",
+      "sha256": "4550bc071d72d2e16d5f84955bf6d12d48e4e97f833416b2905c5970377771f4"
     }
   ],
   "outputs": [
@@ -368,9 +383,9 @@
       "sha256": "863a71d47885c8351ebd74627668c3e2079321c006ffc605155b2c86e666bae2"
     },
     {
-      "bytes": 712,
+      "bytes": 882,
       "path": "tables/table_02.csv",
-      "sha256": "c27127221dab2799365ecce2be6d255394260a2a64739f59464cfae577b704f0"
+      "sha256": "c2c913e80e5047ab7d44e48d43ca5b21567c34d9d7d4489d1303bfc30f4db3f1"
     },
     {
       "bytes": 692,
@@ -415,7 +430,7 @@
     {
       "bytes": 378,
       "path": "tables/table_11.csv",
-      "sha256": "6f7f619c5b801ec5a71e5a511c558d6a109f17bb8865b2b0a5b4a2a4c7197747"
+      "sha256": "bceae2524ea6b8b964ac5ff9de8700ceb1de655a82309112a9d8d7d33f108111"
     },
     {
       "bytes": 249,

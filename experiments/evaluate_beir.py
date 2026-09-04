@@ -1,36 +1,5 @@
 #!/usr/bin/env python3
-"""
-evaluate_beir.py  –  RQ3: generalisation to heterogeneous BEIR retrieval tasks
-===============================================================================
-
-Evaluates kNN, MMR, Maxmin, Greedy-DPP, RNG-Score, and Seg-Score on BEIR
-tasks: SciFact, FiQA-2018, TREC-COVID, Arguana, and Webis-Touche2020.
-
-When --ce_model is supplied, also evaluates CE-topk, CE-MMR, CE-DPP, and the
-S1 / S2 cross-encoder integration strategies from RQ4, applied to BEIR.
-
-Usage
------
-    python evaluate_beir.py                            # all tasks, dense only
-    python evaluate_beir.py --tasks scifact fiqa
-    python evaluate_beir.py --tasks scifact --max_queries 50 --no_index_rebuild
-    python evaluate_beir.py --ce_model minilm-ce       # add CE methods
-
-For each task the script:
-  1. Downloads the BEIR corpus and queries from HuggingFace Hub.
-  2. Builds (or loads) a FAISS flat inner-product index over the corpus.
-  3. For each query retrieves the top-m passages.
-  4. Re-ranks with every method and evaluates using graded qrels.
-  5. Saves CSV results to --output_dir.
-
-The validation-optimal margin alpha* is selected on a 20% held-out validation
-split of the available queries (random seed 0), and test metrics are reported
-at that alpha*.
-
-Relevance metrics : NDCG@k (graded), Recall@k (binary, relevant = score>=1).
-Intent-aware      : alpha-NDCG@k (alpha_r=0.5), S-Recall@k.
-Annotation-free   : APD (avg pairwise distance), Vendi Score.
-"""
+"""Evaluate dense and optional cross-encoder rerankers on BEIR tasks."""
 
 from __future__ import annotations
 
@@ -45,9 +14,9 @@ import numpy as np
 from tabulate import tabulate
 from tqdm import tqdm
 
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from alpha_selection import (
+from ftrb.alpha_selection import (
     AlphaResult,
     accumulate_alpha,
     accumulate_blend,
@@ -84,7 +53,7 @@ from retrieval.rerankers import (
     rerank_rng_score2,
 )
 from retrieval.retriever import DenseRetriever
-from run_utils import (
+from ftrb.run_utils import (
     CE_ALIASES,
     ENCODER_ALIASES,
     attach_run_params,
@@ -95,7 +64,7 @@ from run_utils import (
     resolve_model,
     save_csv,
 )
-from stats import (
+from ftrb.stats import (
     add_seed_arg,
     aggregate_seed_rows,
     as_float,
@@ -778,15 +747,14 @@ def main() -> None:
     }
     run_dir = make_run_dir(args.output_dir, "beir_" + "_".join(tasks), run_params)
 
-    # Persist the raw data FIRST — it is the source of truth and the summary is
-    # re-derivable from it, so an error in the (cheap) aggregation can never
-    # destroy a long run's results.
+    # Persist per-query data before aggregation so an aggregation failure does
+    # not discard completed inference.
     if args.save_per_query:
         save_csv(all_per_query, os.path.join(run_dir, "results_beir_per_query.csv"))
     if len(seeds) > 1:
         save_csv(attach_run_params(all_summary, run_params),
                  os.path.join(run_dir, "results_beir_per_seed_summary.csv"))
-        # Headline table: across-seed mean +/- 95% CI with Wilcoxon vs kNN.
+        # Aggregate repeated runs and paired tests against kNN.
         summary_out = _aggregate_beir(all_summary, all_per_query)
         save_csv(attach_run_params(summary_out, run_params),
                  os.path.join(run_dir, "results_beir_summary.csv"))
@@ -800,7 +768,6 @@ def main() -> None:
         save_csv(attach_run_params(legacy, run_params),
                  os.path.join(run_dir, "results_beir_summary.csv"))
 
-    # Save alpha* results to JSON
     save_path = args.save_alpha_json or os.path.join(run_dir, "alpha_results_beir.json")
     if all_alpha_results:
         save_alphas(all_alpha_results, save_path)

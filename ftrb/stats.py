@@ -1,31 +1,4 @@
-"""Statistics helpers shared by the evaluation scripts.
-
-Three kinds of uncertainty are reported across the suite, so that every
-headline number can carry a 95% interval and a significance marker rather
-than resting on a single point estimate:
-
-* **across-seed CIs** — a Student-t interval over per-seed point estimates.
-  This is the uncertainty introduced by the stochastic components of the
-  pipeline: near-duplicate injection (which duplicates land in the pool),
-  the random validation/test split used to tune ``alpha*``/``lambda*``, and
-  the generation subsample.  Re-running the same experiment under several
-  seeds and reporting mean +/- CI directly addresses the "single run, no
-  seed variance" gap.
-
-* **across-query bootstrap CIs** — a percentile bootstrap over the query
-  set.  This is the dominant uncertainty for a *fixed, deterministic*
-  method on a finite query set (e.g. a small BEIR split), where re-seeding
-  changes nothing.  It is the right error bar to put on a point estimate
-  that does not move with the seed.
-
-* **paired significance** — a Wilcoxon signed-rank test of a method against
-  k-NN on the per-query objective, with an optional Holm-Bonferroni
-  step-down correction for the family of comparisons in a table.
-
-The two CI notions are complementary: stochastic experiments report the
-seed CI (with the bootstrap CI available per seed), deterministic ones fall
-back to the bootstrap CI.  Both are exposed here so the scripts stay thin.
-"""
+"""Confidence intervals and paired tests used by evaluation scripts."""
 
 from __future__ import annotations
 
@@ -42,8 +15,7 @@ except ImportError:  # pragma: no cover
     _wilcoxon = None
 
 
-# The 3-seed protocol referenced in the paper's to-do block.  Scripts default
-# to a single run; pass ``--seeds 0 1 2`` (or this list) for the full version.
+# Standard repeated-run seeds used by the experiment configurations.
 DEFAULT_SEEDS: List[int] = [0, 1, 2]
 N_BOOTSTRAP: int = 1000
 CONFIDENCE: float = 0.95

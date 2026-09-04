@@ -2,7 +2,7 @@
 
 import pytest
 
-from pool_size_invariants import (
+from ftrb.pool_size_invariants import (
     assert_candidate_pool,
     assert_encoded_pool,
     assert_pool_collection,

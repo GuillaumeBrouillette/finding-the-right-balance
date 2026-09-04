@@ -1,45 +1,4 @@
-"""
-Evaluation metrics.
-
-Generation quality
-------------------
-- exact_match        : normalised EM (SQuAD / HotpotQA style)
-- f1_score_single    : token-level F1  (SQuAD / HotpotQA style)
-- hallucination_rate : fraction of prediction tokens absent from context
-                       (n-gram faithfulness proxy)
-- faithfulness_score : 1 - hallucination_rate (groundedness proxy)
-- answer_coverage    : fraction of required answer facets supported by the
-                       prediction (multi-aspect / multi-hop coverage proxy)
-
-Retrieval quality
------------------
-- gold_recall        : fraction of gold passages retrieved
-- ndcg_at_k          : Normalised Discounted Cumulative Gain at k
-- mrr                : Mean Reciprocal Rank
-- recall_at_k        : recall from binary relevance labels
-- ndcg_from_relevance: NDCG@k from binary relevance labels
-- mrr_from_relevance : MRR from binary relevance labels
-
-BEIR / qrel-based metrics
---------------------------
-- ndcg_graded        : NDCG@k with graded relevance from qrel scores
-- recall_from_qrels  : Recall@k against a qrel judgement dict
-
-Annotation-free diversity
--------------------------
-- avg_pairwise_distance : mean cosine distance among selected embeddings
-- vendi_score           : effective number of distinct items
-                          (Friedman & Dieng 2023, range [1, k])
-
-Intent-aware diversity (require subtopic / nugget labels)
----------------------------------------------------------
-- subtopic_coverage     : map each candidate passage to the subtopics it covers
-                          (each distinct gold / relevant document = one subtopic)
-- alpha_ndcg_at_k       : alpha-NDCG (Clarke et al. 2008), redundancy-aware
-- subtopic_recall_at_k  : S-Recall (Zhai et al.), fraction of subtopics covered
-- err_ia_at_k           : intent-aware Expected Reciprocal Rank
-                          (Chapelle et al. 2009/2011)
-"""
+"""Retrieval, diversity, intent-aware, and answer-quality metrics."""
 
 from __future__ import annotations
 

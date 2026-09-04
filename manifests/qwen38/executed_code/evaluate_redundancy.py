@@ -73,6 +73,9 @@ Usage
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
+import json
 import os
 import re
 import sys
@@ -106,12 +109,6 @@ from evaluation.metrics import (
     vendi_score,
 )
 from generation.generator import load_generator
-from pool_size_invariants import (
-    assert_candidate_pool,
-    assert_encoded_pool,
-    assert_pool_collection,
-    clean_pool_target,
-)
 from retrieval.precompute import _format_passage, encode_queries_and_passages
 from retrieval.rerankers import (
     rerank_dedup,
@@ -425,6 +422,50 @@ def _pad_rows(rows: List[Dict]) -> List[Dict]:
     return [{c: row.get(c, "") for c in columns} for row in rows]
 
 
+def _sha256_file(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _validate_reuse_source(path: str, cfg: Dict) -> Dict:
+    """Validate an earlier generation CSV before reusing compatible rows."""
+    path = os.path.abspath(path)
+    if not os.path.isfile(path):
+        raise SystemExit(f"Generation reuse source not found: {path}")
+    params_path = os.path.join(os.path.dirname(path), "run_params.json")
+    if not os.path.isfile(params_path):
+        raise SystemExit(f"Generation reuse source has no run_params.json: {params_path}")
+    with open(params_path, encoding="utf-8") as handle:
+        source = json.load(handle)
+    critical = (
+        "dataset", "split", "max_samples", "encoder_model", "top_m", "top_k",
+        "metric", "dup_noise", "dup_target", "single_subtopic", "generator_model",
+        "generator_backend", "generator_revision", "generator_max_new_tokens",
+        "generator_num_beams", "generator_temperature", "generator_top_p",
+        "generator_seed", "generator_thinking", "generator_prompt_version",
+        "gen_max_samples", "seed", "seeds",
+    )
+    mismatches = [key for key in critical if source.get(key) != cfg.get(key)]
+    requested_levels = {float(value) for value in cfg.get("rho_grid", [])}
+    source_levels = {float(value) for value in source.get("rho_grid", [])}
+    if not requested_levels.issubset(source_levels):
+        mismatches.append("rho_grid")
+    if mismatches:
+        raise SystemExit(
+            "Cannot reuse generations with incompatible settings: "
+            + ", ".join(mismatches)
+        )
+    return {
+        "path": path,
+        "sha256": _sha256_file(path),
+        "run_params_path": params_path,
+        "source_git_commit": source.get("git_commit", "unknown"),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Experiment 1 — redundancy injection
 # ---------------------------------------------------------------------------
@@ -575,16 +616,43 @@ def _run_pool_sweep(
     per_seed_summary: List[Dict] = []
     per_query_rows: List[Dict] = []
     gen_rows: List[Dict] = []
-    pool_size_rows: List[Dict] = []
-
-    query_ids = [str(ex["id"]) for ex in examples]
-    original_sizes = [len(ex["passages"]) for ex in examples]
-    candidate_targets = [
-        clean_pool_target(size, m, k) for size in original_sizes
-    ]
 
     gen_methods = list(cfg.get("gen_methods") or [])
     do_gen = generator is not None and bool(gen_methods)
+    gen_path = os.path.join(run_dir, f"results_{file_tag}_gen_per_query.csv")
+    completed_gen = set()
+    if do_gen and os.path.isfile(gen_path):
+        with open(gen_path, newline="", encoding="utf-8") as handle:
+            gen_rows = list(csv.DictReader(handle))
+        completed_gen = {
+            (float(row[level_col]), int(row["seed"]), row["qid"], row["Method"])
+            for row in gen_rows
+        }
+        print(f"   Resuming from {len(completed_gen)} checkpointed generations.")
+    elif do_gen and cfg.get("reuse_generation_csv"):
+        source_path = cfg["reuse_generation_csv"]
+        requested_levels = {float(value) for value in levels}
+        requested_seeds = {int(value) for value in seeds}
+        with open(source_path, newline="", encoding="utf-8") as handle:
+            source_rows = list(csv.DictReader(handle))
+        for source_row in source_rows:
+            if (source_row.get("Method") not in gen_methods
+                    or float(source_row[level_col]) not in requested_levels
+                    or int(source_row["seed"]) not in requested_seeds):
+                continue
+            row = {key: value for key, value in source_row.items()
+                   if key != "RunParams"}
+            row["GenerationOrigin"] = "reused"
+            row["GenerationSourceSHA256"] = cfg["reuse_generation_sha256"]
+            gen_rows.append(row)
+        completed_gen = {
+            (float(row[level_col]), int(row["seed"]), row["qid"], row["Method"])
+            for row in gen_rows
+        }
+        if len(completed_gen) != len(gen_rows):
+            raise SystemExit("Generation reuse source contains duplicate compatible keys.")
+        print(f"   Reused {len(gen_rows)} provenance-validated generations "
+              f"from SHA256 {cfg['reuse_generation_sha256'][:12]}…")
     if do_gen:
         print(f"   Generation on for {gen_methods} per (level, seed) "
               f"(reader {cfg.get('generator_model')}).")
@@ -599,15 +667,6 @@ def _run_pool_sweep(
         for seed in seeds:
             print(f"   · seed {seed}")
             pools = make_pools(level, seed)
-            assert_pool_collection(
-                query_ids=query_ids,
-                pools=pools,
-                original_sizes=original_sizes,
-                targets=candidate_targets,
-                level_name=level_col,
-                level=level,
-                seed=seed,
-            )
             gen_jobs: Dict[str, List] = {}
 
             if not use_cache:
@@ -659,41 +718,12 @@ def _run_pool_sweep(
                 q_emb = q_embs_l[i]
                 p_embs = p_flat[s:e]
                 pool = pools[i]
-                target = candidate_targets[i]
-                assert_encoded_pool(
-                    query_id=query_ids[i],
-                    transformed_size=len(pool),
-                    encoded_size=len(p_embs),
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
 
-                # Fixed-size first-stage truncation. ``top_m`` is an upper
-                # bound; a query whose clean attached pool is smaller freezes
-                # that clean size across every redundancy/overlap level.
+                # First-stage truncation: top-m by query similarity.
                 sims = p_embs @ q_emb
-                keep = np.argsort(-sims)[:target]
+                keep = np.argsort(-sims)[: min(m, len(pool))]
                 pool_m = [pool[j] for j in keep]
                 p_embs_m = p_embs[keep]
-                assert_candidate_pool(
-                    query_id=query_ids[i],
-                    candidate_size=len(pool_m),
-                    target=target,
-                    level_name=level_col,
-                    level=level,
-                    seed=seed,
-                )
-                pool_size_rows.append({
-                    level_col: level,
-                    "seed": seed,
-                    "qid": ex["id"],
-                    "OriginalPoolSize": original_sizes[i],
-                    "TransformedPoolSize": len(pool),
-                    "CandidatePoolTarget": target,
-                    "CandidatePoolSize": len(pool_m),
-                    "PoolSizeAssertion": "pass",
-                })
 
                 redundancies.append(pool_redundancy(p_embs_m))
                 rel_size = relevant_set_size(
@@ -712,10 +742,6 @@ def _run_pool_sweep(
                         {level_col: level, "seed": seed, "qid": ex["id"],
                          "Method": name,
                          "PoolRedundancy": round(redundancies[-1], 4),
-                         "OriginalPoolSize": original_sizes[i],
-                         "TransformedPoolSize": len(pool),
-                         "CandidatePoolTarget": target,
-                         "CandidatePoolSize": len(pool_m),
                          "RelSetSize": rel_size, **res}
                     )
 
@@ -730,23 +756,29 @@ def _run_pool_sweep(
             # Answer generation for the sampled queries at this (level, seed).
             if generator is not None and gen_jobs:
                 for gm, jobs in gen_jobs.items():
-                    preds = generator.generate_batch(
-                        [j[1] for j in jobs], [j[3] for j in jobs],
-                        batch_size=cfg.get("batch_size", 32),
-                        show_progress=True,
-                        desc=f"   generating {gm} ({level_col}={level:g}, seed={seed})")
-                    for (qid, _q, answers, sel_passages), pred in zip(jobs, preds):
-                        em = max((exact_match(pred, a) for a in answers), default=0.0)
-                        f1 = max((f1_score_single(pred, a) for a in answers), default=0.0)
-                        hall = hallucination_rate(pred, [p["text"] for p in sel_passages])
-                        gen_rows.append(
-                            {level_col: level, "seed": seed, "qid": qid,
-                             "Method": gm, "EM": round(em, 4),
-                             "F1": round(f1, 4), "Halluc": round(hall, 4),
-                             # Raw prediction kept so scoring can be audited
-                             # and re-run offline (answer extraction, judge
-                             # models) without re-generating.
-                             "Prediction": pred[:2000]})
+                    pending = [j for j in jobs if
+                               (float(level), int(seed), j[0], gm) not in completed_gen]
+                    checkpoint_every = int(cfg.get("generation_checkpoint_every", 256))
+                    for start in range(0, len(pending), checkpoint_every):
+                        chunk = pending[start:start + checkpoint_every]
+                        preds = generator.generate_batch(
+                            [j[1] for j in chunk], [j[3] for j in chunk],
+                            batch_size=cfg.get("generator_batch_size", 8),
+                            show_progress=True,
+                            desc=f"   generating {gm} ({level_col}={level:g}, seed={seed})")
+                        for (qid, _q, answers, sel_passages), pred in zip(chunk, preds):
+                            em = max((exact_match(pred, a) for a in answers), default=0.0)
+                            f1 = max((f1_score_single(pred, a) for a in answers), default=0.0)
+                            hall = hallucination_rate(pred, [p["text"] for p in sel_passages])
+                            gen_rows.append(
+                                {level_col: level, "seed": seed, "qid": qid,
+                                 "Method": gm, "EM": round(em, 4),
+                                 "F1": round(f1, 4), "Halluc": round(hall, 4),
+                                 "Prediction": pred[:2000],
+                                 "GenerationOrigin": "generated",
+                                 "GenerationSourceSHA256": ""})
+                            completed_gen.add((float(level), int(seed), qid, gm))
+                        save_csv(attach_run_params(_pad_rows(gen_rows), cfg), gen_path)
 
             mean_red = float(np.mean(redundancies))
             per_seed_summary.extend(_seed_summary_rows(
@@ -766,12 +798,9 @@ def _run_pool_sweep(
              os.path.join(run_dir, f"results_{file_tag}_per_seed_summary.csv"))
     save_csv(per_query_rows,
              os.path.join(run_dir, f"results_{file_tag}_per_query.csv"))
-    save_csv(attach_run_params(pool_size_rows, cfg),
-             os.path.join(run_dir, f"results_{file_tag}_pool_size_audit.csv"))
     print(f"   {len(seeds)} seed(s); summary carries 95% across-seed CIs.")
     if gen_rows:
-        save_csv(attach_run_params(_pad_rows(gen_rows), cfg),
-                 os.path.join(run_dir, f"results_{file_tag}_gen_per_query.csv"))
+        save_csv(attach_run_params(_pad_rows(gen_rows), cfg), gen_path)
         print(f"   Saved generation EM/F1 for {len(gen_rows)} "
               f"(level, seed, query, method) rows.")
 
@@ -1113,6 +1142,19 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--generator_model", default=None,
                    help="Reader alias or HuggingFace ID (default: flan-t5-base "
                         "on cuda, flan-t5-small on cpu).")
+    p.add_argument("--generator_backend", choices=["transformers", "openai-compatible"],
+                   default="transformers",
+                   help="Use openai-compatible for a local vLLM server.")
+    p.add_argument("--generator_api_base", default="http://127.0.0.1:8000/v1")
+    p.add_argument("--generator_api_key", default="EMPTY")
+    p.add_argument("--generator_revision", default=None,
+                   help="Pinned model revision recorded for reproducibility; the server must use it.")
+    p.add_argument("--generator_max_new_tokens", type=int, default=128)
+    p.add_argument("--generator_num_beams", type=int, default=4)
+    p.add_argument("--generator_batch_size", type=int, default=None,
+                   help="Local batch size or concurrent requests for an API reader.")
+    p.add_argument("--generator_timeout", type=float, default=180.0)
+    p.add_argument("--generation_checkpoint_every", type=int, default=256)
     p.add_argument("--gen_methods", nargs="+", default=["kNN", "MMR(0.7)"],
                    help="Method names (as produced in the sweep) to generate "
                         "for; e.g. kNN MMR(0.7) RNG(-0.2). kNN and the fallback "
@@ -1127,6 +1169,11 @@ def _parse_args() -> argparse.Namespace:
                    help="Single-run seed (used when --seeds is not given).")
     add_seed_arg(p)
     p.add_argument("--output_dir", default="results")
+    p.add_argument("--resume_run_dir", default=None,
+                   help="Existing compatible run directory whose generation CSV should be resumed.")
+    p.add_argument("--reuse_generation_csv", default=None,
+                   help="Earlier generation CSV whose compatible rows should be reused in a new run. "
+                        "Its run_params.json and SHA256 are validated and recorded.")
     return p.parse_args()
 
 
@@ -1145,6 +1192,11 @@ def main() -> None:
 
     cfg: Dict = {
         "script": "evaluate_redundancy.py",
+        "evaluation_script_sha256": _sha256_file(os.path.abspath(__file__)),
+        "generator_script_sha256": _sha256_file(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "generation", "generator.py")),
+        "run_utils_sha256": _sha256_file(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "run_utils.py")),
         "experiment": args.experiment,
         "dataset": args.dataset,
         "split": args.split,
@@ -1152,7 +1204,6 @@ def main() -> None:
         "encoder_model": encoder_name,
         "device": device,
         "top_m": args.top_m,
-        "candidate_pool_policy": "fixed_clean_pool_size_per_query",
         "top_k": args.top_k,
         "metric": args.metric,
         "objective": args.objective,
@@ -1169,12 +1220,35 @@ def main() -> None:
         "encode_cache": not args.no_encode_cache,
         "run_generation": args.run_generation,
         "generator_model": generator_name,
+        "generator_backend": args.generator_backend,
+        "generator_api_base": args.generator_api_base,
+        "generator_revision": args.generator_revision,
+        "generator_max_new_tokens": args.generator_max_new_tokens,
+        "generator_num_beams": args.generator_num_beams,
+        "generator_batch_size": args.generator_batch_size or args.batch_size,
+        "generator_timeout": args.generator_timeout,
+        "generation_checkpoint_every": args.generation_checkpoint_every,
+        "generator_temperature": 0,
+        "generator_top_p": 1,
+        "generator_seed": 0,
+        "generator_thinking": False,
+        "generator_prompt_version": "short_direct_v1",
         "gen_methods": list(args.gen_methods) if args.run_generation else [],
         "gen_max_samples": args.gen_max_samples,
         "batch_size": args.batch_size,
         "seed": seeds[0],
         "seeds": seeds,
     }
+
+    if args.reuse_generation_csv:
+        reuse = _validate_reuse_source(args.reuse_generation_csv, cfg)
+        cfg.update(
+            reuse_generation_csv=reuse["path"],
+            reuse_generation_sha256=reuse["sha256"],
+            reuse_generation_run_params=reuse["run_params_path"],
+            reuse_generation_source_git_commit=reuse["source_git_commit"],
+        )
+        print(f"   Validated generation reuse source: {reuse['sha256']}")
 
     print(f"── Loading {args.dataset} ({args.split}) ──")
     examples = LOADERS[args.dataset](split=args.split, max_samples=args.max_samples)
@@ -1189,11 +1263,36 @@ def main() -> None:
     generator = None
     if generator_name is not None:
         print(f"\n── Loading reader: {generator_name} ──")
-        generator = load_generator(generator_name, device=device)
+        generator = load_generator(
+            generator_name, device=device,
+            max_new_tokens=args.generator_max_new_tokens,
+            num_beams=args.generator_num_beams,
+            backend=args.generator_backend,
+            api_base=args.generator_api_base,
+            api_key=args.generator_api_key,
+            timeout=args.generator_timeout,
+            seed=0,
+        )
 
-    run_dir = make_run_dir(
-        args.output_dir, f"redundancy_{args.dataset}", cfg
-    )
+    if args.resume_run_dir:
+        run_dir = os.path.abspath(args.resume_run_dir)
+        params_path = os.path.join(run_dir, "run_params.json")
+        if not os.path.isfile(params_path):
+            raise SystemExit(f"Cannot resume: missing {params_path}")
+        with open(params_path, encoding="utf-8") as handle:
+            previous = json.load(handle)
+        critical = ("experiment", "dataset", "split", "max_samples", "encoder_model",
+                    "rho_grid", "dup_noise", "dup_target", "top_m", "top_k",
+                    "generator_model", "generator_backend", "generator_revision",
+                    "gen_methods", "seeds")
+        mismatches = [key for key in critical if previous.get(key) != cfg.get(key)]
+        if mismatches:
+            raise SystemExit("Cannot resume with changed settings: " + ", ".join(mismatches))
+        print(f"   Resuming run directory: {run_dir}")
+    else:
+        run_dir = make_run_dir(
+            args.output_dir, f"redundancy_{args.dataset}", cfg
+        )
 
     if args.experiment in ("redundancy", "both", "all"):
         run_redundancy_experiment(examples, encoder, cfg, run_dir,

@@ -1,62 +1,7 @@
-"""
-Regime analyses computed from per-query sweep outputs.
+"""Derive tuned, regret, oracle, threshold, and generation analyses.
 
-This script consumes the ``results_redundancy_per_query.csv`` (and optionally
-``results_chunking_per_query.csv``) files written by evaluate_redundancy.py
-and produces the three derived analyses of the paper without re-running any
-retrieval or encoding:
-
-1.  **Tuned summary** (``analysis_summary.csv``) — validation-tuned operating
-    point per method family at every redundancy level, with Wilcoxon
-    signed-rank significance against kNN on the objective metric.  This
-    reproduces the main redundancy-sweep table under any choice of tuning
-    objective (the run scripts tune on alpha-NDCG@k by default; the paper
-    tunes the injection experiment on S-Recall@k, see Section "Protocol").
-
-2.  **Mis-specification regret** (``analysis_regret.csv``) — for each method
-    family and redundancy level, the test-split mean of the objective at the
-    *best* and *worst* grid member, and the regret of each against kNN.
-    Fixed-pressure methods (Maxmin, greedy DPP) have a single member.  This
-    quantifies the harm range a practitioner is exposed to when committing
-    to a method without knowing the regime.
-
-3.  **Oracle headroom** (``analysis_oracle.csv``) — per-family and
-    all-methods per-query oracles with ground-truth access, upper-bounding
-    any query-adaptive policy (reproduces and extends the oracle experiment
-    to every redundancy level using the sweep's own per-query rows).
-
-4.  **Redundancy-threshold decision rule** (``analysis_threshold.csv`` and
-    ``analysis_threshold_curve.csv``) — the paper's prescription made
-    operational and tested:
-
-        run kNN; measure the *effective number of distinct documents* in
-        its top-k selection (Vendi score, label-free, computed from the
-        already-available embeddings); if it falls below a threshold tau,
-        rerank with a diversifier, otherwise keep the kNN selection.
-
-    The threshold tau and the fallback diversifier D are tuned jointly on
-    the pooled validation split across all redundancy levels (a deployment
-    does not know its level), then evaluated on the pooled test split and
-    on each level separately.  Reported alongside: always-kNN, always-D*,
-    the per-level validation-tuned method (an upper line that *does* know
-    the level), and the all-methods oracle (the ceiling).  The fraction of
-    oracle headroom captured by the realizable rule is the headline number.
-
-Usage
------
-::
-
-    python analyze_regimes.py \
-        --per_query ../results/2026-06-10_124318_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv \
-        --objective S-Recall@k --top_k 5
-
-    # Same analysis for a chunk-overlap sweep
-    python analyze_regimes.py --per_query .../results_chunking_per_query.csv \
-        --level_col overlap
-
-Outputs are written next to the input file.  The validation/test split is
-re-derived from the run's seed and val_fraction (recorded in run_params.json
-in the same directory), guaranteeing consistency with the original tuning.
+The input is a per-query redundancy or chunking sweep produced by
+``evaluate_redundancy.py``. Outputs are written beside the input file.
 """
 
 from __future__ import annotations
@@ -70,7 +15,9 @@ from typing import Dict, List, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
-from stats import as_float, seed_interval
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+from ftrb.stats import as_float, seed_interval
 
 try:
     from scipy.stats import wilcoxon as _wilcoxon
@@ -78,8 +25,7 @@ except ImportError:  # pragma: no cover
     _wilcoxon = None
 
 
-# Seg-Score excluded from all analyses (2026-07-16): implementation-only
-# sibling of the RNG-Score, never introduced in the paper.
+# Seg-Score is outside the reported analysis families.
 FAMILIES = ("Dedup", "MMR", "VendiG", "RNG")
 SINGLETONS = ("Maxmin", "Greedy-DPP")
 
@@ -198,9 +144,7 @@ def _aggregate_info(infos: List[Dict]) -> Dict[str, object]:
 # Loading and split reconstruction
 # ---------------------------------------------------------------------------
 
-# Methods excluded from every analysis, including the all-methods oracle and
-# the rule's fallback candidates (Seg-Score dropped 2026-07-16: an
-# implementation-only sibling of the RNG-Score, never introduced in the paper).
+# Apply the reported method scope consistently to summaries and oracles.
 EXCLUDED_METHOD_PATTERN = r"^Seg\("
 
 
@@ -705,8 +649,8 @@ def main() -> None:
     df = load_per_query(args.per_query, args.level_col)
 
     # Seed handling: a multi-seed run tags every per-query row with a seed.
-    # We run each analysis once per seed (each on its own validation/test
-    # split) and aggregate to a mean with a 95% across-seed CI. An explicit
+    # Run each analysis once per seed on its own validation/test split, then
+    # aggregate with a 95% across-seed CI. An explicit
     # --seed forces single-seed mode on that seed.
     if args.seed is not None:
         seeds_list = [int(args.seed)]

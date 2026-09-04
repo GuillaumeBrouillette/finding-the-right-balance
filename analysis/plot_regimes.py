@@ -1,44 +1,4 @@
-"""
-Paper figures derived from the analyze_regimes.py outputs.
-
-Generates, from the analysis CSVs of a redundancy-sweep run directory:
-
-  fig_alpha_sweep.pdf     S-Recall@5 as a function of the margin alpha on
-                          clean (rho=0) and redundant (rho=0.25) pools, with
-                          the kNN baselines as horizontal references.
-
-  fig_threshold.pdf       (a) pooled validation objective of the decision
-                          rule as a function of the trigger threshold tau
-                          (fallback diversifier fixed at the selected D*),
-                          with the always-kNN / always-D* extremes, the
-                          tuned tau* and the deployed tau=h annotated.
-                          (b) test S-Recall@5 of always-kNN, always-D*, the
-                          frozen rule (tau=h, from
-                          frozen_rule_transfer_summary.csv) and the
-                          all-methods oracle at every injection level.
-
-  fig_generation.pdf      Answer quality (--gen_metrics, default EM and
-                          F1) versus injected redundancy for kNN, the
-                          fallback diversifier and the frozen rule; one
-                          panel per generation run and metric (--gen_runs).
-
-  fig_crossover.pdf       S-Recall versus measured pool redundancy, one
-                          panel per run (2-column grid), shared y-scale.
-
-Every rho axis uses the true injection levels on a symlog scale
-(linear below RHO_LINTHRESH so rho=0 stays on-axis), so unequal grid
-steps are spaced according to their value rather than evenly.
-
-Multi-panel figures are additionally written as one PDF per panel
-(suffix _a, _b, ...) for LaTeX subfigure layouts; the combined PDF is
-kept for older drafts.
-
-Usage::
-
-    python plot_regimes.py --run_dir ../results/<redundancy run> \
-        --gen_run_dir ../results/<generation run> --out_dir ../plots \
-        --crossover "TITLE=path/analysis_summary.csv" ...
-"""
+"""Generate redundancy-regime figures from analysis CSV files."""
 
 from __future__ import annotations
 

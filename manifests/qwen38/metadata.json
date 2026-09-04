@@ -1,0 +1,330 @@
+{
+  "created_at": "2026-09-03T18:46:54.848325+00:00",
+  "files": [
+    {
+      "bytes": 58957,
+      "path": "manifests/qwen38/executed_code/evaluate_redundancy.py",
+      "sha256": "67eddd9940f7edd3db5ee6c46a15ad6f0879c2770f11c29300bd10a313514b7a"
+    },
+    {
+      "bytes": 22367,
+      "path": "manifests/qwen38/executed_code/generator.py",
+      "sha256": "30b65350c972a23821ce2d494ea195a23ddfe089fb7b50bf29446376a28731ff"
+    },
+    {
+      "bytes": 7796,
+      "path": "manifests/qwen38/executed_code/run_utils.py",
+      "sha256": "09e7ae5d2d2d9650d78d2e352ec0a54cedf31616d93917a4668a6598c13ea82a"
+    },
+    {
+      "bytes": 331,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/analysis_generation_rq1_qwen38.csv",
+      "sha256": "50ac6bf90059c77f1975fd56560382c32d97e4e46e3272b05b89294494b16531"
+    },
+    {
+      "bytes": 140281444,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_gen_per_query.csv",
+      "sha256": "6b3ba1d39dddad2e55f604bb4d7b87947b200157cffc1d32659fc310ad67de6c"
+    },
+    {
+      "bytes": 24953417,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "sha256": "84fc8332c43e7b0f2e6286a2711d57ae1061fc0037fddcaf44e09b57a0d7a248"
+    },
+    {
+      "bytes": 16631,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_per_seed_summary.csv",
+      "sha256": "e556b702c5ec1cc8203e3e015af40b055f82bf57109e99e432b1d98a3771b9f4"
+    },
+    {
+      "bytes": 17054,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_summary.csv",
+      "sha256": "e15e40f29d36e08f2834bcbbf0187cd60df2ab9b67834f7fd2c36400600024f8"
+    },
+    {
+      "bytes": 2879,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/run_params.json",
+      "sha256": "cffee9cb2d7a7626a31e3592915d72f9093384288a98a36368b98e9023fc343b"
+    },
+    {
+      "bytes": 1258,
+      "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/table_rq1_qwen38.tex",
+      "sha256": "ce9d873d449b16260e8d5bc4a628140ed53f56cb770a73d8cf36367127b1c08a"
+    },
+    {
+      "bytes": 93,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_crossover.csv",
+      "sha256": "fd57126d841883336842ebf2b91b35c555e6fa45716fd675530b4ea9be62ab25"
+    },
+    {
+      "bytes": 444,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_gate.csv",
+      "sha256": "e098f5db57508a9855efc533cb416135e551372148b9954296089fcb99ac7339"
+    },
+    {
+      "bytes": 262,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_gate_info.json",
+      "sha256": "d1e24f50016b263b3be68687b1889b87419bcf5ec8714087a120e71f692b6f27"
+    },
+    {
+      "bytes": 272,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_generation.csv",
+      "sha256": "d3e3e2bbefa34562260912c5c1627da882a6d5a02d6123309aca923784d5ee6c"
+    },
+    {
+      "bytes": 817,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_oracle.csv",
+      "sha256": "8c241e5605bbcc0dd91552e15425d7b2f62257938e8c6b2f12b792a602ba064d"
+    },
+    {
+      "bytes": 866,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_regret.csv",
+      "sha256": "940d88262845db243f0ddfce8e266e1add13a57481c4bf22667a7696d9cf3ace"
+    },
+    {
+      "bytes": 1341,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_summary.csv",
+      "sha256": "16e31455d18e198a38507e7a6de698a034f18a1faf7d465d2608cbd8deae4e40"
+    },
+    {
+      "bytes": 488,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_threshold.csv",
+      "sha256": "b7d11b63afd77f145e03355fa35d48f3d2d08870c925bf3aa5f2bbbcd896672f"
+    },
+    {
+      "bytes": 148284,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_threshold_curve.csv",
+      "sha256": "369972aa2350a0612131968c3171961b755f39ae2e69eae78fa62dd18bab44fe"
+    },
+    {
+      "bytes": 197,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_threshold_info.json",
+      "sha256": "6a68502901f30a8d32f250cf67d2ff4596d1e465a337a93cd48cf6a1c5bbd3a1"
+    },
+    {
+      "bytes": 42204084,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/results_redundancy_gen_per_query.csv",
+      "sha256": "daf7cf09e08e4794f2a0e100b159926a21e4321494637673c07d61f60818eede"
+    },
+    {
+      "bytes": 51139969,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/results_redundancy_per_query.csv",
+      "sha256": "def7af0c5a2d15d44a54a5130f7cfff2c9d1dc4e621e3ea457e41f0fa6332513"
+    },
+    {
+      "bytes": 20344,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/results_redundancy_per_seed_summary.csv",
+      "sha256": "6a0d86cb9a9c40b5a71ea83b22612ceb65cdcee599557d054f08989b23eb799a"
+    },
+    {
+      "bytes": 21044,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/results_redundancy_summary.csv",
+      "sha256": "9a7ffd9f534dec4172324a25a393082e9de42d6f58893680833332b9a4d488ec"
+    },
+    {
+      "bytes": 1971,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/run_params.json",
+      "sha256": "0ddfbc44972516b7def46c2db04e9febd13a4d34b2516d4e70dabf75d92a6599"
+    },
+    {
+      "bytes": 93,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_crossover.csv",
+      "sha256": "fd57126d841883336842ebf2b91b35c555e6fa45716fd675530b4ea9be62ab25"
+    },
+    {
+      "bytes": 452,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_gate.csv",
+      "sha256": "cbcdd4186f53eb51bcafc1d84b97a17a17f64dd7ab0b8d2dd41715a17b6b30eb"
+    },
+    {
+      "bytes": 264,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_gate_info.json",
+      "sha256": "4073bf1dfa228dc1c7b3e2ebfd0e0b604f4f05324a9ad1eaafb97f4fb66613ba"
+    },
+    {
+      "bytes": 275,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_generation.csv",
+      "sha256": "4550bc071d72d2e16d5f84955bf6d12d48e4e97f833416b2905c5970377771f4"
+    },
+    {
+      "bytes": 814,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_oracle.csv",
+      "sha256": "a73bc64d4269cc34ee6c8fc00db98467868fdb46414376ed7d053a3faee49c5f"
+    },
+    {
+      "bytes": 863,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_regret.csv",
+      "sha256": "13d6ce6d49ba19028cb3426ef18ab9424faff87715a80f7ab50ab8eec3d10e66"
+    },
+    {
+      "bytes": 1358,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_summary.csv",
+      "sha256": "55af396f0fa406c8215e796023af78ce2acfd9b847be60f6958ab7ae62908e83"
+    },
+    {
+      "bytes": 494,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_threshold.csv",
+      "sha256": "115a0f729c87cc0239d8592ee42fab445a9220a3b0f30385a63ee669f1c6f4a4"
+    },
+    {
+      "bytes": 181275,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_threshold_curve.csv",
+      "sha256": "c9eee74de0764aec6feec444248423d97ea83bf8a3d9ad0bffc5d5032ec4f0f1"
+    },
+    {
+      "bytes": 198,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_threshold_info.json",
+      "sha256": "c61af2bbf2649b8e45be4592bba96048e415fa910d02cce930f859fac3c0edc9"
+    },
+    {
+      "bytes": 71981235,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/results_redundancy_gen_per_query.csv",
+      "sha256": "fdf380a2bf7daec22a8041258c44485e16ff1a44bd4a647f12d7af6e4a521139"
+    },
+    {
+      "bytes": 94590176,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/results_redundancy_per_query.csv",
+      "sha256": "1fa5ac96c24f973cb5a021278d2f73b2d47e206d7fe0b27361ffa493dcca5f1a"
+    },
+    {
+      "bytes": 20319,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/results_redundancy_per_seed_summary.csv",
+      "sha256": "8717956d316a8e99fb6b1a4e6f6fcc97c96033e38309beddce7d01de1b55e2a5"
+    },
+    {
+      "bytes": 21014,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/results_redundancy_summary.csv",
+      "sha256": "0d9e94fc034f7f64d5620e9b009f12df43216b04babc01f3abb14e5031f85cf7"
+    },
+    {
+      "bytes": 1969,
+      "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/run_params.json",
+      "sha256": "1ed7a1d1b4a95d6920d6d45aa20531650f9ffa9a06d10cbdbb1a1bd079fea974"
+    },
+    {
+      "bytes": 3124939,
+      "path": "results/retained/qwen38_legacy_unfixed/experiment.log",
+      "sha256": "e2e65f378299b706af37cb2bd5732c80daeec6b08bb7f05da885fa5ea72e272d"
+    },
+    {
+      "bytes": 940,
+      "path": "results/retained/qwen38_legacy_unfixed/table_generation_qwen38.tex",
+      "sha256": "43646a020a1e0066eac4f9a9e41523732de35c991b7171791bb0b99142483562"
+    }
+  ],
+  "format_version": 1,
+  "model": "Qwen/Qwen3.8-27B",
+  "model_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+  "paper_reconstruction": {
+    "model_execution": false,
+    "table_02": "accepted clean-pool RQ1 run",
+    "table_11": "legacy clean/heavy runs, with protocol limitation disclosed"
+  },
+  "reader_protocol": {
+    "gpu": "NVIDIA GB10",
+    "max_new_tokens": 64,
+    "prompt_version": "short_direct_v1",
+    "seed": 0,
+    "server": "NVIDIA vLLM 26.08",
+    "temperature": 0,
+    "thinking": false,
+    "top_p": 1
+  },
+  "runs": [
+    {
+      "exact_executed_code_hashes_available": true,
+      "generation": {
+        "method_rows": {
+          "Greedy-DPP": 7405,
+          "MMR(0.3)": 7405,
+          "MMR(0.5)": 7405,
+          "MMR(0.7)": 7405,
+          "MMR(0.9)": 7405,
+          "Maxmin": 7405,
+          "RNG(0.2)": 7405,
+          "kNN": 7405
+        },
+        "rho": [
+          0.0
+        ],
+        "rows": 59240,
+        "seeds": [
+          0
+        ]
+      },
+      "generation_csv": {
+        "bytes": 140281444,
+        "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/results_redundancy_gen_per_query.csv",
+        "sha256": "6b3ba1d39dddad2e55f604bb4d7b87947b200157cffc1d32659fc310ad67de6c"
+      },
+      "reason": "rho=0; old and fixed candidate-pool truncation coincide",
+      "run_id": "2026-09-01_191110_redundancy_hotpotqa_fullwiki",
+      "run_params": {
+        "bytes": 2879,
+        "path": "results/retained/2026-09-01_191110_redundancy_hotpotqa_fullwiki/run_params.json",
+        "sha256": "cffee9cb2d7a7626a31e3592915d72f9093384288a98a36368b98e9023fc343b"
+      },
+      "status": "accepted_clean_only_policy_equivalent"
+    },
+    {
+      "exact_executed_code_hashes_available": false,
+      "generation": {
+        "method_rows": {
+          "MMR(0.7)": 14810,
+          "kNN": 14810
+        },
+        "rho": [
+          0.0,
+          1.0
+        ],
+        "rows": 29620,
+        "seeds": [
+          0
+        ]
+      },
+      "generation_csv": {
+        "bytes": 42204084,
+        "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/results_redundancy_gen_per_query.csv",
+        "sha256": "daf7cf09e08e4794f2a0e100b159926a21e4321494637673c07d61f60818eede"
+      },
+      "reason": "Executed before the official fixed-clean-pool-size correction; retained because these are the supplied clean/heavy Qwen results",
+      "run_id": "2026-08-31_163327_redundancy_hotpotqa_fullwiki",
+      "run_params": {
+        "bytes": 1971,
+        "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/run_params.json",
+        "sha256": "0ddfbc44972516b7def46c2db04e9febd13a4d34b2516d4e70dabf75d92a6599"
+      },
+      "status": "legacy_unfixed_candidate_pool_disclosed"
+    },
+    {
+      "exact_executed_code_hashes_available": false,
+      "generation": {
+        "method_rows": {
+          "MMR(0.7)": 25152,
+          "kNN": 25152
+        },
+        "rho": [
+          0.0,
+          1.0
+        ],
+        "rows": 50304,
+        "seeds": [
+          0
+        ]
+      },
+      "generation_csv": {
+        "bytes": 71981235,
+        "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/results_redundancy_gen_per_query.csv",
+        "sha256": "fdf380a2bf7daec22a8041258c44485e16ff1a44bd4a647f12d7af6e4a521139"
+      },
+      "reason": "Executed before the official fixed-clean-pool-size correction; retained because these are the supplied clean/heavy Qwen results",
+      "run_id": "2026-08-31_232318_redundancy_2wikimultihopqa",
+      "run_params": {
+        "bytes": 1969,
+        "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/run_params.json",
+        "sha256": "1ed7a1d1b4a95d6920d6d45aa20531650f9ffa9a06d10cbdbb1a1bd079fea974"
+      },
+      "status": "legacy_unfixed_candidate_pool_disclosed"
+    }
+  ]
+}

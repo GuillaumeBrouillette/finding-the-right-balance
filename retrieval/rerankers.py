@@ -1,34 +1,4 @@
-"""
-Retrieval re-ranking methods.
-
-All functions receive pre-computed embeddings and return a list of *indices*
-into the candidate list, ordered by selection priority.
-
-References
-----------
-- kNN        : standard nearest-neighbour, no diversity
-- Dedup      : greedy near-duplicate removal, then top-k by relevance
-- MMR        : Carbonell & Goldstein (1998)
-- Maxmin     : greedy max-min diversity
-- Greedy DPP : Chen et al. (2018), NeurIPS
-- RDS        : this paper
-- RADS       : this paper
-- REDS       : this paper
-
-Examples
---------
->>> import numpy as np
->>> from retrieval.rerankers import rerank_knn, rerank_rds
->>> scores = np.array([0.9, 0.4, 0.7, 0.3])
->>> rerank_knn(scores, k=2)
-[0, 2]
->>> rng = np.random.default_rng(0)
->>> embs = rng.standard_normal((4, 8))
->>> q = rng.standard_normal(8)
->>> selected = rerank_rds(embs, q, k=2, alpha=0.1, metric='euclidean')
->>> len(selected) <= 2
-True
-"""
+"""Rerank candidate embeddings and return indices in selection order."""
 
 from __future__ import annotations
 
@@ -366,7 +336,7 @@ def rerank_greedy_dpp(
 
 
 # ---------------------------------------------------------------------------
-# Relative Distance Selection  (this paper)
+# Relative Distance Selection
 # ---------------------------------------------------------------------------
 
 def rerank_rds(
@@ -480,7 +450,7 @@ def rerank_rds(
 
 
 # ---------------------------------------------------------------------------
-# Relative Exhaustive Distance Selection  (this paper)
+# Relative Exhaustive Distance Selection
 # ---------------------------------------------------------------------------
 
 def rerank_reds(
@@ -607,7 +577,7 @@ def rerank_reds(
 
 
 # ---------------------------------------------------------------------------
-# Adaptive Relative Distance Selection  (this paper)
+# Adaptive Relative Distance Selection
 # ---------------------------------------------------------------------------
 
 def rerank_rads(

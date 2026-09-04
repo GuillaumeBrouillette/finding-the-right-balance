@@ -1,34 +1,7 @@
-"""Re-analyze every injection/chunking sweep on the correct objective.
+"""Recompute sweep summaries from retained per-query metrics.
 
-The injection and chunking sweeps must be tuned on S-Recall@k, not alpha-NDCG@k:
-copies (injected duplicates / overlapping chunks) share their source identity,
-and alpha-NDCG@k (alpha_r=0.5) rewards covering the same subtopic twice, so it
-selects copy-preserving (near-kNN) operating points on redundant pools. Some
-runs were mistakenly tuned on alpha-NDCG@k.
-
-This is fixable offline with **no retrieval re-run**: evaluate_redundancy.py logs
-every metric per query regardless of the sweep's --objective, and the val/test
-split + generation subset are seed-based (objective-independent). So re-running
-analyze_regimes.py with --objective S-Recall@k on the existing per-query CSV
-yields exactly what a native S-Recall sweep would have produced.
-
-For each injection/chunking run this driver:
-  1. detects the sweep type from which per-query file exists (redundancy -> rho,
-     chunking -> overlap) — the dir name is always ``redundancy_<dataset>``
-     regardless of experiment, so it must not be trusted;
-  2. guards against truncated per-query files (levels present must match the
-     per_seed_summary), skipping with a warning rather than emitting partial
-     analyses;
-  3. runs analyze_regimes.py --objective S-Recall@k (correct level_col);
-  4. for runs whose sweep was tuned on alpha-NDCG@k, regenerates the sweep's own
-     results_<tag>_summary.csv / _per_seed_summary.csv on S-Recall@k too, so no
-     stale confounded summary is left behind (reuses evaluate_redundancy's own
-     aggregation functions).
-
-Usage::
-
-    python reanalyze_all.py                 # both results roots, all runs
-    python reanalyze_all.py --dry_run       # report what would be done
+The command selects S-Recall on validation data and does not rerun retrieval,
+encoding, or generation.
 """
 
 from __future__ import annotations
@@ -43,22 +16,19 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from evaluate_redundancy import (  # noqa: E402  (import after sys.path tweak)
+from experiments.evaluate_redundancy import (  # noqa: E402
     _aggregate_sweep_summary,
     _pad_rows,
     _seed_summary_rows,
 )
-from run_utils import attach_run_params, save_csv  # noqa: E402
+from ftrb.run_utils import attach_run_params, save_csv  # noqa: E402
 
 OBJECTIVE = "S-Recall@k"
-# The eight per-query metric columns evaluate_selection always logs.
 METRIC_KEYS = ["Recall@k", "NDCG@k", "MRR", "alpha-NDCG@k", "S-Recall@k",
                "ERR-IA@k", "APD", "Vendi"]
 
-# (per_query filename, per_seed_summary filename, level column, file tag)
 SWEEP_KINDS = [
     ("results_redundancy_per_query.csv",
      "results_redundancy_per_seed_summary.csv", "rho", "redundancy"),

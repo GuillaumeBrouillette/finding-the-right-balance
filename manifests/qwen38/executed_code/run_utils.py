@@ -6,8 +6,12 @@ import argparse
 import csv
 import json
 import os
+import platform
 import subprocess
+import sys
+import tempfile
 from datetime import datetime
+from importlib import metadata
 from typing import Dict, List, Optional
 
 
@@ -20,6 +24,31 @@ def _git_commit() -> str:
         ).strip()
     except Exception:
         return "unknown"
+
+
+def _runtime_environment() -> Dict:
+    """Collect compact software/hardware provenance without requiring CUDA."""
+    packages = {}
+    for name in ("numpy", "torch", "transformers", "sentence-transformers", "vllm"):
+        try:
+            packages[name] = metadata.version(name)
+        except metadata.PackageNotFoundError:
+            pass
+    runtime = {
+        "python": sys.version.split()[0],
+        "platform": platform.platform(),
+        "packages": packages,
+    }
+    try:
+        import torch
+        runtime["cuda_runtime"] = torch.version.cuda
+        runtime["cuda_available"] = torch.cuda.is_available()
+        if torch.cuda.is_available():
+            runtime["gpu"] = torch.cuda.get_device_name(0)
+            runtime["gpu_count"] = torch.cuda.device_count()
+    except ImportError:
+        runtime["cuda_available"] = False
+    return runtime
 
 
 def make_run_dir(base_dir: str, tag: str, params: Dict) -> str:
@@ -38,7 +67,8 @@ def make_run_dir(base_dir: str, tag: str, params: Dict) -> str:
 
     with open(os.path.join(run_dir, "run_params.json"), "w", encoding="utf-8") as f:
         json.dump(
-            {**params, "timestamp": timestamp, "git_commit": _git_commit()},
+            {**params, "timestamp": timestamp, "git_commit": _git_commit(),
+             "runtime_environment": _runtime_environment()},
             f,
             indent=2,
             sort_keys=True,
@@ -76,10 +106,32 @@ def save_csv(rows: List[Dict], path: str) -> None:
             if key not in fieldnames:
                 fieldnames.append(key)
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    with open(path, "w", newline="", encoding="utf-8") as f:
+    # Write beside the destination and replace it atomically.  Long generation
+    # runs checkpoint this file repeatedly; a killed process must not leave a
+    # half-written CSV that cannot be resumed.
+    fd, tmp_path = tempfile.mkstemp(
+        prefix=f".{os.path.basename(path)}.", suffix=".tmp",
+        dir=os.path.dirname(path) or ".",
+    )
+    try:
+        f = os.fdopen(fd, "w", newline="", encoding="utf-8")
         writer = csv.DictWriter(f, fieldnames=fieldnames, restval="")
         writer.writeheader()
         writer.writerows(rows)
+        f.flush()
+        os.fsync(f.fileno())
+        f.close()
+        os.replace(tmp_path, path)
+    except Exception:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
     print(f"   Saved: {path}")
 
 
@@ -115,6 +167,7 @@ GENERATOR_ALIASES: Dict[str, str] = {
     "llama-3.1-8b":  "meta-llama/Llama-3.1-8B-Instruct",
     "qwen3-4b":      "Qwen/Qwen3-4B-Instruct-2507",
     "qwen3-8b":      "Qwen/Qwen3-8B",
+    "qwen3.8-27b":   "Qwen/Qwen3.8-27B",
 }
 
 

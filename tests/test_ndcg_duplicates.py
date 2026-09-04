@@ -1,21 +1,4 @@
-"""Regression test: NDCG@k and MRR must stay in [0, 1] when the retrieved
-list contains multiple copies of the same gold title (redundancy injection,
-evaluate_redundancy.py).
-
-Background
-----------
-inject_duplicates() appends near-duplicate passages that inherit the title of
-their source passage.  A reranker that fills the top-k with copies of one
-gold passage then presents a title list like ["Paris", "Paris", "Paris",
-"France", "Other"].  ndcg_at_k() used to add a DCG term for every occurrence
-while the ideal DCG was computed from the deduplicated gold set, so NDCG
-could exceed 1 (e.g. 1.59 for kNN at rho=0.25 in the 2026-06-10 fullwiki
-run, produced before evaluate_selection() masked repeated titles).  The
-metric itself must credit each distinct gold title at most once so that the
-bound holds for every caller, masked or not.
-
-Run with pytest, or directly:  python tests/test_ndcg_duplicates.py
-"""
+"""Regression tests for duplicate-safe NDCG and MRR bounds."""
 
 import os
 import sys
@@ -29,7 +12,7 @@ from evaluation.metrics import mrr, ndcg_at_k
 # evaluate_redundancy pulls in the retrieval stack (torch, datasets, …); the
 # end-to-end test is skipped on machines that only have numpy installed.
 try:
-    from evaluate_redundancy import evaluate_selection, inject_duplicates
+    from experiments.evaluate_redundancy import evaluate_selection, inject_duplicates
     _HAVE_PIPELINE = True
 except ImportError:
     _HAVE_PIPELINE = False

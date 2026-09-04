@@ -1,50 +1,7 @@
-"""
-Dataset loaders.
+"""Load supported QA datasets into the shared evaluation-example schema.
 
-Supported datasets
-------------------
-hotpotqa          : HotpotQA distractor setting (Yang et al. 2018).
-                    Each example ships with 10 candidate paragraphs
-                    (2 gold + 8 distractors).
-                    HuggingFace: hotpotqa/hotpot_qa / distractor.
-
-nq_open           : Natural Questions Open (Lee et al. 2019).
-                    No passages attached; requires external retriever.
-                    HuggingFace: google-research-datasets/nq_open.
-
-nq                : Natural Questions Open with DPR pre-retrieved top-100
-                    candidate passages (Karpukhin et al. 2020).
-                    Data: https://dl.fbaipublicfiles.com/dpr/data/retriever/
-                    Downloaded automatically to data/dpr/ on first use.
-
-trivia            : TriviaQA with DPR pre-retrieved top-100 candidate passages.
-                    Same format and source as nq.
-
-squad             : SQuAD v1.1 (Rajpurkar et al. 2016).
-                    Passages are all paragraphs of the same Wikipedia article.
-                    HuggingFace: rajpurkar/squad.
-
-2wikimultihopqa   : 2WikiMultiHopQA distractor setting (Ho et al. 2020).
-                    Each example ships with 10 candidate paragraphs,
-                    same format as HotpotQA distractor.
-                    HuggingFace: xanhho/2WikiMultiHopQA.
-
-musique           : MuSiQue answerable split (Trivedi et al. 2022).
-                    Each example ships with ~20 candidate paragraphs
-                    (supporting + distractors).
-                    HuggingFace: dgslibisey/musique.
-
-All loaders return a list of dicts:
-    {
-        "id"         : str,
-        "question"   : str,
-        "answers"    : List[str],
-        "passages"   : List[{"title": str, "text": str}] | None,
-        "gold_titles": List[str] | None,
-    }
-
-When passages is None the caller must use DenseRetriever over a pre-built
-corpus index (NQ-Open, BEIR datasets).
+Each example contains an identifier, question, answers, optional candidate
+passages, and optional gold passage titles.
 """
 
 from __future__ import annotations

@@ -40,6 +40,15 @@ ARTIFACT_OUTPUT_NAMES = (
     "clean_pool_checksums.csv.gz",
     "trigger_decisions.csv.gz",
 )
+QWEN38_MANIFEST = ROOT / "manifests" / "qwen38" / "metadata.json"
+
+
+def extension_run_ids() -> set[str]:
+    """Runs documented separately from the historical execution archive."""
+    if not QWEN38_MANIFEST.is_file():
+        return set()
+    metadata = json.loads(QWEN38_MANIFEST.read_text(encoding="utf-8"))
+    return {str(run["run_id"]) for run in metadata.get("runs", [])}
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -147,11 +156,14 @@ def file_statistics(path: Path) -> dict:
 def inventory_results() -> tuple[list[dict], dict]:
     runs: list[dict] = []
     totals = defaultdict(int)
+    excluded_runs = extension_run_ids()
     for collection, result_root in RESULT_ROOTS.items():
         if not result_root.exists():
             continue
         for params_path in sorted(result_root.glob("*/run_params.json")):
             run_dir = params_path.parent
+            if collection == "historical" and run_dir.name in excluded_runs:
+                continue
             params = json.loads(params_path.read_text(encoding="utf-8"))
             artifacts = []
             for path in sorted(p for p in run_dir.iterdir() if p.is_file()):
@@ -302,7 +314,7 @@ def nq_native_id_hints(split: str) -> dict[str, list[str]]:
 
 def write_clean_pool_archive(state: dict) -> tuple[list[dict], dict]:
     # Delayed imports keep inventory/validation usable without the ML environment.
-    from evaluate_redundancy import LOADERS
+    from experiments.evaluate_redundancy import LOADERS
 
     configs = clean_pool_configs(state)
     members_path = OUTPUT / "clean_pool_members.csv.gz"
@@ -458,7 +470,7 @@ def corrected_artifacts(state: dict) -> list[dict]:
 def write_trigger_decisions(state: dict) -> tuple[list[dict], dict]:
     import numpy as np
     import pandas as pd
-    from analyze_regimes import threshold_rule
+    from analysis.analyze_regimes import threshold_rule
 
     output_path = OUTPUT / "trigger_decisions.csv.gz"
     fields = [
@@ -594,10 +606,10 @@ def referenced_manifests() -> list[dict]:
 def reconstruction_dependencies() -> dict:
     paths = [
         ROOT / "reproducibility" / "create_execution_artifacts.py",
-        ROOT / "evaluate_redundancy.py",
+        ROOT / "experiments" / "evaluate_redundancy.py",
         ROOT / "data" / "loaders.py",
         ROOT / "data" / "beir.py",
-        ROOT / "analyze_regimes.py",
+        ROOT / "analysis" / "analyze_regimes.py",
         STATE,
     ]
     try:

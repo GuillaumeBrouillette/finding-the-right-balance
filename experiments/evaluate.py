@@ -1,34 +1,5 @@
 #!/usr/bin/env python3
-"""
-evaluate.py  –  RDS vs. baselines on HotpotQA / NQ-Open
-=========================================================
-
-Usage
------
-    python evaluate.py                        # use default config.yaml
-    python evaluate.py --config my.yaml
-    python evaluate.py --dataset nq_open --max_samples 100 --no_generation
-
-The script:
-  1. Loads the dataset (HotpotQA distractor or NQ-Open).
-  2. Embeds every question and its candidate passages with SentenceTransformers.
-  3. Re-ranks the top-m candidates with each method:
-       kNN, MMR (multiple λ), Maxmin, Greedy-DPP, RDS (multiple α).
-  4. (Optionally) generates answers with Flan-T5 for every method.
-  5. Computes and prints a comparison table.
-
-Baseline provenance
--------------------
-The kNN + Flan-T5-small setup reproduces the retrieval-augmented reader
-baseline from Izacard & Grave (2021) "Leveraging Passage Retrieval with
-Generative Models for Open Domain Question Answering" (FiD, arXiv 2007.01282).
-We intentionally keep the pipeline minimal so those numbers can be verified.
-
-Output files (in --output_dir):
-    results_retrieval.csv              – mean retrieval/diversity metrics
-    results_generation.csv             – mean generation metrics
-    results_*_per_query.csv            – per-query metrics (only with --save_per_query)
-"""
+"""Evaluate retrieval, reranking, and optional answer generation."""
 
 from __future__ import annotations
 
@@ -44,10 +15,9 @@ import yaml
 from tabulate import tabulate
 from tqdm import tqdm
 
-# Local imports
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from alpha_selection import OBJECTIVES, build_coarse_to_fine_alpha_grid, load_alphas, lookup_alpha
+from ftrb.alpha_selection import OBJECTIVES, build_coarse_to_fine_alpha_grid, load_alphas, lookup_alpha
 from data.loaders import (
     load_2wikimultihopqa,
     load_hotpotqa,
@@ -86,7 +56,7 @@ from retrieval.rerankers import (
     rerank_rng_score2,
 )
 from retrieval.retriever import DenseRetriever
-from run_utils import (
+from ftrb.run_utils import (
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
     attach_run_params,
@@ -98,7 +68,7 @@ from run_utils import (
     resolve_model,
     save_csv,
 )
-from stats import significance_table
+from ftrb.stats import significance_table
 
 # -2.0 is the fallback sentinel: under cosine distance it deactivates every
 # obstruction penalty (Prop. knnlimit), so the grid contains the exact k-NN
@@ -110,7 +80,7 @@ _MMR_LAMBDAS = [0.3, 0.5, 0.7]
 # Config helpers
 # ---------------------------------------------------------------------------
 
-_DEFAULT_CONFIG = os.path.join(os.path.dirname(__file__), "config.yaml")
+_DEFAULT_CONFIG = os.path.join(PROJECT_ROOT, "config.yaml")
 
 
 def _load_config(path: str) -> Dict:
@@ -450,7 +420,6 @@ def run_evaluation(
         * ``"rads_alphas"``    : list of float — RADS α values (used when include_rds is True).
     """
 
-    # 1. Load dataset
     dataset_name = cfg["dataset"]
     split = cfg.get("split", "validation")
     max_samples = cfg.get("max_samples", None)
@@ -476,7 +445,6 @@ def run_evaluation(
         raise ValueError(f"Unknown dataset: {dataset_name!r}")
     print(f"   {len(examples)} examples loaded.")
 
-    # 2. Load encoder
     print(f"\n── Loading encoder: {cfg['encoder_model']} ──")
     device = normalize_device(cfg.get("device", "cpu"))
     batch_size = cfg.get("batch_size", 64)
@@ -495,7 +463,6 @@ def run_evaluation(
         )
         corpus_retriever.load(retriever_index_dir)
 
-    # 3. (Optionally) load generator
     run_gen = cfg.get("run_generation", True)
     generator = None
     if run_gen:
@@ -507,7 +474,6 @@ def run_evaluation(
             num_beams=cfg.get("num_beams", 4),
         )
 
-    # 4. Build method list
     methods = _build_methods(cfg)
     top_m = cfg.get("top_m", 100)
     top_k = cfg["top_k"]
@@ -522,9 +488,7 @@ def run_evaluation(
     ret_per_query: List[Dict] = []
     gen_per_query: List[Dict] = []
 
-    # 5. Pre-compute all embeddings in one GPU sweep, then loop CPU-only.
-    #    Encoding per-query creates N tiny GPU dispatches; a single large batch
-    #    keeps the GPU fed continuously.
+    # Batch encoding avoids one GPU dispatch per query.
     _all_questions = [ex["question"] for ex in examples]
     _is_pre_attached = all(ex["passages"] is not None for ex in examples)
 
@@ -546,7 +510,6 @@ def run_evaluation(
             _all_questions, top_m
         )
 
-    # 6. Per-example loop (pure CPU: slice pre-computed arrays + numpy reranking)
     for ei, ex in enumerate(tqdm(examples, desc="Evaluating")):
         example_id = ex.get("id", "")
         question = _all_questions[ei]
@@ -706,10 +669,8 @@ def run_evaluation(
         if row.get("EM")
     ]
 
-    # Across-query bootstrap CIs + Wilcoxon vs kNN. The retrieval and (beam)
-    # generation metrics are deterministic given the encoder/reader, so the
-    # honest error bar is over the query sample, not over a re-seed; this is
-    # the significance evidence for the main retrieval and generation tables.
+    # Deterministic retrieval and beam-generation metrics use query-bootstrap
+    # intervals and paired Wilcoxon tests against kNN.
     ret_significance = significance_table(ret_acc, retrieval_metric_order,
                                           baseline="kNN")
     gen_significance = significance_table(gen_acc, generation_metric_order,
@@ -871,7 +832,6 @@ def main() -> None:
 
     output_dir = cfg.get("output_dir", "results")
 
-    # Print
     if cfg.get("print_table", True):
         print("\n══ Retrieval metrics ══")
         print(tabulate(ret_rows, headers="keys", tablefmt="github"))
@@ -900,7 +860,6 @@ def main() -> None:
     }
     run_dir = make_run_dir(output_dir, cfg.get("dataset", "run"), run_params)
 
-    # Save
     save_csv(
         attach_run_params(ret_rows, run_params),
         os.path.join(run_dir, "results_retrieval.csv"),

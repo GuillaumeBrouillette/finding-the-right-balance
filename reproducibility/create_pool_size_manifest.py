@@ -13,6 +13,15 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "manifests" / "pool_sizes"
 HISTORICAL_RESULTS = ROOT / "results" / "retained"
 RERUN_RESULTS = ROOT / "results" / "reproducibility_reruns"
+QWEN38_MANIFEST = ROOT / "manifests" / "qwen38" / "metadata.json"
+
+
+def extension_run_ids() -> set[str]:
+    """Runs whose pool policy is assessed in the dedicated Qwen manifest."""
+    if not QWEN38_MANIFEST.is_file():
+        return set()
+    metadata = json.loads(QWEN38_MANIFEST.read_text(encoding="utf-8"))
+    return {str(run["run_id"]) for run in metadata.get("runs", [])}
 
 
 def sha256_file(path: Path) -> str:
@@ -73,8 +82,11 @@ def audit_corrected_reruns() -> list[dict]:
 def create(output: Path = OUTPUT) -> None:
     output.mkdir(parents=True, exist_ok=True)
     audited_runs = []
+    excluded_runs = extension_run_ids()
     for run_dir in sorted(HISTORICAL_RESULTS.iterdir()):
         if not run_dir.is_dir():
+            continue
+        if run_dir.name in excluded_runs:
             continue
         artifacts = sorted(
             list(run_dir.glob("results_redundancy_per_query.csv"))
@@ -97,8 +109,8 @@ def create(output: Path = OUTPUT) -> None:
                 "rerun_required_for_pool_size_proof": True,
             })
 
-    implementation = ROOT / "pool_size_invariants.py"
-    driver = ROOT / "evaluate_redundancy.py"
+    implementation = ROOT / "ftrb" / "pool_size_invariants.py"
+    driver = ROOT / "experiments" / "evaluate_redundancy.py"
     corrected_reruns = audit_corrected_reruns()
     metadata = {
         "format_version": 1,

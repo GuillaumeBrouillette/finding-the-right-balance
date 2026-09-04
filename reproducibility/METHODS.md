@@ -19,9 +19,11 @@ The execution manifest is represented by
 
 ## Injection algorithm
 
-The complete executable implementation is the `inject_duplicates` and
-`_perturb_text` code in each archived `evaluate_redundancy.py`. For a source
-pool of size `n` and level `rho`, it appends `round(rho*n)` passages. The
+The current executable implementation is in
+`experiments/evaluate_redundancy.py`; exact historical implementations are
+archived with the execution manifest. The `inject_duplicates` and
+`_perturb_text` functions append `round(rho*n)` passages to a source pool of
+size `n` at level `rho`. The
 recorded `dup_target` determines whether source indices are gold-only, uniformly
 random with replacement, or half gold and half random. The recorded
 `dup_noise` selects exact copying, sentence permutation, or sentence permutation
@@ -30,8 +32,9 @@ source-group identity for datasets without native passage IDs.
 
 ## Chunking algorithm
 
-The complete executable implementation is `_chunk_words`, `chunk_pool`, and
-`run_chunking_experiment` in each archived `evaluate_redundancy.py`. Text is
+The current `_chunk_words`, `chunk_pool`, and `run_chunking_experiment`
+implementations are in `experiments/evaluate_redundancy.py`; historical
+versions remain in the execution manifest. Text is
 split on whitespace into `chunk_window`-word windows. At overlap `o`, stride is
 `max(1, round(chunk_window*(1-o)))`. A final fragment shorter than half a window
 is dropped unless the whole passage fits in one window. Every chunk retains the
@@ -45,8 +48,8 @@ source title and therefore the original source group.
   run seed.
 - Generation-query subsampling, where present, uses `seed + 1`.
 - Chunk creation itself is deterministic; its seed changes only the split.
-- Answer generation uses beam or greedy decoding with `do_sample=False`, so it
-  has no sampling seed.
+- FLAN generation uses deterministic beam decoding with `do_sample=False`.
+  Qwen uses temperature 0, top-p 1 and an explicitly recorded API seed of 0.
 
 Early cross-encoder and BEIR scripts used a literal seed `0`; the execution
 manifest records that value as code-derived evidence. Later runs explicitly
@@ -108,6 +111,7 @@ as analysis-only rather than being silently omitted.
 | Encoder | `Qwen/Qwen3-Embedding-4B` | `5cf2132abc99cad020ac570b19d031efec650f2b` | bfloat16 |
 | Cross-encoder | `BAAI/bge-reranker-v2-m3` | `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e` | float32 |
 | Generator | `google/flan-t5-base` | `7bcac572ce56db69c1ea7c8af255c5d7c9672fc2` | float32 |
+| Generator | `Qwen/Qwen3.8-27B` | `1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0` | server-managed |
 
 Model and tokenizer were loaded from the same repository identifier without a
 separate tokenizer revision, so the same repository SHA freezes both. Each
@@ -120,9 +124,19 @@ The per-run manifest records CPU/CUDA device, batch size, normalization,
 embedding output precision, similarity metric, retrieval depths, cross-encoder
 length and score conversion, and generation length/beam/decoding settings.
 Embedding and cross-encoder arrays are stored as float32. No autocast or
-automatic mixed precision context is used. Generation is deterministic beam
-decoding (`do_sample=False`), with a 512-token input limit and the exact
-per-run output-token and beam limits.
+automatic mixed precision context is used. FLAN generation is deterministic
+beam decoding (`do_sample=False`), with a 512-token input limit and the exact
+per-run output-token and beam limits. The Qwen robustness check uses the fixed
+`short_direct_v1` prompt, greedy decoding, temperature 0, top-p 1, seed 0, 64
+output tokens and thinking disabled. Its NVIDIA vLLM environment and server
+command are recorded in `reproducibility/QWEN38_GENERATION.md`.
+
+The clean-pool eight-method Qwen run is protocol-compatible with the fixed-pool
+implementation because no candidates are injected at `rho=0`. The first
+clean/heavy Qwen attempt used the older draft truncation policy, which allowed
+candidate-pool size to grow for clean pools smaller than `top_m`; it is retained
+for audit but excluded from corrected heavy-regime evidence. A corrected
+fixed-pool run is registered separately when complete.
 
 Regenerate and validate the record with:
 
@@ -202,7 +216,7 @@ from runtime state that the historical code never serialized.
 | Hyperparameters | Retained | All 42 discovered run configurations and their SHA-256 hashes are indexed in `metadata.json`. |
 | Metrics | Retained | Retained artifacts are indexed by path, type, size, and SHA-256; CSV evidence additionally records its schema and row count. |
 | Trigger decisions | Exactly derived | `trigger_decisions.csv.gz` contains 872,032 validation/test decisions reconstructed from retained per-query kNN Vendi values, frozen splits, and validation-tuned rules. |
-| Generated answers | Limited scores retained; text unavailable | Two redundancy files preserve 199,810 qid-keyed EM/F1/hallucination rows. Other generation outputs are summaries or unkeyed scores. Prediction strings were not serialized and cannot be recovered from those scores. |
+| Generated answers | Historical coverage plus Qwen extension | Two historical redundancy files preserve 199,810 qid-keyed EM/F1/hallucination rows without text. The new clean-pool Qwen run preserves 59,240 qid-keyed rows with raw predictions; its retained artifact is checksummed separately. |
 
 This status is intentionally not marked “complete”: exact historical embedding
 hashes, post-encoder top-m candidate membership, method-specific ordered
@@ -395,7 +409,8 @@ without new model execution:
 
 - a frozen query-family identifier linking questions that may share source
   documents; `query_id` is therefore the finest available sampling unit;
-- per-query Table 2 generation outputs needed for raw paired EM/F1 inference;
+- per-query historical FLAN Table 2 generation outputs needed for raw paired
+  EM/F1 inference (the new Qwen extension does retain these rows);
 - per-query ArguAna and Touché outputs underlying the aggregate-only Table 3
   columns; and
 - per-query non-Hotpot cross-encoder outputs underlying the aggregate-only
@@ -427,7 +442,7 @@ environment documented above. Outputs are written to
 | Paper table | Reconstructed content | Retained source |
 |---|---|---|
 | 1 | Five displayed passage-title rankings | Frozen displayed rows from the retained passage export |
-| 2 | HotpotQA fixed rerankers and generation | Per-query injection rows + frozen split; two generation summaries |
+| 2 | HotpotQA fixed rerankers and generation | Per-query injection rows + frozen split; two FLAN summaries; Qwen extension with 59,240 per-query predictions |
 | 3 | Five BEIR tasks | Two BEIR result summaries |
 | 4 | Four cross-encoder pipelines | Four cross-encoder summaries; NDCG-tuned S2-V1 rows |
 | 5 | Misspecification regret | HotpotQA `analysis_regret.csv` |

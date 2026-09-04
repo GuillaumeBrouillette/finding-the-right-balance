@@ -1,16 +1,13 @@
-"""
-Answer generators for retrieval-augmented question answering.
-
-Supports:
-  - Flan-T5 (seq2seq): google/flan-t5-small, google/flan-t5-base, …
-  - Causal LMs (decoder-only): Llama, Qwen, and other AutoModelForCausalLM models
-
-Use ``load_generator(model_name, ...)`` to get the right class automatically.
-"""
+"""Seq2seq, causal-LM, and OpenAI-compatible answer generators."""
 
 from __future__ import annotations
 
 from typing import Dict, List, Union
+
+import json
+import time
+from concurrent.futures import ThreadPoolExecutor
+from urllib import error, request
 
 import torch
 from transformers import (
@@ -33,52 +30,7 @@ _MAX_OUTPUT_TOKENS = 128
 
 
 class FlanT5Generator:
-    """Flan-T5 answer generator for retrieval-augmented question answering.
-
-    Wraps HuggingFace ``T5ForConditionalGeneration`` with a simple prompt
-    format that concatenates the question and the provided context passages.
-
-    Default: ``google/flan-t5-small``  (~80 MB, ≈0.3 s/sample on modern CPU).
-    Upgrade:  ``google/flan-t5-base``  (~250 MB, ≈1 s/sample) for better quality.
-
-    Prompt format (seq2seq):
-        Answer the question based on the context.
-        Question: <question>
-        Context: <doc1_title>: <doc1_text> | <doc2_title>: <doc2_text> | …
-        Answer:
-
-    Parameters
-    ----------
-    model_name : str, optional
-        HuggingFace model identifier.
-        Default ``"google/flan-t5-small"``.
-    device : str, optional
-        PyTorch device string (``"cpu"`` or ``"cuda"``).  Default ``"cpu"``.
-    max_new_tokens : int, optional
-        Maximum number of tokens to generate.  Default 128.
-    num_beams : int, optional
-        Number of beams for beam-search decoding.  Default 4.
-
-    Attributes
-    ----------
-    tokenizer : T5Tokenizer
-        Tokenizer loaded from ``model_name``.
-    model : T5ForConditionalGeneration
-        Flan-T5 model set to eval mode.
-    device : torch.device
-        Device the model lives on.
-    max_new_tokens : int
-        Maximum generation length.
-    num_beams : int
-        Beam-search width.
-
-    Examples
-    --------
-    >>> gen = FlanT5Generator()  # doctest: +SKIP
-    >>> passages = [{"title": "Paris", "text": "Paris is the capital of France."}]
-    >>> gen.generate("What is the capital of France?", passages)  # doctest: +SKIP
-    'Paris'
-    """
+    """Flan-T5 generator using question and ranked-passage prompts."""
     def __init__(
         self,
         model_name: str = _DEFAULT_MODEL,
@@ -425,13 +377,134 @@ class CausalLMGenerator:
         return results
 
 
+class OpenAICompatibleGenerator:
+    """Deterministic chat-completion client for a local vLLM-style server."""
+
+    PROMPT_VERSION = "short_direct_v1"
+
+    def __init__(
+        self,
+        model_name: str,
+        api_base: str = "http://127.0.0.1:8000/v1",
+        api_key: str = "EMPTY",
+        max_new_tokens: int = 64,
+        timeout: float = 180.0,
+        seed: int = 0,
+        disable_thinking: bool = True,
+    ) -> None:
+        self.model_name = model_name
+        self.api_base = api_base.rstrip("/")
+        self.api_key = api_key
+        self.max_new_tokens = max_new_tokens
+        self.timeout = timeout
+        self.seed = seed
+        self.disable_thinking = disable_thinking
+        print(f"Using OpenAI-compatible generator: {model_name} at {self.api_base}")
+        self._check_server()
+
+    def _headers(self) -> Dict[str, str]:
+        return {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+
+    def _check_server(self) -> None:
+        req = request.Request(f"{self.api_base}/models", headers=self._headers())
+        try:
+            with request.urlopen(req, timeout=min(self.timeout, 30.0)) as response:
+                models = json.loads(response.read().decode("utf-8")).get("data", [])
+        except (error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"Cannot reach generator server at {self.api_base}: {exc}") from exc
+        names = {item.get("id") for item in models}
+        if names and self.model_name not in names:
+            raise RuntimeError(
+                f"Generator server exposes {sorted(names)}, not {self.model_name!r}. "
+                "Set --served-model-name to the requested model ID."
+            )
+
+    @staticmethod
+    def _prompt(question: str, passages: List[Dict]) -> str:
+        parts = []
+        for passage in passages:
+            title, body = passage.get("title", ""), passage.get("text", "")
+            parts.append(f"{title}: {body}" if title else body)
+        return (
+            "Answer the question based on the context. "
+            "Give only a short, direct answer.\n"
+            f"Question: {question}\n"
+            f"Context: {' | '.join(parts)}"
+        )
+
+    def _complete(self, question: str, passages: List[Dict]) -> str:
+        payload = {
+            "model": self.model_name,
+            "messages": [{"role": "user", "content": self._prompt(question, passages)}],
+            "max_tokens": self.max_new_tokens,
+            "temperature": 0,
+            "top_p": 1,
+            "seed": self.seed,
+        }
+        if self.disable_thinking:
+            payload["chat_template_kwargs"] = {"enable_thinking": False}
+        result = None
+        for attempt in range(3):
+            req = request.Request(
+                f"{self.api_base}/chat/completions",
+                data=json.dumps(payload).encode("utf-8"),
+                headers=self._headers(), method="POST",
+            )
+            try:
+                with request.urlopen(req, timeout=self.timeout) as response:
+                    result = json.loads(response.read().decode("utf-8"))
+                break
+            except error.HTTPError as exc:
+                detail = exc.read().decode("utf-8", errors="replace")
+                if exc.code < 500 or attempt == 2:
+                    raise RuntimeError(
+                        f"Generator server returned HTTP {exc.code}: {detail}") from exc
+            except (error.URLError, TimeoutError) as exc:
+                if attempt == 2:
+                    raise RuntimeError(f"Generator request failed after 3 attempts: {exc}") from exc
+            time.sleep(2 ** attempt)
+        assert result is not None
+        return result["choices"][0]["message"]["content"].strip()
+
+    def generate(self, question: str, passages: List[Dict]) -> str:
+        return self._complete(question, passages)
+
+    def generate_batch(
+        self,
+        questions: List[str],
+        passages_list: List[List[Dict]],
+        batch_size: int = 8,
+        show_progress: bool = False,
+        desc: str = "generating",
+    ) -> List[str]:
+        pairs = list(zip(questions, passages_list))
+        with ThreadPoolExecutor(max_workers=max(1, batch_size)) as executor:
+            outputs = executor.map(lambda pair: self._complete(*pair), pairs)
+            if show_progress:
+                outputs = tqdm(outputs, total=len(pairs), desc=desc, unit="answer")
+            return list(outputs)
+
+
 def load_generator(
     model_name: str,
     device: str = "cpu",
     max_new_tokens: int = _MAX_OUTPUT_TOKENS,
     num_beams: int = 4,
-) -> Union[FlanT5Generator, CausalLMGenerator]:
+    backend: str = "transformers",
+    api_base: str = "http://127.0.0.1:8000/v1",
+    api_key: str = "EMPTY",
+    timeout: float = 180.0,
+    seed: int = 0,
+) -> Union[FlanT5Generator, CausalLMGenerator, OpenAICompatibleGenerator]:
     """Return a ``FlanT5Generator`` for T5 checkpoints or a ``CausalLMGenerator`` for all others."""
+    if backend == "openai-compatible":
+        return OpenAICompatibleGenerator(
+            model_name=model_name, api_base=api_base, api_key=api_key,
+            max_new_tokens=max_new_tokens, timeout=timeout, seed=seed,
+        )
     if "t5" in model_name.lower():
         return FlanT5Generator(model_name=model_name, device=device, max_new_tokens=max_new_tokens, num_beams=num_beams)
     return CausalLMGenerator(model_name=model_name, device=device, max_new_tokens=max_new_tokens, num_beams=num_beams)

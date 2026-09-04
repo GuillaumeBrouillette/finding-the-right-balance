@@ -1,33 +1,4 @@
-"""
-retrieval/precompute.py
-=======================
-Batch pre-computation helpers for evaluation pipelines.
-
-Encoding queries and passages one at a time creates many tiny GPU dispatches
-with Python overhead between each.  The functions here collect all texts and
-dispatch a single large encode / score call *before* the per-example loop,
-keeping the GPU fed continuously.
-
-Typical usage
--------------
-::
-
-    from retrieval.precompute import encode_queries_and_passages, score_cross_encoder
-
-    # One-time sweep before the evaluation loop
-    q_embs, p_embs_flat, p_offsets = encode_queries_and_passages(
-        encoder, questions, passages_pools
-    )
-    ce_scores_flat = score_cross_encoder(
-        cross_encoder, questions, passages_pools
-    )
-
-    # Inside the per-example loop — pure numpy, no GPU calls
-    s, e = int(p_offsets[i]), int(p_offsets[i + 1])
-    q_emb      = q_embs[i]
-    p_embs     = p_embs_flat[s:e]
-    ce_scores  = ce_scores_flat[s:e]
-"""
+"""Batch query, passage, and cross-encoder precomputation helpers."""
 
 from __future__ import annotations
 

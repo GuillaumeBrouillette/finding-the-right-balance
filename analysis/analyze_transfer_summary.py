@@ -1,37 +1,7 @@
-"""
-Frozen-rule transfer summary (Table `tab:rq6-transfer` of the paper).
+"""Evaluate the frozen redundancy rule across configured transfer targets.
 
-Evaluates the decision rule frozen at (tau, D) = (h, MMR(0.7)) -- the
-evidence-anchored threshold: the rule diversifies when the Vendi score of
-the k-NN selection falls below the query's evidence requirement h. On the
-bge-m3 HotpotQA fullwiki injection sweep (both k=5 and k=10), validation
-tuning of the threshold recovers h (tuned across-seed means 1.83 and 1.9,
-results/2026-06-24_230733 and 2026-07-20_121145) -- on the transfer sweeps
-listed in TARGETS, with no retuning, and writes one consolidated CSV:
-
-    results/frozen_rule_transfer_summary.csv
-
-Per (target, level): mean kNN / always-D / rule objective over seeds, the
-trigger rate, and rule-minus-kNN deltas; per target: pooled values and the
-clean/heavy/pooled deltas reported in the paper (cleanDelta = worst per-level
-delta among near-clean levels, rho<=0.05 or overlap<=0.25; heavyDelta = delta
-at the most redundant level).
-
-The h specification per target (H_SPEC below):
-    ("const", v)  -- fixed evidence requirement (2 on the two-hop HotpotQA
-                     and 2WikiMultiHopQA sweeps, 1 on single-hop NQ-Open,
-                     where the trigger T(q) >= 1 never fires and the rule
-                     reduces to k-NN by construction);
-    "qid_hops"    -- per-query hop count parsed from the qid prefix
-                     (MuSiQue, 2--4 hops);
-    "relset"      -- per-query relevant-set size (graded-relevance BEIR
-                     tasks; uses labels in evaluation, estimators in
-                     deployment).
-
-The rule logic otherwise replicates analyze_regimes.threshold_rule exactly
-(same validation/test split reconstruction, same Vendi trigger):
-
-    python analyze_transfer_summary.py
+Writes per-level and pooled summaries to
+``results/frozen_rule_transfer_summary.csv``.
 """
 
 from __future__ import annotations
@@ -39,14 +9,13 @@ from __future__ import annotations
 import json
 import os
 import re
-import sys
 
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+RESULTS = os.path.join(PROJECT_ROOT, "results")
 
 FALLBACK = "MMR(0.7)"
 T95 = 4.302652  # two-sided Student-t, 2 df (three seeds)

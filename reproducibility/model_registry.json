@@ -25,6 +25,14 @@
       "weight_precision": "bfloat16",
       "revision_evidence": "Hugging Face repository SHA; upstream main predates the archived run and has not changed since"
     },
+    "Qwen/Qwen3.8-27B": {
+      "loader": "vLLM OpenAI-compatible chat-completions server",
+      "model_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "tokenizer_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "upstream_last_modified": null,
+      "weight_precision": "server-managed",
+      "revision_evidence": "Explicit immutable revision supplied to the vLLM server and recorded in every Qwen run configuration"
+    },
     "google/flan-t5-base": {
       "loader": "transformers.T5ForConditionalGeneration and T5Tokenizer",
       "model_revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",

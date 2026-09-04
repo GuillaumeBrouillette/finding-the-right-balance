@@ -158,7 +158,7 @@
     "pool_config_count": 8,
     "query_pool_record_count": 30890
   },
-  "created_at": "2026-08-10T22:11:54.402218+00:00",
+  "created_at": "2026-09-04T20:24:03.327671+00:00",
   "evidence_classes": {
     "derived": "exact deterministic calculations from retained rows",
     "reconstructed_input": "clean pre-encoding pools rebuilt from frozen sources/loaders",
@@ -225,28 +225,28 @@
     "files": [
       {
         "path": "reproducibility/create_execution_artifacts.py",
-        "sha256": "af742407aac6ecf8a1d03a4e89abfa9a1e6142ab5a4951776f3af47cac9b22ea",
-        "size_bytes": 34188
+        "sha256": "b545ecde4c26c5ddc3e191f1e5002d08294ed448db24d465c99609d8b7585dd3",
+        "size_bytes": 34759
       },
       {
-        "path": "evaluate_redundancy.py",
-        "sha256": "1983201891c4578a139041773dd2f06cce2fe0fd2522d90ee021edcdfa7f0cb8",
-        "size_bytes": 52972
+        "path": "experiments/evaluate_redundancy.py",
+        "sha256": "d3c8d9e4a6489a4189b9f8fdca56a586b37d2a4c2caf66b33052d82b62e8bc5d",
+        "size_bytes": 55879
       },
       {
         "path": "data/loaders.py",
-        "sha256": "7a2a26a77a2f48f6775f140de0afbb78c3f168dfc662e13f38b16f2f35ddd217",
-        "size_bytes": 29290
+        "sha256": "e9389ca0db046ebd05e1bd29a797cc6496044a3c49c8a92e31cdda26ed223a66",
+        "size_bytes": 27515
       },
       {
         "path": "data/beir.py",
-        "sha256": "3e48caa6d92f7e26ee9a8cc4eb1560cd1449b76977c8650ff583a0fab46a3a6f",
-        "size_bytes": 8631
+        "sha256": "beaeede330a9bbdc463661d6ce56d3843097cba5ecfd368fffbde6fd57d07439",
+        "size_bytes": 7312
       },
       {
-        "path": "analyze_regimes.py",
-        "sha256": "964dd099e9cb387db24b1ce625ad8ebedb06e9dfddd8d8ff08514468571bf6f8",
-        "size_bytes": 39568
+        "path": "analysis/analyze_regimes.py",
+        "sha256": "4b441fe73f941407955343506a54f99b936bac679ae6a0cc969141efddcc100b",
+        "size_bytes": 36566
       },
       {
         "path": "reproducibility/run_state.json",
@@ -254,9 +254,9 @@
         "size_bytes": 32841
       }
     ],
-    "git_status_sha256": "f89707bbd21c9c7e0e52729179da5c7daf21693f61a8292553e6c0ad1a107c4a",
+    "git_status_sha256": "d1d5b5793ee0a47cdd1a90e14797d9bb2932fe7d99ac91b630585024fbd16964",
     "provenance_note": "Exact file hashes govern this post-hoc reconstruction because the working tree contains documented local reproducibility changes.",
-    "repository_commit": "045293775a2cc0a041d33d063279d848227a73d9",
+    "repository_commit": "6af39a9e8debfd083a050d4435ed430e4cd922e4",
     "worktree_dirty": true
   },
   "referenced_manifests": [
@@ -274,11 +274,11 @@
     },
     {
       "path": "manifests/models/metadata.json",
-      "sha256": "3d428607c00ec9f964a147c09ad5f4790afd38a8692e045939f52df20344fdbe"
+      "sha256": "36a712d66f3b47465ade754c58379d4fe04a10e5207b0e3e353fbb6e842bb614"
     },
     {
       "path": "manifests/pool_sizes/metadata.json",
-      "sha256": "3e6655ab4869e9293d54c4be823bded94040a1898843223cb581958cc62618dd"
+      "sha256": "d77cad7461a5d8f8f2c4424ca3e17f65f6f41ec765efedb1537a280a1e76cfec"
     },
     {
       "path": "reproducibility/environment-lock.txt",

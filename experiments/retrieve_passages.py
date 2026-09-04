@@ -1,23 +1,5 @@
 #!/usr/bin/env python3
-"""
-retrieve_passages.py – per-query passage retrieval for each reranking method.
-
-Runs kNN, RNG-Score, MMR, and Greedy-DPP on every selected query and writes
-one CSV row per (query, method, rank).  Rows are sorted by ``num_unique_sets``
-descending so that queries where the methods most disagree appear first.
-
-Usage examples
---------------
-    # All queries, default methods
-    python retrieve_passages.py --dataset hotpotqa
-
-    # 50 queries, custom RNG alphas, wider MMR sweep, truncate text
-    python retrieve_passages.py --dataset musique --max_samples 50 \
-        --rng_alphas -0.2 0.0 0.2 --mmr_lambdas 0.3 0.7 --text_max_chars 150
-
-    # NQ (DPR pre-retrieved), test split
-    python retrieve_passages.py --dataset nq --split test --top_k 10
-"""
+"""Export ranked passages for each configured reranking method."""
 
 from __future__ import annotations
 
@@ -30,7 +12,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 from data.loaders import (
     load_2wikimultihopqa,
@@ -49,7 +31,7 @@ from retrieval.rerankers import (
     rerank_mmr,
     rerank_rng_score,
 )
-from run_utils import (
+from ftrb.run_utils import (
     ENCODER_ALIASES,
     default_encoder,
     int_or_all,
@@ -220,7 +202,7 @@ def main() -> None:
     if args.output:
         out_path = args.output
     else:
-        out_dir = os.path.join(os.path.dirname(__file__), "..", "retrieved_passages")
+        out_dir = os.path.join(PROJECT_ROOT, "..", "retrieved_passages")
         os.makedirs(out_dir, exist_ok=True)
         out_path = os.path.join(
             out_dir, f"retrieve_passages_{args.dataset}_{args.split}_k{args.top_k}.csv"

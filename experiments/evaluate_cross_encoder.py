@@ -1,32 +1,5 @@
 #!/usr/bin/env python3
-"""
-evaluate_cross_encoder.py  –  RQ4: diversification on top of a cross-encoder
-=============================================================================
-
-Tests whether the RNG-Score can add diversity value after a cross-encoder
-reranker in a multi-stage pipeline, using two integration strategies:
-
-  S1 – score blending     (Appendix §A.2):
-       sim_blend(q,w) = (1-β)·sim_CE(q,w) + β·(1 - f_c(score_α(w;q)))
-
-  S2 – CE-induced semimetric  (Appendix §A.3), three d_CE(v,w) variants:
-       V1: d_CE(v,w) = d_emb(v,w) / R
-       V2: d_CE(v,w) = 2·f_c(d_emb(v,w) / R)
-       V3: d_CE(v,w) = d_emb(v,w)·(2 - sim_CE(q,v) - sim_CE(q,w))
-                       / (d_emb(q,v) + d_emb(q,w))
-
-No training is performed; both strategies are purely inference-time.
-
-Usage
------
-    python evaluate_cross_encoder.py
-    python evaluate_cross_encoder.py --dataset hotpotqa --max_samples 100
-    python evaluate_cross_encoder.py --no_generation --top_m 50 --top_k 5
-
-Pipeline
---------
-  dense retrieval (top-m)  →  cross-encoder rescoring  →  diversification  →  generation (optional)
-"""
+"""Evaluate diversification after cross-encoder relevance scoring."""
 
 from __future__ import annotations
 
@@ -42,9 +15,9 @@ from tabulate import tabulate
 from tqdm import tqdm
 
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from alpha_selection import (
+from ftrb.alpha_selection import (
     AlphaResult,
     accumulate_alpha,
     accumulate_blend,
@@ -90,7 +63,7 @@ from retrieval.rerankers import (
     rerank_mmr_ce,
 )
 from retrieval.retriever import DenseRetriever
-from run_utils import (
+from ftrb.run_utils import (
     CE_ALIASES,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
@@ -104,7 +77,7 @@ from run_utils import (
     resolve_model,
     save_csv,
 )
-from stats import (
+from ftrb.stats import (
     add_seed_arg,
     aggregate_seed_rows,
     as_float,
@@ -787,8 +760,8 @@ def main() -> None:
     tag = args.dataset
     run_dir = make_run_dir(args.output_dir, f"ce_{tag}", run_params)
 
-    # Persist the raw data FIRST — the summary is re-derivable from it, so an
-    # error in the (cheap) aggregation can never destroy a long run's results.
+    # Persist per-query data before aggregation so an aggregation failure does
+    # not discard completed inference.
     if args.save_per_query:
         save_csv(per_query_ret, os.path.join(run_dir, f"results_ce_{tag}_retrieval_per_query.csv"))
         if per_query_gen:
@@ -797,7 +770,7 @@ def main() -> None:
     if len(seeds) > 1:
         save_csv(attach_run_params(all_summary, run_params),
                  os.path.join(run_dir, f"results_ce_{tag}_per_seed_summary.csv"))
-        # Headline table: across-seed mean +/- 95% CI with Wilcoxon vs CE-topk.
+        # Aggregate repeated runs and paired tests against CE-topk.
         summary_out = _aggregate_ce(all_summary, per_query_ret, per_query_gen,
                                     cfg["run_generation"])
         save_csv(attach_run_params(summary_out, run_params),
@@ -812,7 +785,6 @@ def main() -> None:
         save_csv(attach_run_params(legacy, run_params),
                  os.path.join(run_dir, f"results_ce_{tag}_summary.csv"))
 
-    # Save alpha* results to JSON
     save_path = args.save_alpha_json or os.path.join(run_dir, f"alpha_results_ce_{tag}.json")
     if alpha_results:
         save_alphas(alpha_results, save_path)

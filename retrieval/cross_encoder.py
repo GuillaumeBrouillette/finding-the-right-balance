@@ -1,19 +1,4 @@
-"""
-Cross-encoder wrapper for RQ4: diversification on top of a cross-encoder.
-
-Provides :class:`CrossEncoderReranker`, which scores query-passage pairs and
-returns relevance probabilities in [0, 1].  The scores feed the integration
-strategies defined in Section 6.4 and Appendix A of the paper (strategy S1 /
-S2, implemented as reranker functions in ``rerankers.py``).
-
-Lightweight default model
--------------------------
-``cross-encoder/ms-marco-MiniLM-L-6-v2``  (~85 MB, ≈10 ms / passage on CPU)
-
-Stronger alternative
---------------------
-``cross-encoder/ms-marco-MiniLM-L-12-v2``  (~130 MB)
-"""
+"""Cross-encoder relevance scoring for query-passage pairs."""
 
 from __future__ import annotations
 

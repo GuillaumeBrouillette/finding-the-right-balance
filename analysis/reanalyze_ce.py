@@ -1,22 +1,6 @@
-"""Re-tune the cross-encoder (RQ4) table on s_recall, offline, no GPU re-run.
+"""Retune cross-encoder strategies from retained per-query metrics.
 
-`evaluate_cross_encoder.py` selects each S1/S2 strategy's alpha*/beta* by
-maximising an objective on the validation split. The RQ4 run was tuned on
-`alpha_ndcg`; the QA tables tune on S-Recall, so for consistency we re-select on
-S-Recall. This needs no re-run: the retrieval per-query CSV already logs every
-grid member's per-query metrics on both splits (with a `Split` column), so the
-only thing that changes is which member each family selects.
-
-For each seed: on `Split==val`, pick the S1/S2 member maximising mean
-S-Recall@k; on `Split==test`, report each method's metric means. Aggregate across
-seeds to mean +/- 95% CI with a median Wilcoxon p-value vs CE-topk (retrieval
-objectives + EM/F1 when generation is present). Rows are paired by position
-within (seed, Method) — the per-query file has no qid column, but rows are in
-example order per method, so CE-topk and any method align by row.
-
-Usage::
-
-    python reanalyze_ce.py --run_dir ../results/2026-06-24_064052_ce_hotpotqa_fullwiki
+Selects configurations by validation S-Recall and requires no model inference.
 """
 
 from __future__ import annotations
@@ -30,17 +14,16 @@ from typing import Dict, List
 import numpy as np
 import pandas as pd
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from evaluate_cross_encoder import (  # noqa: E402
+from experiments.evaluate_cross_encoder import (  # noqa: E402
     _CE_BASELINE,
     _CE_GEN_METRICS,
     _CE_RET_METRICS,
     _ce_method_key,
 )
-from run_utils import attach_run_params, save_csv  # noqa: E402
-from stats import aggregate_seed_rows, paired_wilcoxon_p  # noqa: E402
+from ftrb.run_utils import attach_run_params, save_csv  # noqa: E402
+from ftrb.stats import aggregate_seed_rows, paired_wilcoxon_p  # noqa: E402
 
 OBJ = "S-Recall@k"
 SIG_RET = ["alpha-NDCG@k", "S-Recall@k"]

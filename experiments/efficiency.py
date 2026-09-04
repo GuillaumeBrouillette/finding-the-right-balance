@@ -1,23 +1,5 @@
 #!/usr/bin/env python3
-"""
-efficiency.py  –  RQ5: computational efficiency of diversification methods
-==========================================================================
-
-Measures mean reranking latency (ms / query) for each method across candidate-
-pool sizes m ∈ {25, 50, 100, 200, 500}, confirming the O(m²D) scaling of
-the RNG-Score and comparing constant factors against the baselines.
-
-All timings use synthetic random embeddings on a single CPU core so that
-the numbers reflect pure reranking cost, independent of encoding and
-data-loading overhead.  The default dimension (D=1024) matches the
-bge-m3 encoder used in the paper's efficiency table.
-
-Usage
------
-    python efficiency.py
-    python efficiency.py --dim 1024 --repeats 500
-    python efficiency.py --pool_sizes 25 50 100 200 --output_dir results
-"""
+"""Benchmark CPU reranking latency on synthetic embedding pools."""
 
 from __future__ import annotations
 
@@ -31,7 +13,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 from tabulate import tabulate
 
-sys.path.insert(0, os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 from retrieval.rerankers import (
     rerank_greedy_dpp,

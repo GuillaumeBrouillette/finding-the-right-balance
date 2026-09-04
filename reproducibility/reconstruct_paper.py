@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import os
 from pathlib import Path
@@ -79,6 +78,12 @@ def table02(results: Path, inputs: set[Path]) -> pd.DataFrame:
     ret = pq.groupby(["seed", "Method"], as_index=False)[metrics].mean().groupby("Method")[metrics].mean()
     gen0 = read(results, "2026-06-05_200449_hotpotqa_fullwiki/results_generation.csv", inputs).set_index("Method")
     gen9 = read(results, "2026-07-28_152156_hotpotqa_fullwiki/results_generation.csv", inputs).set_index("Method")
+    qwen = read(
+        results,
+        "2026-09-01_191110_redundancy_hotpotqa_fullwiki/"
+        "results_redundancy_gen_per_query.csv",
+        inputs,
+    ).groupby("Method")[["EM", "F1"]].mean()
     specs = [
         ("kNN", "kNN", "kNN"), ("MMR(0.3)", "MMR(0.3)", "MMR(λ=0.3)"),
         ("MMR(0.5)", "MMR(0.5)", "MMR(λ=0.5)"), ("MMR(0.7)", "MMR(0.7)", "MMR(λ=0.7)"),
@@ -90,7 +95,13 @@ def table02(results: Path, inputs: set[Path]) -> pd.DataFrame:
     for label, rkey, gkey in specs:
         rr = ret.loc[rkey]
         gg = (gen9 if gkey == "MMR(λ=0.9)" else gen0).loc[gkey]
-        rows.append({"method": label, **{c: rr[c] for c in ["Recall@k", "NDCG@k", "alpha-NDCG@k", "S-Recall@k", "APD", "Vendi"]}, "EM": gg.EM, "F1": gg.F1})
+        qg = qwen.loc[rkey]
+        rows.append({
+            "method": label,
+            **{c: rr[c] for c in ["Recall@k", "NDCG@k", "alpha-NDCG@k", "S-Recall@k", "APD", "Vendi"]},
+            "FLAN_EM": gg.EM, "FLAN_F1": gg.F1,
+            "Qwen_EM": qg.EM, "Qwen_F1": qg.F1,
+        })
     return pd.DataFrame(rows)
 
 
@@ -227,7 +238,10 @@ def table10(results: Path, inputs: set[Path]) -> pd.DataFrame:
 
 
 def table11(results: Path, inputs: set[Path]) -> pd.DataFrame:
-    specs=[("HotpotQA","2026-06-18_173800_redundancy_hotpotqa_fullwiki/analysis_generation_frozen.csv"),("2WikiMultiHopQA","2026-06-18_121117_redundancy_2wikimultihopqa/analysis_generation_frozen.csv")]
+    specs=[
+        ("HotpotQA", "qwen38_legacy_unfixed/2026-08-31_163327_redundancy_hotpotqa_fullwiki/analysis_generation.csv"),
+        ("2WikiMultiHopQA", "qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_generation.csv"),
+    ]
     rows=[]
     for dataset,path in specs:
         d=read(results,path,inputs)
@@ -256,8 +270,9 @@ TABLES=[table01,table02,table03,table04,table05,table06,table07,table08,table09,
 
 
 def load_plot_module():
-    path=ROOT/"plot_regimes.py"; spec=importlib.util.spec_from_file_location("paper_reconstruction_plot_regimes",path)
-    module=importlib.util.module_from_spec(spec); assert spec.loader; spec.loader.exec_module(module); return module
+    from analysis import plot_regimes
+
+    return plot_regimes
 
 
 def make_figures(results: Path, out: Path, inputs: set[Path]) -> list[Path]:
@@ -266,7 +281,7 @@ def make_figures(results: Path, out: Path, inputs: set[Path]) -> list[Path]:
         path=results/run/name; inputs.add(path); return str(path)
     generated=[]
     # Figures 2 and 3 are deterministic geometric illustrations.
-    import plot_geometry
+    from analysis import plot_geometry
     plot_geometry.emit_rng_graph(str(figdir/"figure02_rng_graph.tex"),seed=7)
     (figdir/"figure02_lune.tex").write_text(
         "\\begin{tikzpicture}[scale=0.85]\n"
@@ -320,11 +335,27 @@ def make_figures(results: Path, out: Path, inputs: set[Path]) -> list[Path]:
 
 
 def main() -> None:
-    ap=argparse.ArgumentParser(); ap.add_argument("--results",type=Path,default=DEFAULT_RESULTS); ap.add_argument("--out",type=Path,default=DEFAULT_OUT); ap.add_argument("--skip-figures",action="store_true"); args=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--results",type=Path,default=DEFAULT_RESULTS); ap.add_argument("--out",type=Path,default=DEFAULT_OUT); ap.add_argument("--skip-figures",action="store_true"); ap.add_argument("--reuse-existing-figures",action="store_true",help="Rebuild tables and metadata while retaining already validated figure files and their recorded inputs."); args=ap.parse_args()
     results=args.results.resolve(); out=args.out.resolve(); tables=out/"tables"; tables.mkdir(parents=True,exist_ok=True); inputs:set[Path]=set(); outputs=[]
     for i,builder in enumerate(TABLES,1):
         path=tables/f"table_{i:02d}.csv"; write_table(builder(results,inputs),path); outputs.append(path)
-    if not args.skip_figures: outputs += make_figures(results,out,inputs)
+    if args.reuse_existing_figures:
+        old_meta_path = out / "metadata.json"
+        if not old_meta_path.is_file():
+            raise FileNotFoundError("--reuse-existing-figures requires existing metadata.json")
+        old_meta = json.loads(old_meta_path.read_text(encoding="utf-8"))
+        for item in old_meta["inputs"]:
+            logical = Path(item["path"])
+            path = (results / logical.relative_to(ARCHIVE_RESULTS_ROOT)
+                    if logical.is_relative_to(ARCHIVE_RESULTS_ROOT)
+                    else ROOT / logical)
+            inputs.add(path)
+        outputs += [
+            out / item["path"] for item in old_meta["outputs"]
+            if item["path"].startswith("figures/")
+        ]
+    elif not args.skip_figures:
+        outputs += make_figures(results,out,inputs)
     metadata={"schema_version":1,"status":"complete","scope":{"tables":12,"figures":8,"model_execution":False},"rendering_note":"All numerical cells and curves are rebuilt from retained files. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.","results_root":ARCHIVE_RESULTS_ROOT.as_posix(),"inputs":[{"path":portable_input_path(p,results),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(inputs)],"outputs":[{"path":str(p.relative_to(out)),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(set(outputs))]}
     meta=out/"metadata.json"; meta.write_text(json.dumps(metadata,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     sums=out/"SHA256SUMS"; sums.write_text("".join(f"{sha256(p)}  {p.relative_to(out)}\n" for p in sorted(set(outputs)|{meta})),encoding="utf-8")

@@ -139,10 +139,10 @@ def validate_reference_hashes(metadata: dict) -> None:
     dependencies = metadata["reconstruction_dependencies"]["files"]
     required_dependencies = {
         "reproducibility/create_execution_artifacts.py",
-        "evaluate_redundancy.py",
+        "experiments/evaluate_redundancy.py",
         "data/loaders.py",
         "data/beir.py",
-        "analyze_regimes.py",
+        "analysis/analyze_regimes.py",
         "reproducibility/run_state.json",
     }
     require({item["path"] for item in dependencies} == required_dependencies,

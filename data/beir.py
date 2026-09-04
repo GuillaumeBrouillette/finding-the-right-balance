@@ -1,36 +1,7 @@
-"""BEIR dataset loader with BM25 candidate-pool construction.
+"""Load BEIR tasks with self-contained Okapi BM25 candidate pools.
 
-Loads a BEIR task (Thakur et al. 2021) and returns examples in the same
-schema as data.loaders, with candidate pools attached so that the
-redundancy / oracle / chunking experiments of evaluate_redundancy.py can run
-unchanged on heterogeneous retrieval tasks:
-
-    {
-        "id"         : str,
-        "question"   : str,
-        "answers"    : [],
-        "passages"   : List[{"title": str, "text": str}],
-        "gold_titles": List[str],
-    }
-
-Candidate pools are built with a self-contained Okapi BM25 first stage
-(k1 = 0.9, b = 0.4, the standard BEIR configuration), so no extra
-dependencies are required.  The "title" field of each passage is the BEIR
-corpus id, which is unique by construction; the human-readable title is
-prepended to the passage text instead.  gold_titles are therefore the
-relevant corpus ids of the query (qrels with score > 0), and all title-based
-coverage metrics work unchanged.
-
-Notes
------
-* SciFact (5.2K docs) is the laptop-friendly default; FiQA-2018 (57K) is
-  moderate; TREC-COVID (171K) takes a few minutes to index and ~2 GB RAM.
-* BM25 pools cap attainable Recall: a gold document missing from the
-  pool cannot be retrieved by any reranker.  The loader prints the mean
-  fraction of golds present in the pool so this ceiling is explicit.
-* qrels splits differ by task (scifact: train/test; trec-covid: test only).
-  If the requested split has no qrels file, the loader falls back to "test"
-  and says so.
+Corpus identifiers serve as passage titles so qrels and title-based coverage
+metrics use the same stable document identity.
 """
 
 from __future__ import annotations

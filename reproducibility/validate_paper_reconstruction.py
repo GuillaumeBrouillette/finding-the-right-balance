@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -35,6 +36,10 @@ def close(actual, expected, label, tol=5e-7):
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    parser.add_argument(
+        "--reuse-existing-figures", action="store_true",
+        help="Validate tables deterministically without regenerating figures.",
+    )
     args = parser.parse_args()
     results = args.results.resolve()
     meta = json.loads((ARCHIVE / "metadata.json").read_text())
@@ -63,6 +68,8 @@ def main() -> None:
     assert tables[0].iloc[4]["RNG-Score(gamma=0)"] == "George V"
     close(tables[1].set_index("method").loc["MMR(0.3)", "S-Recall@k"], .481150, "Table 2 MMR(.3)")
     close(tables[1].set_index("method").loc["RNG-Score(0.2)", "Recall@k"], .750872, "Table 2 RNG")
+    close(tables[1].set_index("method").loc["kNN", "Qwen_EM"], .513841999, "Table 2 Qwen kNN EM")
+    close(tables[1].set_index("method").loc["RNG-Score(0.2)", "Qwen_F1"], .640625874, "Table 2 Qwen RNG F1")
     close(tables[2].set_index("method").loc["kNN", "scifact:NDCG@k"], .6405, "Table 3 SciFact")
     t4 = tables[3].set_index(["dataset", "method"])
     close(t4.loc[("MuSiQue", "CE+RNG-Score"), "F1"], .3431, "Table 4 MuSiQue RNG")
@@ -74,14 +81,18 @@ def main() -> None:
     close(tables[7].query("dataset == 'TREC-COVID' and method == 'RNG*'").iloc[0]["SRecall_0.75"], .2725, "Table 8 TREC")
     close(tables[8].query("level == '1.0' and selector == 'rule'").iloc[0]["S-Recall@k"], .742882, "Table 9 rule")
     assert "HotpotQA bge-m3 (tuning run)" not in set(tables[9].target)
-    close(tables[10].query("dataset == 'HotpotQA' and method == 'rule'").iloc[0]["rho=1:EM"], .3098, "Table 11 rule EM")
+    close(tables[10].query("dataset == 'HotpotQA' and method == 'rule'").iloc[0]["rho=1:EM"], .4777, "Table 11 Qwen rule EM")
     close(tables[11].set_index("dataset").loc["MuSiQue", "RNG*"], .7171, "Table 12 MuSiQue")
 
     # A clean second build must be byte-identical, including PDFs.  Matplotlib
     # receives SOURCE_DATE_EPOCH in the reconstruction entry point.
     with tempfile.TemporaryDirectory(prefix="paper_reconstruction_validate_") as temp:
         env = os.environ.copy()
-        subprocess.run([sys.executable, str(ROOT / "reproducibility" / "reconstruct_paper.py"), "--results", str(results), "--out", temp], cwd=ROOT, env=env, check=True, stdout=subprocess.DEVNULL)
+        command = [sys.executable, str(ROOT / "reproducibility" / "reconstruct_paper.py"), "--results", str(results), "--out", temp]
+        if args.reuse_existing_figures:
+            shutil.copytree(ARCHIVE, temp, dirs_exist_ok=True)
+            command.append("--reuse-existing-figures")
+        subprocess.run(command, cwd=ROOT, env=env, check=True, stdout=subprocess.DEVNULL)
         rebuilt = Path(temp)
         current = {x["path"]: x["sha256"] for x in meta["outputs"]}
         rebuilt_meta = json.loads((rebuilt / "metadata.json").read_text())
