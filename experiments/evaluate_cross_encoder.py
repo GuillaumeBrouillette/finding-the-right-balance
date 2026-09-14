@@ -65,6 +65,7 @@ from retrieval.rerankers import (
 from retrieval.retriever import DenseRetriever
 from ftrb.run_utils import (
     CE_ALIASES,
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
     attach_run_params,
@@ -221,7 +222,7 @@ def run_evaluation(cfg: Dict) -> Tuple[List[Dict], List[Dict], List[Dict], List[
 
     # 2. Load dense encoder
     print(f"\n── Loading encoder: {cfg['encoder_model']} ──")
-    device = normalize_device(cfg.get("device", "cpu"))
+    device = normalize_device(cfg.get("device", DEFAULT_DEVICE))
     batch_size = cfg.get("batch_size", 64)
     encoder = DenseRetriever(model_name=cfg["encoder_model"], device=device, batch_size=batch_size)
 
@@ -640,8 +641,9 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--device",
-        default="cpu",
-        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" (default: cpu).',
+        default=DEFAULT_DEVICE,
+        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" '
+             '(default: cuda; use cpu explicitly for CPU execution).',
     )
     p.add_argument(
         "--batch_size",

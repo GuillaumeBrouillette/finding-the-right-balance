@@ -12,6 +12,7 @@ import platform
 import subprocess
 import time
 from pathlib import Path
+from typing import Optional, Set
 
 # Set thread controls before importing NumPy/BLAS.
 for variable in (
@@ -47,7 +48,10 @@ def _args() -> argparse.Namespace:
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--repeats", type=int, default=10_000)
     parser.add_argument("--inputs", type=int, default=128)
-    parser.add_argument("--cpu", type=int, default=5)
+    parser.add_argument(
+        "--cpu", type=int, default=None,
+        help="Logical CPU to pin. Defaults to the first CPU allowed for this process.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", default="results/cpu_latency")
     return parser.parse_args()
@@ -75,10 +79,42 @@ def _command_output(command: list[str]) -> str:
         return "unavailable"
 
 
+def _current_affinity() -> Optional[Set[int]]:
+    if not hasattr(os, "sched_getaffinity"):
+        return None
+    try:
+        return set(os.sched_getaffinity(0))
+    except OSError:
+        return None
+
+
+def _pin_cpu(requested_cpu: Optional[int]) -> Optional[int]:
+    """Pin to an allowed CPU when supported, falling back without crashing."""
+    if not hasattr(os, "sched_setaffinity"):
+        return None
+
+    allowed = _current_affinity()
+    if not allowed:
+        print("Warning: CPU affinity is unavailable; continuing without pinning.")
+        return None
+
+    selected_cpu = requested_cpu if requested_cpu in allowed else min(allowed)
+    if requested_cpu is not None and requested_cpu not in allowed:
+        print(
+            f"Warning: CPU {requested_cpu} is not available to this process; "
+            f"using CPU {selected_cpu}."
+        )
+    try:
+        os.sched_setaffinity(0, {selected_cpu})
+    except OSError as exc:
+        print(f"Warning: could not pin CPU affinity ({exc}); continuing unpinned.")
+        return None
+    return selected_cpu
+
+
 def main() -> None:
     args = _args()
-    if hasattr(os, "sched_setaffinity"):
-        os.sched_setaffinity(0, {args.cpu})
+    pinned_cpu = _pin_cpu(args.cpu)
 
     try:
         from threadpoolctl import threadpool_info, threadpool_limits
@@ -132,8 +168,9 @@ def main() -> None:
         "platform": platform.platform(),
         "python": platform.python_version(),
         "numpy": np.__version__,
-        "cpu": args.cpu,
-        "affinity": sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
+        "requested_cpu": args.cpu,
+        "cpu": pinned_cpu,
+        "affinity": sorted(_current_affinity() or []),
         "cpu_details": _command_output(["lscpu"]),
         "threadpools": pools_info,
         "timer": "time.perf_counter_ns",

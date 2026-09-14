@@ -58,10 +58,19 @@ ftrb-redundancy --help
 The ignored test module validates large files supplied by the release. Run the
 complete suite after extracting those files in Step 4.
 
-For CUDA, first install the PyTorch build recommended by the
-[official PyTorch selector](https://pytorch.org/get-started/locally/), then run
-the editable installation above. The experiment commands accept `--device
-cuda` and `--device cuda:N`.
+GPU execution is the default for experiment commands. Install the PyTorch
+build recommended by the
+[official PyTorch selector](https://pytorch.org/get-started/locally/) before
+the editable installation, then verify CUDA:
+
+```bash
+nvidia-smi
+python -c "import torch; assert torch.cuda.is_available(), 'CUDA unavailable'; print(torch.cuda.get_device_name(0))"
+```
+
+Use `--device cuda:N` to select a GPU. If CUDA is unavailable, experiment
+commands stop with a clear error instead of silently starting a slow CPU run.
+Use `--device cpu` only when CPU execution is intentional.
 
 ## 2. Resources and downloads
 

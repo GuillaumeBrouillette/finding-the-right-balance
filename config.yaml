@@ -8,6 +8,7 @@ split: validation         # train | validation
 max_samples: 100          # set null to run the full split (slow on a laptop)
 
 # ── Retrieval ─────────────────────────────────────────────────────────────────
+device: cuda              # GPU default; set cpu explicitly only when intended
 encoder_model: minilm     # alias → sentence-transformers/all-MiniLM-L6-v2 (fast, CPU-friendly)
 #   Other aliases: bge-m3 (BAAI/bge-m3), qwen3-embed-4b (Qwen/Qwen3-Embedding-4B)
 #   Or pass a full HuggingFace ID directly.

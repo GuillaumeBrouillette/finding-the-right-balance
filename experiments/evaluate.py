@@ -57,6 +57,7 @@ from retrieval.rerankers import (
 )
 from retrieval.retriever import DenseRetriever
 from ftrb.run_utils import (
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
     attach_run_params,
@@ -157,7 +158,11 @@ def _apply_cli_overrides(cfg: Dict, args: argparse.Namespace) -> Dict:
     if getattr(args, "alpha_objective", None):
         cfg["alpha_objective"] = args.alpha_objective
 
-    if getattr(args, "device", None):
+    device_was_provided = any(
+        token == "--device" or token.startswith("--device=")
+        for token in sys.argv[1:]
+    )
+    if device_was_provided:
         cfg["device"] = args.device
 
     if getattr(args, "batch_size", None) is not None:
@@ -182,14 +187,14 @@ def _apply_cli_overrides(cfg: Dict, args: argparse.Namespace) -> Dict:
         alpha_results = load_alphas(args.alpha_json)
         dataset = cfg.get("dataset", "hotpotqa")
         encoder = resolve_model(
-            cfg.get("encoder_model") or default_encoder(cfg.get("device", "cpu")),
+            cfg.get("encoder_model") or default_encoder(cfg.get("device", DEFAULT_DEVICE)),
             ENCODER_ALIASES,
         )
         setting = f"{dataset}/{encoder}"
         alpha_objective = cfg.get("alpha_objective", cfg.get("objective", "apd"))
         generator_for_objective = None
         if alpha_objective in {"em", "f1"}:
-            device = normalize_device(cfg.get("device", "cpu"))
+            device = normalize_device(cfg.get("device", DEFAULT_DEVICE))
             generator_for_objective = resolve_model(
                 cfg.get("generator_model") or default_generator(device),
                 GENERATOR_ALIASES,
@@ -446,7 +451,7 @@ def run_evaluation(
     print(f"   {len(examples)} examples loaded.")
 
     print(f"\n── Loading encoder: {cfg['encoder_model']} ──")
-    device = normalize_device(cfg.get("device", "cpu"))
+    device = normalize_device(cfg.get("device", DEFAULT_DEVICE))
     batch_size = cfg.get("batch_size", 64)
     retriever = DenseRetriever(
         model_name=cfg["encoder_model"],
@@ -775,8 +780,9 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--device",
-        default="cpu",
-        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" (default: cpu).',
+        default=DEFAULT_DEVICE,
+        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" '
+             '(default: cuda; use cpu explicitly for CPU execution).',
     )
     p.add_argument(
         "--batch_size",
@@ -794,7 +800,7 @@ def main() -> None:
     cfg = _apply_cli_overrides(cfg, args)
 
     # Resolve device-aware model defaults and expand any short aliases.
-    device = normalize_device(cfg.get("device", "cpu"))
+    device = normalize_device(cfg.get("device", DEFAULT_DEVICE))
     using_default_config = os.path.abspath(args.config) == os.path.abspath(_DEFAULT_CONFIG)
 
     # Keep default-config behaviour device-aware while preserving explicit
@@ -850,7 +856,7 @@ def main() -> None:
         "top_m": cfg.get("top_m"),
         "top_k": cfg.get("top_k"),
         "metric": cfg.get("metric"),
-        "device": cfg.get("device", "cpu"),
+        "device": device,
         "run_generation": cfg.get("run_generation"),
         "include_rds": cfg.get("include_rds"),
         "alpha_json": cfg.get("alpha_json"),

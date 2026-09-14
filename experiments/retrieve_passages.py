@@ -32,6 +32,7 @@ from retrieval.rerankers import (
     rerank_rng_score,
 )
 from ftrb.run_utils import (
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     default_encoder,
     int_or_all,
@@ -250,7 +251,10 @@ def _parse_args() -> argparse.Namespace:
         help=f"Encoder alias or HuggingFace ID. Aliases: {', '.join(ENCODER_ALIASES)}. "
              "Default: bge-m3 on CUDA, minilm on CPU.",
     )
-    p.add_argument("--device", default="cpu")
+    p.add_argument(
+        "--device", default=DEFAULT_DEVICE,
+        help="Inference device (default: cuda; use cpu explicitly for CPU execution).",
+    )
     p.add_argument("--batch_size", type=int, default=64)
     p.add_argument(
         "--text_max_chars", type=int, default=300,

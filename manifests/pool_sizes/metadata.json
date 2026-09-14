@@ -498,7 +498,7 @@
   "runtime_proof": {
     "audit_output_pattern": "results_<experiment>_pool_size_audit.csv",
     "execution_driver": "experiments/evaluate_redundancy.py",
-    "execution_driver_sha256": "d3c8d9e4a6489a4189b9f8fdca56a586b37d2a4c2caf66b33052d82b62e8bc5d",
+    "execution_driver_sha256": "a9962de6fca436895c6b8aaa7eda2c7f23f095be06b6c157df54bca14be81477",
     "implementation": "ftrb/pool_size_invariants.py",
     "implementation_sha256": "1dc771b2a2034bc859be85a9a52ba2ed45cfaa7331bdf2bcfc402804b6535f84",
     "per_query_columns": [

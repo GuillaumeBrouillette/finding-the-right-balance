@@ -62,6 +62,7 @@ from retrieval.rerankers import (
 )
 from retrieval.retriever import DenseRetriever
 from ftrb.run_utils import (
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
     attach_run_params,
@@ -1046,9 +1047,9 @@ def _parse_args() -> argparse.Namespace:
                    help="Encoder alias or HuggingFace ID (default: device-based).")
     p.add_argument(
         "--device",
-        default="cpu",
-        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" (default: cpu). '
-             "When cuda is selected, bge-m3 is used as the default encoder instead of minilm.",
+        default=DEFAULT_DEVICE,
+        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" '
+             '(default: cuda; use cpu explicitly for CPU execution).',
     )
     p.add_argument("--batch_size", type=int, default=64)
     p.add_argument("--top_m", type=int, default=100)

@@ -48,6 +48,7 @@ from retrieval.rerankers import (
 from retrieval.retriever import DenseRetriever
 from ftrb.run_utils import (
     CE_ALIASES,
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     GENERATOR_ALIASES,
     default_ce_model,
@@ -132,8 +133,9 @@ def _parse_args() -> argparse.Namespace:
                    help="FAISS index cache dir (for BEIR datasets).")
     p.add_argument(
         "--device",
-        default="cpu",
-        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" (default: cpu).',
+        default=DEFAULT_DEVICE,
+        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" '
+             '(default: cuda; use cpu explicitly for CPU execution).',
     )
     return p.parse_args()
 
@@ -626,7 +628,7 @@ def main() -> None:
     if args.objective in {"em", "f1"}:
         print(f"\n── Loading generator: {args.generator_model} ──")
         generator = load_generator(
-            model_name=args.generator_model, device=args.device,
+            model_name=args.generator_model, device=device,
             max_new_tokens=128, num_beams=4,
         )
 
@@ -651,7 +653,7 @@ def main() -> None:
     if args.ce_model:
         print(f"\n── Loading cross-encoder: {args.ce_model} ──")
         from retrieval.cross_encoder import CrossEncoderReranker
-        ce_reranker = CrossEncoderReranker(model_name=args.ce_model, device=args.device)
+        ce_reranker = CrossEncoderReranker(model_name=args.ce_model, device=device)
 
         print("\n── Sweeping CE strategies (S1-Blend / S2-V1/V2/V3) ──")
         ce_results = _sweep_ce(val_examples, retriever, ce_reranker,
@@ -673,7 +675,7 @@ def main() -> None:
         "val_seed": args.val_seed,
         "encoder_model": args.encoder_model,
         "ce_model": args.ce_model,
-        "device": args.device,
+        "device": device,
         "objective": args.objective,
         "lambda_div": args.lambda_div,
         "top_k": args.top_k,

@@ -114,19 +114,14 @@ def save_csv(rows: List[Dict], path: str) -> None:
         dir=os.path.dirname(path) or ".",
     )
     try:
-        f = os.fdopen(fd, "w", newline="", encoding="utf-8")
-        writer = csv.DictWriter(f, fieldnames=fieldnames, restval="")
-        writer.writeheader()
-        writer.writerows(rows)
-        f.flush()
-        os.fsync(f.fileno())
-        f.close()
+        with os.fdopen(fd, "w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames, restval="")
+            writer.writeheader()
+            writer.writerows(rows)
+            handle.flush()
+            os.fsync(handle.fileno())
         os.replace(tmp_path, path)
     except Exception:
-        try:
-            os.close(fd)
-        except OSError:
-            pass
         try:
             os.unlink(tmp_path)
         except OSError:
@@ -146,6 +141,8 @@ def attach_run_params(rows: List[Dict], run_params: Dict) -> List[Dict]:
 # ---------------------------------------------------------------------------
 # Model registry
 # ---------------------------------------------------------------------------
+
+DEFAULT_DEVICE = "cuda"
 
 ENCODER_ALIASES: Dict[str, str] = {
     "minilm":         "sentence-transformers/all-MiniLM-L6-v2",
@@ -210,8 +207,8 @@ def normalize_device(device: str) -> str:
     """Normalise a device string to a torch-compatible form.
 
     Accepts ``"cpu"``, ``"cuda"``, ``"cuda:N"``, and aliases ``"gpu"`` /
-    ``"gpu:N"``.  Warns and falls back to CPU when CUDA is requested but
-    unavailable.
+    ``"gpu:N"``.  CUDA requests fail immediately when CUDA is unavailable;
+    CPU execution must be requested explicitly.
     """
     d = str(device).strip().lower()
     if d == "gpu":
@@ -221,10 +218,14 @@ def normalize_device(device: str) -> str:
     if d.startswith("cuda"):
         try:
             import torch
-            if not torch.cuda.is_available():
-                print("   Warning: CUDA requested but not available; falling back to cpu.")
-                return "cpu"
-        except ImportError:
-            print("   Warning: torch not found; falling back to cpu.")
-            return "cpu"
+        except ImportError as exc:
+            raise RuntimeError(
+                "CUDA was requested, but PyTorch is not installed. Install a "
+                "CUDA-enabled PyTorch build or pass --device cpu explicitly."
+            ) from exc
+        if not torch.cuda.is_available():
+            raise RuntimeError(
+                "CUDA was requested, but no CUDA device is available. Check the "
+                "PyTorch/CUDA installation or pass --device cpu explicitly."
+            )
     return d

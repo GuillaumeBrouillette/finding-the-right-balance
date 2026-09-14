@@ -55,6 +55,7 @@ from retrieval.rerankers import (
 from retrieval.retriever import DenseRetriever
 from ftrb.run_utils import (
     CE_ALIASES,
+    DEFAULT_DEVICE,
     ENCODER_ALIASES,
     attach_run_params,
     default_encoder,
@@ -223,7 +224,7 @@ def evaluate_task(
     # 2. Build or load index
     encoder = DenseRetriever(
         model_name=encoder_name,
-        device=normalize_device(cfg.get("device", "cpu")),
+        device=normalize_device(cfg.get("device", DEFAULT_DEVICE)),
         batch_size=cfg.get("batch_size", 64),
     )
     corpus_passages = list(corpus.values())
@@ -626,8 +627,9 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--device",
-        default="cpu",
-        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" (default: cpu).',
+        default=DEFAULT_DEVICE,
+        help='Device for model inference, e.g. "cpu", "cuda", "cuda:0" '
+             '(default: cuda; use cpu explicitly for CPU execution).',
     )
     p.add_argument(
         "--batch_size",
