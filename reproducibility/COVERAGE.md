@@ -11,7 +11,7 @@ This table maps the article's reproducibility materials to their published evide
 | Environment and hardware | Exact 111-package [`environment-lock.txt`](environment-lock.txt) and captured software/hardware details in [`METHODS.md`](METHODS.md). | Complete |
 | Per-query execution artifacts | Forty-two historical runs and 460 retained artifacts indexed in [`manifests/execution_artifacts/`](../manifests/execution_artifacts/), including 1,836,695 clean-pool memberships and 872,032 reconstructed trigger decisions. The staged Qwen clean-pool extension adds 59,240 rows with raw predictions. | Historical limitations remain; the Qwen extension preserves predictions and source hashes prospectively. |
 | Statistical inference | 4,186,032 raw paired contrasts, 1,814,424 query-averaged contrasts, and 534 inferential rows in [`manifests/statistics/`](../manifests/statistics/). | All recoverable inference published; aggregate-only historical generation, ArguAna/Touché, and non-Hotpot cross-encoder cells remain descriptive. |
-| Paper reconstruction | Deterministic reconstruction of all 12 tables and all 8 figures from 53 checksummed inputs in [`manifests/paper_reconstruction/`](../manifests/paper_reconstruction/). | Complete |
+| Paper reconstruction | Deterministic reconstruction of all 12 tables and all 8 figures from 56 checksummed inputs in [`manifests/paper_reconstruction/`](../manifests/paper_reconstruction/). | Complete |
 
 Detailed definitions, statistical procedures, validation rules, and limitations are in [`METHODS.md`](METHODS.md).
 

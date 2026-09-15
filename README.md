@@ -1,8 +1,8 @@
 # Finding the Right Balance: Relevance and Diversity in LLM Retrieval
 
 Official code and reproducibility package for **“Finding the Right Balance:
-Relevance and Diversity in LLM Retrieval”** by Guillaume Brouillette and
-Faustin Kagabo.
+Relevance and Diversity in LLM Retrieval”** by Guillaume Brouillette,
+Faustin Kagabo, Usef Faghihi and Nadia Ghazzali.
 
 The project evaluates RNG-Score and established diversification methods under
 controlled redundancy. It includes retrieval and generation experiments,
@@ -428,7 +428,7 @@ including Holm correction and query clustering, is documented in
 ```bibtex
 @article{brouillette2026balance,
   title  = {Finding the Right Balance: Relevance and Diversity in LLM Retrieval},
-  author = {Brouillette, Guillaume and Kagabo, Faustin},
+  author = {Brouillette, Guillaume and Kagabo, Faustin and Faghihi, Usef and Ghazzali, Nadia},
   year   = {2026},
   note   = {Preprint}
 }
