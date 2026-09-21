@@ -295,39 +295,39 @@
       "sha256": "ec0c7d3d228d1aece1d8f7e499b050a311052792f25890149a3386cda8148558"
     },
     {
-      "bytes": 23257,
+      "bytes": 23208,
       "path": "results/revision_stats/table_refresh/2026-08-06_164145_redundancy_musique__chunking_level_means.csv",
-      "sha256": "f7085e6c3cf17685019ecb13fd81ac5129dd5a158f8e6de90db95f390c949745"
+      "sha256": "790857d52d0a1b85089970218b7daa70d4b8611af85bae1c74055b9e3c7a30d6"
     },
     {
-      "bytes": 23863,
+      "bytes": 23830,
       "path": "results/revision_stats/table_refresh/2026-08-06_170200_redundancy_trec-covid__chunking_level_means.csv",
-      "sha256": "78514085f1c81e84f4c13375bc8fda27f112371d62c39555ac46f7a9b43abe76"
+      "sha256": "f730fd6994c2ed201d3dd347e00914c96e086fb318ef2d7075bb7c447ed91d1f"
     },
     {
-      "bytes": 26094,
+      "bytes": 26033,
       "path": "results/revision_stats/table_refresh/2026-08-07_031430_redundancy_2wikimultihopqa__chunking_level_means.csv",
-      "sha256": "dea29c44fff747f4768fded5ccea2ea4ae6e4c8c91c5402e3388196ca1cd4f80"
+      "sha256": "3023bc16353564b157f1790095b0d5cf596182d325019f2ab078c1baa256e90a"
     },
     {
-      "bytes": 23213,
+      "bytes": 23147,
       "path": "results/revision_stats/table_refresh/2026-08-07_072703_redundancy_scifact__chunking_level_means.csv",
-      "sha256": "a29dd7af9ed7ea39ee8c6faa71a047e0d081b6d725de31cc9801954abf07cec2"
+      "sha256": "0b0f3ba17e57debc2f1db2968c137c925ded72636f774338fff2e0f584409ee9"
     },
     {
-      "bytes": 26523,
+      "bytes": 26454,
       "path": "results/revision_stats/table_refresh/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking_level_means.csv",
-      "sha256": "800e09b8c94821b7ea207b3d296f7eeae0b2e9d36c54458c95f509654e184767"
+      "sha256": "fb0ab013531b4683f7eb66f073ca3c58357aaae7f1c3018abf70b585a4260d96"
     },
     {
-      "bytes": 53206,
+      "bytes": 53088,
       "path": "results/revision_stats/table_refresh/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy_level_means.csv",
-      "sha256": "b5b5c4b59351d93a2ea8ee7736fbafa6a4b50909e07eff2aff59d74baf957b2c"
+      "sha256": "5a418269ce262d8720b607e9f30b24439b8e7d84ef9c840d62f3c12fb682eb1f"
     },
     {
-      "bytes": 18777,
+      "bytes": 18718,
       "path": "results/revision_stats/table_refresh/2026-08-08_070150_redundancy_nq__chunking_level_means.csv",
-      "sha256": "e7e23d9d9b119b74a26f8f8fa6605c3b0072d9e01449eb3834f9c8c19ea6d26b"
+      "sha256": "4f5d59d6f1e8e44a99211b3029a444722384351f8d78adfd72f72518d29c7a0a"
     }
   ],
   "outputs": [
@@ -454,7 +454,7 @@
     {
       "bytes": 1716,
       "path": "tables/table_06.csv",
-      "sha256": "c7bcbb7a45eb0ddf3ca5338601b11ea4a3db48be136a7b5c3b11b599a0b45b1e"
+      "sha256": "a107d3ef7ee6eb1d3d45f185be4931751b9b9bb55d9f18d8df29eff298124dc2"
     },
     {
       "bytes": 2274,
@@ -464,7 +464,7 @@
     {
       "bytes": 1306,
       "path": "tables/table_08.csv",
-      "sha256": "c1cd47e6ba67eb5a3fc5e15dac88248984d381c3fb96fe36e6df0975d6deed32"
+      "sha256": "e7c78886d703c10c402480a187a11156b9acd5f7abd88542cbf31858f58abdd0"
     },
     {
       "bytes": 1297,

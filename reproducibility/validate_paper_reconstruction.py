@@ -93,6 +93,7 @@ def main() -> None:
     close(tables[4].set_index("method").loc["kNN", "minimax_regret"], .221844396, "Table 5 kNN minimax regret")
     close(tables[4].set_index("method").loc["MMR", "minimax_regret"], .063044070, "Table 5 MMR minimax regret")
     close(tables[5].query("rho == 0 and Method == 'kNN'").iloc[0]["S-Recall@k"], .789989119, "Table 6 clean kNN")
+    close(tables[5].query("rho == 0.05 and Method == 'kNN'").iloc[0]["PoolRedundancy"], .0012, "Table 6 rho=.05 measured redundancy")
     close(tables[5].query("rho == 1 and Method == 'MMR*'").iloc[0]["S-Recall@k"], .749183896, "Table 6 heavy MMR")
     t7 = tables[6].set_index(["sweep", "rho"])
     assert t7.loc[("HotpotQA bge-m3", 0.0), "published_gamma"] == "+0.2"

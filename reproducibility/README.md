@@ -201,6 +201,6 @@ their source data on first use.
 
 `manifests/paper_reconstruction/` and [`METHODS.md`](METHODS.md) provide one
 deterministic entry point that reconstructs all 12 numbered tables and all 8
-numbered figures from 56 checksummed retained inputs. The
+numbered figures from 64 checksummed retained inputs. The
 validator checks manuscript-value anchors and proves a second clean build is
 byte-identical, including the generated PDFs.

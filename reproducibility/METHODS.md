@@ -430,7 +430,7 @@ published under [`results/revision_stats/`](../results/revision_stats/):
 
 | Output | Published contents |
 |---|---|
-| `table_refresh/` | Thirteen corrected test-split level-mean CSVs, including measured pool redundancy, used to refresh the displayed injection and chunk-overlap sweeps |
+| `table_refresh/` | Thirteen corrected test-split level-mean CSVs, with measured pool redundancy taken from each rerun summary to preserve the paper's displayed rounding, used to refresh the injection and chunk-overlap sweeps |
 | `rule_transfer/rule_inference.csv` | Frozen-rule effects, query-clustered intervals, multiplicity-adjusted p-values, trigger rates, and improved/harmed fractions |
 | `gate_budgeted/gate_budgeted.csv` | BEIR subset of the frozen-rule analysis under the budgeted threshold |
 | `generation_inference/generation_inference.csv` | Paired EM risk differences and F1 mean differences for the two retained historical generation runs |

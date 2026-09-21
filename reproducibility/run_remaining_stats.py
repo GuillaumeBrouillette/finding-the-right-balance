@@ -220,6 +220,7 @@ def discover_runs(source_mode: str = "auto") -> Tuple[str, List[dict]]:
                 "default_seed": int(params.get("seed", 0)),
                 "condition_name": "rho" if experiment == "redundancy" else "overlap",
                 "per_query": per_query,
+                "summary": run_dir / f"{stem}_summary.csv",
             })
     return mode, runs
 
@@ -321,7 +322,7 @@ def step_table_refresh(runs: List[dict], samples: int, seed: int) -> None:
             metric_fields = [
                 f for f in (reader.fieldnames or [])
                 if f not in (condition_name, "seed", "qid", "Method")
-                and (not f.startswith("Pool") or f == "PoolRedundancy")
+                and not f.startswith("Pool")
                 and f not in ("OriginalPoolSize", "TransformedPoolSize", "CandidatePoolTarget",
                               "CandidatePoolSize", "PoolSizeAssertion", "RelSetSize")
             ]
@@ -368,10 +369,6 @@ def step_table_refresh(runs: List[dict], samples: int, seed: int) -> None:
                 if row is None:
                     continue
                 for metric in metric_fields:
-                    if metric == "PoolRedundancy" and series != BASELINE:
-                        # This is a condition-level pool property, not a
-                        # method metric; publish it once on the baseline row.
-                        continue
                     value = row.get(metric, "")
                     if value in ("", None):
                         continue
@@ -391,6 +388,33 @@ def step_table_refresh(runs: List[dict], samples: int, seed: int) -> None:
                     for (c, s, p) in sorted(chosen_labels) if c == condition
                 ) if series.endswith("*") else "",
             })
+        # PoolRedundancy is the displayed condition-level header. Preserve
+        # the rerun summary's aggregation/rounding so reconstructed headers
+        # exactly match the paper rather than recomputing a per-query mean.
+        summary_redundancy = {}
+        with run["summary"].open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                if row["Method"] == BASELINE:
+                    summary_redundancy[canonical_number(row[condition_name])] = float(
+                        row["PoolRedundancy"]
+                    )
+        conditions = {condition for condition, _, _ in acc}
+        if set(summary_redundancy) != conditions:
+            raise RuntimeError(
+                f"{run['run']}: summary PoolRedundancy levels do not match per-query levels"
+            )
+        for condition in sorted(conditions, key=Decimal):
+            rows.append({
+                "run": run["run"], "dataset": run["dataset"],
+                "experiment": run["experiment"], "condition_name": condition_name,
+                "condition": condition, "series": BASELINE,
+                "metric": "PoolRedundancy",
+                "n_test_queries": len(acc[(condition, BASELINE, objective)]),
+                "mean": summary_redundancy[condition], "chosen_members": "",
+            })
+        rows.sort(key=lambda row: (
+            Decimal(str(row["condition"])), row["series"], row["metric"]
+        ))
         path = out_dir / f"{run['run']}_level_means.csv"
         with path.open("w", newline="", encoding="utf-8") as handle:
             writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()), lineterminator="\n")
