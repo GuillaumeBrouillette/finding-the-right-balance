@@ -90,10 +90,11 @@ def alpha_sweep_figure(run_dir: str, out_path: str, objective: str = "S-Recall@k
     for rho, color, label in [(0.0, BLUE, r"$\rho=0$ (clean)"),
                               (0.25, RED, r"$\rho=0.25$ (redundant)")]:
         cur = rng[rng.rho == rho]
-        ax.plot(cur["alpha"], cur[objective], "-o", ms=3.5, color=color,
-                label=f"RNG-Score, {label}")
-        ax.axhline(knn[rho], color=color, ls=":", lw=1)
-        ax.annotate("kNN", xy=(cur["alpha"].iloc[-1], knn[rho]),
+        ax.plot(cur["alpha"], cur[objective] * METRIC_SCALE, "-o", ms=3.5,
+                color=color, label=f"RNG-Score, {label}")
+        ax.axhline(knn[rho] * METRIC_SCALE, color=color, ls=":", lw=1)
+        ax.annotate("kNN",
+                    xy=(cur["alpha"].iloc[-1], knn[rho] * METRIC_SCALE),
                     xytext=(3, 2), textcoords="offset points",
                     color=color, fontsize=7)
     ax.set_xlabel(r"Margin $\alpha$")
@@ -120,22 +121,23 @@ def threshold_figure(run_dir: str, out_path: str,
 
     def draw_left(ax) -> None:
         cur = curve[curve.D == d_star].sort_values("tau")
-        ax.plot(cur["tau"], cur["val mean"], "-", color=BLUE, lw=1.5)
+        val = cur["val mean"] * METRIC_SCALE
+        ax.plot(cur["tau"], val, "-", color=BLUE, lw=1.5)
         ax.axvline(tau_star, color=GRAY, ls="--", lw=1)
         ax.annotate(rf"$\tau^*={tau_star:.2f}$",
-                    xy=(tau_star, cur["val mean"].max()),
+                    xy=(tau_star, val.max()),
                     xytext=(-46, 2), textcoords="offset points",
                     color=GRAY, fontsize=8)
         ax.axvline(deployed_tau, color=RED, ls="--", lw=1)
         ax.annotate(r"$\tau=h$",
-                    xy=(deployed_tau, cur["val mean"].min()),
+                    xy=(deployed_tau, val.min()),
                     xytext=(4, 4), textcoords="offset points",
                     color=RED, fontsize=8)
-        ax.annotate("always k-NN", xy=(cur["tau"].min(), cur["val mean"].iloc[0]),
+        ax.annotate("always k-NN", xy=(cur["tau"].min(), val.iloc[0]),
                     xytext=(5, 8), textcoords="offset points",
                     color=GRAY, fontsize=7)
         ax.annotate(f"always {d_star}",
-                    xy=(cur["tau"].max(), cur["val mean"].iloc[-1]),
+                    xy=(cur["tau"].max(), val.iloc[-1]),
                     xytext=(-56, -10), textcoords="offset points",
                     color=GRAY, fontsize=7)
         ax.set_xlabel(r"Trigger threshold $\tau$")
@@ -162,21 +164,21 @@ def threshold_figure(run_dir: str, out_path: str,
 
         knn, alw = sel("kNN"), sel(f"always {d_star}")
         orc = sel("all-methods oracle")
-        ax.plot(knn["rho"], knn[objective], "-", marker="s", ms=5,
-                color=GRAY, lw=1.2, label="Always k-NN")
-        ax.plot(alw["rho"], alw[objective], "-", marker="o", ms=5,
-                color=BLUE, lw=1.2, label=f"Always {d_star}")
+        ax.plot(knn["rho"], knn[objective] * METRIC_SCALE, "-", marker="s",
+                ms=5, color=GRAY, lw=1.2, label="Always k-NN")
+        ax.plot(alw["rho"], alw[objective] * METRIC_SCALE, "-", marker="o",
+                ms=5, color=BLUE, lw=1.2, label=f"Always {d_star}")
         if frozen is not None:
-            ax.plot(frozen["rho"], frozen["rule"], "-", marker="D", ms=5,
-                    color=RED, lw=1.2,
+            ax.plot(frozen["rho"], frozen["rule"] * METRIC_SCALE, "-",
+                    marker="D", ms=5, color=RED, lw=1.2,
                     label=r"Rule ($\tau=h$)")
         else:
             r = lev[lev.Selector.str.startswith("rule (")]
             r = r.groupby("rho", as_index=False)[objective].mean()
-            ax.plot(r["rho"], r[objective], "-", marker="D", ms=5,
-                    color=RED, lw=1.2, label=r"Rule ($\tau^*$)")
-        ax.plot(orc["rho"], orc[objective], ":", marker="_", ms=5,
-                color="black", lw=1.2, label="Oracle")
+            ax.plot(r["rho"], r[objective] * METRIC_SCALE, "-", marker="D",
+                    ms=5, color=RED, lw=1.2, label=r"Rule ($\tau^*$)")
+        ax.plot(orc["rho"], orc[objective] * METRIC_SCALE, ":", marker="_",
+                ms=5, color="black", lw=1.2, label="Oracle")
         _rho_axis(ax, levels)
         ax.set_ylabel("Test S-Recall@5")
         ax.legend(loc="lower left", frameon=False)
@@ -232,8 +234,8 @@ def generation_figure(runs, out_path: str,
                         (dcol, f"Always {dcol}", BLUE, "o"),
                         ("rule", rule_label, RED, "D")]:
                     cur = sub.set_index(level_col).reindex(levels)
-                    ax.plot(levels, cur[name], "-", marker=mk, ms=5,
-                            color=c, lw=1.2, label=lab)
+                    ax.plot(levels, cur[name] * METRIC_SCALE, "-", marker=mk,
+                            ms=5, color=c, lw=1.2, label=lab)
                 _rho_axis(ax, levels)
                 ax.set_ylabel(f"Test {met}")
                 if legend:
@@ -284,7 +286,7 @@ def crossover_figure(panels, out_path: str,
 
     # Shared y-limits across panels.
     vals = pd.concat(
-        s[s.Method.str.match(pat)][objective]
+        s[s.Method.str.match(pat)][objective] * METRIC_SCALE
         for _, s in frames for _, pat, _, _, _ in series
     )
     pad = 0.04 * (vals.max() - vals.min())
@@ -298,7 +300,8 @@ def crossover_figure(panels, out_path: str,
                 cur = s[s.Method.str.match(pat)].sort_values("PoolRedundancy")
                 if cur.empty:
                     continue
-                ax.plot(cur["PoolRedundancy"].clip(lower=0), cur[objective],
+                ax.plot(cur["PoolRedundancy"].clip(lower=0),
+                        cur[objective] * METRIC_SCALE,
                         marker=mk, ms=4, lw=1.3, color=color, label=lab)
             ax.set_xscale("symlog", linthresh=lin)
             ax.set_xlim(-lin / 2, xmax)
