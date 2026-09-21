@@ -21,7 +21,9 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESULTS = ROOT / "results" / "retained"
 DEFAULT_OUT = ROOT / "manifests" / "paper_reconstruction"
+REVISION_STATS = ROOT / "results" / "revision_stats"
 ARCHIVE_RESULTS_ROOT = Path("results/retained")
+CROSSOVER_BRACKET = (0.0012, 0.0030)
 sys.path.insert(0, str(ROOT))
 os.environ.setdefault("SOURCE_DATE_EPOCH", "1786233600")
 
@@ -40,6 +42,45 @@ def read(results: Path, relative: str, inputs: set[Path]) -> pd.DataFrame:
         raise FileNotFoundError(path)
     inputs.add(path)
     return pd.read_csv(path)
+
+
+def read_revision(relative: str, inputs: set[Path]) -> pd.DataFrame:
+    """Read a small, Git-tracked revision statistic and record its lineage."""
+    path = REVISION_STATS / relative
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    inputs.add(path)
+    return pd.read_csv(path)
+
+
+def refreshed_means(relative: str, inputs: set[Path]) -> pd.DataFrame:
+    """Return corrected S-Recall means with measured pool redundancy."""
+    source = read_revision(f"table_refresh/{relative}", inputs)
+    coverage = source[source.metric.eq("S-Recall@k")][
+        ["condition", "series", "mean", "chosen_members"]
+    ].rename(columns={"mean": "S-Recall@k"})
+    redundancy = source[
+        source.metric.eq("PoolRedundancy") & source.series.eq("kNN")
+    ][["condition", "mean"]].rename(columns={"mean": "PoolRedundancy"})
+    if redundancy.empty:
+        raise ValueError(
+            f"{relative} lacks PoolRedundancy; regenerate table_refresh with "
+            "reproducibility/run_remaining_stats.py"
+        )
+    return coverage.merge(redundancy, on="condition", validate="many_to_one")
+
+
+def selected_member(series: str, members: object) -> str:
+    """Collapse seed-labelled refresh selections to the summary-table form."""
+    if not series.endswith("*"):
+        return series
+    prefix = series[:-1] + "("
+    selected = []
+    for entry in str(members).split(";"):
+        member = entry.split(":", 1)[-1]
+        if member.startswith(prefix) and member not in selected:
+            selected.append(member)
+    return ";".join(selected)
 
 
 def write_table(frame: pd.DataFrame, path: Path) -> None:
@@ -152,19 +193,31 @@ def table04(results: Path, inputs: set[Path]) -> pd.DataFrame:
 
 def table05(results: Path, inputs: set[Path]) -> pd.DataFrame:
     d = read(results, "2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_regret.csv", inputs)
+    minimax = read_revision("minimax_regret/minimax_regret.csv", inputs)
+    minimax = minimax.set_index("family")["minimax_regret_pp"].div(100)
     rows = []
     for family in ["MMR", "Maxmin", "Greedy-DPP", "RNG"]:
         a, b = d[(d.Family.eq(family)) & d.rho.eq(0)].iloc[0], d[(d.Family.eq(family)) & d.rho.eq(1)].iloc[0]
-        rows.append({"method": family, "clean_best": a.best, "clean_worst": a.worst, "heavy_best": b.best, "heavy_worst": b.worst, "max_regret": max(a["regret(worst)"], b["regret(worst)"])})
+        minimax_family = family + "*" if family in {"MMR", "RNG"} else family
+        rows.append({"method": family, "clean_best": a.best, "clean_worst": a.worst, "heavy_best": b.best, "heavy_worst": b.worst, "max_downside": max(a["regret(worst)"], b["regret(worst)"]), "minimax_regret": minimax.loc[minimax_family]})
     knn = d[d.rho.isin([0, 1])].groupby("rho").kNN.first()
     kreg = max(float(d[d.rho.eq(r)].best.max() - knn.loc[r]) for r in [0, 1])
-    rows.insert(0, {"method": "kNN", "clean_best": knn.loc[0], "clean_worst": knn.loc[0], "heavy_best": knn.loc[1], "heavy_worst": knn.loc[1], "max_regret": kreg})
+    rows.insert(0, {"method": "kNN", "clean_best": knn.loc[0], "clean_worst": knn.loc[0], "heavy_best": knn.loc[1], "heavy_worst": knn.loc[1], "max_downside": kreg, "minimax_regret": minimax.loc["kNN"]})
     return pd.DataFrame(rows)
 
 
 def table06(results: Path, inputs: set[Path]) -> pd.DataFrame:
-    d = read(results, "2026-06-24_230733_redundancy_hotpotqa_fullwiki/analysis_summary.csv", inputs)
-    return d[d.Method.isin(["kNN", "MMR*", "Maxmin", "Greedy-DPP", "RNG*"])][["rho", "PoolRedundancy", "Method", "Chosen", "S-Recall@k"]].reset_index(drop=True)
+    d = refreshed_means(
+        "2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy_level_means.csv",
+        inputs,
+    ).rename(columns={"condition": "rho", "series": "Method"})
+    d["Chosen"] = [selected_member(series, members) for series, members in
+                   zip(d.Method, d.chosen_members)]
+    methods = ["kNN", "MMR*", "Maxmin", "Greedy-DPP", "RNG*"]
+    d["Method"] = pd.Categorical(d.Method, categories=methods, ordered=True)
+    return d.sort_values(["rho", "Method"])[
+        ["rho", "PoolRedundancy", "Method", "Chosen", "S-Recall@k"]
+    ].reset_index(drop=True)
 
 
 def table07(results: Path, inputs: set[Path]) -> pd.DataFrame:
@@ -192,18 +245,18 @@ def table07(results: Path, inputs: set[Path]) -> pd.DataFrame:
 
 def table08(results: Path, inputs: set[Path]) -> pd.DataFrame:
     specs = [
-        ("HotpotQA", "2026-06-24_083656_redundancy_hotpotqa_fullwiki/analysis_summary.csv"),
-        ("2Wiki", "2026-07-23_085711_redundancy_2wikimultihopqa/analysis_summary.csv"),
-        ("MuSiQue", "2026-07-23_101022_redundancy_musique/results_chunking_summary.csv"),
-        ("SciFact", "2026-06-25_082550_redundancy_scifact/analysis_chunking_summary.csv"),
-        ("NQ-Open", "2026-06-16_094433_redundancy_nq/analysis_summary.csv"),
-        ("TREC-COVID", "2026-07-16_095435_redundancy_trec-covid/results_chunking_summary.csv"),
+        ("HotpotQA", "2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking_level_means.csv"),
+        ("2Wiki", "2026-08-07_031430_redundancy_2wikimultihopqa__chunking_level_means.csv"),
+        ("MuSiQue", "2026-08-06_164145_redundancy_musique__chunking_level_means.csv"),
+        ("SciFact", "2026-08-07_072703_redundancy_scifact__chunking_level_means.csv"),
+        ("NQ-Open", "2026-08-08_070150_redundancy_nq__chunking_level_means.csv"),
+        ("TREC-COVID", "2026-08-06_170200_redundancy_trec-covid__chunking_level_means.csv"),
     ]
     rows=[]
     for dataset,path in specs:
-        d=read(results,path,inputs); lvl=d.columns[0]
+        d=refreshed_means(path,inputs)
         for method in ["kNN","Maxmin","Greedy-DPP","MMR*","RNG*"]:
-            g=d[d.Method.eq(method)].set_index(lvl)
+            g=d[d.series.eq(method)].set_index("condition")
             rows.append({"dataset":dataset,"method":method,"redundancy_0.75":g.loc[0.75,"PoolRedundancy"],"SRecall_0":g.loc[0,"S-Recall@k"],"SRecall_0.75":g.loc[0.75,"S-Recall@k"]})
     return pd.DataFrame(rows)
 
@@ -310,27 +363,16 @@ def make_figures(results: Path, out: Path, inputs: set[Path]) -> list[Path]:
     gruns=[("HotpotQA",str(results/"2026-06-18_173800_redundancy_hotpotqa_fullwiki")),("2Wiki",str(results/"2026-06-18_121117_redundancy_2wikimultihopqa"))]
     for _,d in gruns: inputs.add(Path(d)/"analysis_generation_frozen.csv")
     plots.generation_figure(gruns,str(figdir/"figure08.pdf"),metrics=("EM",)); generated += sorted(figdir.glob("figure08*.pdf"))
-    # Figure 1: same source mapping and styling as regimes_summary_figure in
-    # the manuscript implementation (three policies on measured redundancy).
+    # Figure 1: three policies on measured redundancy, with the fixed-pool
+    # rerun's sign-change bracket rather than an interpolated point estimate.
     gate_path=results/"2026-06-24_230733_redundancy_hotpotqa_fullwiki"/"analysis_gate.csv"
     summ_path=results/"2026-06-24_230733_redundancy_hotpotqa_fullwiki"/"analysis_summary.csv"
     frozen_path=results/"frozen_rule_transfer_summary.csv"; inputs.update({gate_path,summ_path,frozen_path})
-    gate=pd.read_csv(gate_path); summ=pd.read_csv(summ_path); frozen=pd.read_csv(frozen_path)
-    gate=gate[gate.iloc[:,0].astype(str).ne("pooled")].copy(); gate["rho"]=gate.iloc[:,0].astype(float)
-    red=summ[summ.Method.eq("kNN")].set_index(summ.columns[0])["PoolRedundancy"]
-    gate["red"]=gate.rho.map(red); gate=gate.sort_values("red")
-    run_name="2026-06-24_230733_redundancy_hotpotqa_fullwiki"
-    rule=frozen[(frozen.run.eq(run_name)) & frozen.level.astype(str).ne("pooled")].copy()
-    rule["rho"]=rule.level.astype(float); rule["red"]=rule.rho.map(red); rule=rule.sort_values("red")
-    fig,ax=plots.plt.subplots(figsize=(4.9,2.9)); x=gate.red.clip(lower=0)
-    ax.plot(x,gate.kNN*100,"-s",ms=5,color=plots.GRAY,lw=1.3,label="Always k-NN")
-    ax.plot(x,gate.always_D*100,"-o",ms=5,color=plots.BLUE,lw=1.3,label="Always diversify (MMR, lambda=0.7)")
-    ax.plot(rule.red.clip(lower=0),rule.rule*100,"-D",ms=5,color=plots.RED,lw=1.3,label="Decision rule (tau=h)")
-    ax.set_xscale("symlog",linthresh=1e-4); ax.axvline(0.0011,color="black",ls=":",lw=1)
-    ax.annotate("Crossover 0.001",xy=(0.0011,0.03),xycoords=ax.get_xaxis_transform(),xytext=(3,0),textcoords="offset points",rotation=90,va="bottom",fontsize=7)
-    ax.set_xlabel("Measured near-duplicate pair fraction"); ax.set_ylabel("Retrieval coverage (S-Recall@5)")
-    ax.legend(loc="lower left",frameon=True,framealpha=.9,edgecolor=".85",fontsize=7.5); ax.spines[["top","right"]].set_visible(False)
-    fig.tight_layout(); fig.savefig(figdir/"figure01.pdf"); plots.plt.close(fig); generated.append(figdir/"figure01.pdf")
+    plots.regimes_summary_figure(
+        str(gate_path.parent), str(figdir/"figure01.pdf"),
+        frozen_csv=str(frozen_path), crossover=CROSSOVER_BRACKET,
+    )
+    generated.append(figdir/"figure01.pdf")
     return sorted(set(generated))
 
 
@@ -356,10 +398,10 @@ def main() -> None:
         ]
     elif not args.skip_figures:
         outputs += make_figures(results,out,inputs)
-    metadata={"schema_version":1,"status":"complete","scope":{"tables":12,"figures":8,"model_execution":False},"rendering_note":"All numerical cells and curves are rebuilt from retained files. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.","results_root":ARCHIVE_RESULTS_ROOT.as_posix(),"inputs":[{"path":portable_input_path(p,results),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(inputs)],"outputs":[{"path":str(p.relative_to(out)),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(set(outputs))]}
+    metadata={"schema_version":1,"status":"complete","scope":{"tables":12,"figures":8,"model_execution":False},"figure_parameters":{"figure01":{"crossover_bracket":list(CROSSOVER_BRACKET),"metric_scale":100.0}},"rendering_note":"All numerical cells and curves are rebuilt from retained files and committed revision statistics. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.","results_root":ARCHIVE_RESULTS_ROOT.as_posix(),"inputs":[{"path":portable_input_path(p,results),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(inputs)],"outputs":[{"path":str(p.relative_to(out)),"sha256":sha256(p),"bytes":p.stat().st_size} for p in sorted(set(outputs))]}
     meta=out/"metadata.json"; meta.write_text(json.dumps(metadata,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     sums=out/"SHA256SUMS"; sums.write_text("".join(f"{sha256(p)}  {p.relative_to(out)}\n" for p in sorted(set(outputs)|{meta})),encoding="utf-8")
-    print(f"Paper reconstructed: 12 tables, 8 figures; {len(inputs)} retained inputs; no model execution")
+    print(f"Paper reconstructed: 12 tables, 8 figures; {len(inputs)} checksummed inputs; no model execution")
 
 
 if __name__=="__main__": main()

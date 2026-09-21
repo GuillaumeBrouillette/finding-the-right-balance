@@ -1,8 +1,3 @@
 mixed
-table_refresh/ was computed 2026-08-26 in corrected mode, from the fixed-pool
-re-executions under results/reproducibility_reruns/
-(reproducibility/run_remaining_stats.py --source-mode corrected --only table_refresh).
-rule_transfer/, gate_budgeted/, generation_inference/, oracle_intervals/ and
-minimax_regret/ are the earlier historical-mode outputs, computed from the
-originally executed runs under results/retained/ (the runs the paper's transfer,
-oracle, regret and generation tables deliberately display).
+table_refresh/ was computed in corrected mode from the fixed-pool re-executions under results/reproducibility_reruns/. Its compact outputs include test-split metric means and measured pool redundancy; the large source reruns are distributed separately.
+rule_transfer/, gate_budgeted/, generation_inference/, oracle_intervals/ and minimax_regret/ retain historical-mode outputs from the originally executed runs under results/retained/.

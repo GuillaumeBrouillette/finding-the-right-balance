@@ -320,7 +320,8 @@ def step_table_refresh(runs: List[dict], samples: int, seed: int) -> None:
             reader = csv.DictReader(handle)
             metric_fields = [
                 f for f in (reader.fieldnames or [])
-                if f not in (condition_name, "seed", "qid", "Method") and not f.startswith("Pool")
+                if f not in (condition_name, "seed", "qid", "Method")
+                and (not f.startswith("Pool") or f == "PoolRedundancy")
                 and f not in ("OriginalPoolSize", "TransformedPoolSize", "CandidatePoolTarget",
                               "CandidatePoolSize", "PoolSizeAssertion", "RelSetSize")
             ]
@@ -367,6 +368,10 @@ def step_table_refresh(runs: List[dict], samples: int, seed: int) -> None:
                 if row is None:
                     continue
                 for metric in metric_fields:
+                    if metric == "PoolRedundancy" and series != BASELINE:
+                        # This is a condition-level pool property, not a
+                        # method metric; publish it once on the baseline row.
+                        continue
                     value = row.get(metric, "")
                     if value in ("", None):
                         continue
@@ -836,10 +841,13 @@ def main() -> None:
     if mode == "corrected" and selected == {"table_refresh"} and complementary_outputs_exist:
         source_description = (
             "mixed\n"
-            "table_refresh/ was computed from the fixed-pool re-executions under "
-            "results/reproducibility_reruns/.\n"
+            "table_refresh/ was computed in corrected mode from the fixed-pool "
+            "re-executions under results/reproducibility_reruns/. Its compact outputs "
+            "include test-split metric means and measured pool redundancy; the large "
+            "source reruns are distributed separately.\n"
             "rule_transfer/, gate_budgeted/, generation_inference/, oracle_intervals/ "
-            "and minimax_regret/ retain historical-mode outputs from results/retained/.\n"
+            "and minimax_regret/ retain historical-mode outputs from the originally "
+            "executed runs under results/retained/.\n"
         )
     elif mode == "corrected":
         source_description = "corrected\nValues computed from the fixed-pool re-executions.\n"

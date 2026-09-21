@@ -13,7 +13,7 @@ This table maps the article's reproducibility materials to their published evide
 | Statistical inference | 4,186,032 raw paired contrasts, 1,814,424 query-averaged contrasts, and 534 inferential rows in [`manifests/statistics/`](../manifests/statistics/). | All recoverable inference published; aggregate-only historical generation, ArguAna/Touché, and non-Hotpot cross-encoder cells remain descriptive. |
 | Revision-specific analyses | CPU-only launcher [`run_remaining_stats.py`](run_remaining_stats.py), 18 small CSVs under [`results/revision_stats/`](../results/revision_stats/), and explicit source provenance in [`SOURCE_MODE.txt`](../results/revision_stats/SOURCE_MODE.txt). | Corrected fixed-pool sources for table refreshes; historical displayed-run sources for rule, gate, generation, oracle, and regret quantities. |
 | Dataset descriptions | Recomputable pool and relevant-set summaries in [`dataset_stats.py`](dataset_stats.py), with the committed BEIR values in [`results/dataset_statistics.csv`](../results/dataset_statistics.csv). | The committed CSV covers SciFact, FiQA, and TREC-COVID; QA summaries require reacquiring the documented datasets. |
-| Paper reconstruction | Deterministic reconstruction of all 12 tables and all 8 figures from 56 checksummed inputs in [`manifests/paper_reconstruction/`](../manifests/paper_reconstruction/). | Complete |
+| Paper reconstruction | Deterministic reconstruction of all 12 tables and all 8 figures from 64 checksummed retained inputs and committed revision statistics in [`manifests/paper_reconstruction/`](../manifests/paper_reconstruction/). | Complete |
 
 Detailed definitions, statistical procedures, validation rules, and limitations are in [`METHODS.md`](METHODS.md).
 

@@ -14,6 +14,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# The paper reports relevance, coverage, and generation metrics on a 0--100
+# scale; analysis CSVs keep raw 0--1 values.
+METRIC_SCALE = 100.0
 BLUE = "#005AB5"
 RED = "#DC3220"
 GRAY = "#828282"
@@ -330,6 +333,77 @@ def crossover_figure(panels, out_path: str,
     _save_panels(
         [make_draw(i, t, s, single=True) for i, (t, s) in enumerate(frames)],
         [(3.0, 2.4)] * len(frames), out_path)
+
+
+def regimes_summary_figure(run_dir: str, out_path: str,
+                           frozen_csv: str | None = None,
+                           crossover: tuple[float, float] = (0.0012, 0.0030)
+                           ) -> None:
+    """Draw the three-policy summary against measured pool redundancy.
+
+    ``crossover`` is the measured-redundancy grid bracket in which tuned MMR's
+    paired effect against kNN changes sign.  It is intentionally shown as an
+    interval: no interpolated point estimate is implied.
+    """
+    gate = pd.read_csv(os.path.join(run_dir, "analysis_gate.csv"))
+    summary = pd.read_csv(os.path.join(run_dir, "analysis_summary.csv"))
+    run_name = os.path.basename(os.path.normpath(run_dir))
+    level = gate.columns[0]
+    gate = gate[gate[level].astype(str) != "pooled"].copy()
+    gate["rho"] = gate[level].astype(float)
+    summary_level = summary.columns[0]
+    redundancy = (summary[summary.Method == "kNN"]
+                  .assign(rho=lambda frame: frame[summary_level].astype(float))
+                  .set_index("rho")["PoolRedundancy"])
+    gate["red"] = gate["rho"].map(redundancy)
+    gate = gate.sort_values("red")
+    d_star = gate["D"].iloc[0]
+    match = re.match(r"^(\w+)\(([-\d.]+)\)$", d_star)
+    d_label = (rf"{match.group(1)}, $\lambda={match.group(2)}$"
+               if match else d_star)
+
+    rule = None
+    if frozen_csv and os.path.exists(frozen_csv):
+        frozen = pd.read_csv(frozen_csv)
+        frozen = frozen[(frozen["run"] == run_name)
+                        & (frozen["level"].astype(str) != "pooled")]
+        if not frozen.empty:
+            rule = (frozen.assign(
+                rho=frozen["level"].astype(float),
+                red=lambda frame: frame["rho"].map(redundancy),
+            ).sort_values("red"))
+
+    fig, ax = plt.subplots(figsize=(4.9, 2.9))
+    x = gate["red"].clip(lower=0)
+    ax.plot(x, gate["kNN"] * METRIC_SCALE, "-s", ms=5, color=GRAY,
+            lw=1.3, label="Always $k$-NN")
+    ax.plot(x, gate["always_D"] * METRIC_SCALE, "-o", ms=5, color=BLUE,
+            lw=1.3, label=f"Always diversify ({d_label})")
+    if rule is not None:
+        ax.plot(rule["red"].clip(lower=0), rule["rule"] * METRIC_SCALE,
+                "-D", ms=5, color=RED, lw=1.3,
+                label=r"Decision rule ($\tau=h$)")
+    else:
+        ax.plot(x, gate["ungated_rule"] * METRIC_SCALE, "-D", ms=5,
+                color=RED, lw=1.3, label=r"Decision rule ($\tau^*$)")
+    ax.set_xscale("symlog", linthresh=1e-4)
+    lo, hi = crossover
+    centre = (lo * hi) ** 0.5
+    ax.axvspan(lo, hi, color="black", alpha=0.07, lw=0)
+    ax.axvline(centre, color="black", ls=":", lw=1)
+    ax.annotate("Crossover bracket", xy=(hi, 0.03),
+                xycoords=ax.get_xaxis_transform(), xytext=(3, 0),
+                textcoords="offset points", rotation=90, va="bottom",
+                ha="left", fontsize=7)
+    ax.set_xlabel("Measured near-duplicate pair fraction")
+    ax.set_ylabel("Retrieval coverage (S-Recall@5)")
+    ax.legend(loc="lower left", frameon=True, framealpha=0.9,
+              edgecolor="0.85", fontsize=7.5)
+    ax.spines[["top", "right"]].set_visible(False)
+    fig.tight_layout()
+    fig.savefig(out_path)
+    plt.close(fig)
+    print(f"wrote {out_path}")
 
 
 def oracle_figure(panels, out_path: str, x_axis: str = "redundancy") -> None:

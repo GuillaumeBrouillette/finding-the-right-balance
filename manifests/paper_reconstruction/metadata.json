@@ -1,4 +1,13 @@
 {
+  "figure_parameters": {
+    "figure01": {
+      "crossover_bracket": [
+        0.0012,
+        0.003
+      ],
+      "metric_scale": 100.0
+    }
+  },
   "inputs": [
     {
       "bytes": 1381819,
@@ -279,13 +288,53 @@
       "bytes": 275,
       "path": "results/retained/qwen38_legacy_unfixed/2026-08-31_232318_redundancy_2wikimultihopqa/analysis_generation.csv",
       "sha256": "4550bc071d72d2e16d5f84955bf6d12d48e4e97f833416b2905c5970377771f4"
+    },
+    {
+      "bytes": 1077,
+      "path": "results/revision_stats/minimax_regret/minimax_regret.csv",
+      "sha256": "ec0c7d3d228d1aece1d8f7e499b050a311052792f25890149a3386cda8148558"
+    },
+    {
+      "bytes": 23257,
+      "path": "results/revision_stats/table_refresh/2026-08-06_164145_redundancy_musique__chunking_level_means.csv",
+      "sha256": "f7085e6c3cf17685019ecb13fd81ac5129dd5a158f8e6de90db95f390c949745"
+    },
+    {
+      "bytes": 23863,
+      "path": "results/revision_stats/table_refresh/2026-08-06_170200_redundancy_trec-covid__chunking_level_means.csv",
+      "sha256": "78514085f1c81e84f4c13375bc8fda27f112371d62c39555ac46f7a9b43abe76"
+    },
+    {
+      "bytes": 26094,
+      "path": "results/revision_stats/table_refresh/2026-08-07_031430_redundancy_2wikimultihopqa__chunking_level_means.csv",
+      "sha256": "dea29c44fff747f4768fded5ccea2ea4ae6e4c8c91c5402e3388196ca1cd4f80"
+    },
+    {
+      "bytes": 23213,
+      "path": "results/revision_stats/table_refresh/2026-08-07_072703_redundancy_scifact__chunking_level_means.csv",
+      "sha256": "a29dd7af9ed7ea39ee8c6faa71a047e0d081b6d725de31cc9801954abf07cec2"
+    },
+    {
+      "bytes": 26523,
+      "path": "results/revision_stats/table_refresh/2026-08-07_113533_redundancy_hotpotqa_fullwiki__chunking_level_means.csv",
+      "sha256": "800e09b8c94821b7ea207b3d296f7eeae0b2e9d36c54458c95f509654e184767"
+    },
+    {
+      "bytes": 53206,
+      "path": "results/revision_stats/table_refresh/2026-08-07_230907_redundancy_hotpotqa_fullwiki__redundancy_level_means.csv",
+      "sha256": "b5b5c4b59351d93a2ea8ee7736fbafa6a4b50909e07eff2aff59d74baf957b2c"
+    },
+    {
+      "bytes": 18777,
+      "path": "results/revision_stats/table_refresh/2026-08-08_070150_redundancy_nq__chunking_level_means.csv",
+      "sha256": "e7e23d9d9b119b74a26f8f8fa6605c3b0072d9e01449eb3834f9c8c19ea6d26b"
     }
   ],
   "outputs": [
     {
-      "bytes": 16202,
+      "bytes": 20240,
       "path": "figures/figure01.pdf",
-      "sha256": "850a741e5f5a86e8dd71be6a9fa753b0db8281249670aa49055593bf8599cad2"
+      "sha256": "145fa37bbe64ee14e92666cfda0f93212044df8feafe1649eab7b83d7c8cd0d0"
     },
     {
       "bytes": 541,
@@ -398,14 +447,14 @@
       "sha256": "e7fb6ae42a9dc3c56e9676545e694d676dfa7f27b52459fe67c10f8b142918fa"
     },
     {
-      "bytes": 319,
+      "bytes": 381,
       "path": "tables/table_05.csv",
-      "sha256": "7166ec42243357d8093579a8ea36bcaf7c6686a8dcb6946f947b9c2f6f9bdf49"
+      "sha256": "9044c3eda6a6bbe6417bea7ee6811d2dbbb3de7ca7c720c66a5d5d0ca5875481"
     },
     {
-      "bytes": 1555,
+      "bytes": 1716,
       "path": "tables/table_06.csv",
-      "sha256": "19e6bafc750d401218e99f4c754487f68e1ef325ce25ca55efe3ae88952263f4"
+      "sha256": "c7bcbb7a45eb0ddf3ca5338601b11ea4a3db48be136a7b5c3b11b599a0b45b1e"
     },
     {
       "bytes": 2274,
@@ -415,7 +464,7 @@
     {
       "bytes": 1306,
       "path": "tables/table_08.csv",
-      "sha256": "d283a725a4fbd604c7f59557a09c631d8eb4dcdc0316d3811ebb1a98a045def1"
+      "sha256": "c1cd47e6ba67eb5a3fc5e15dac88248984d381c3fb96fe36e6df0975d6deed32"
     },
     {
       "bytes": 1297,
@@ -438,7 +487,7 @@
       "sha256": "6d4a5a72f01c33d98d9883f8a1e628a75f58e870019f72c4ddb854c1b43037bc"
     }
   ],
-  "rendering_note": "All numerical cells and curves are rebuilt from retained files. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.",
+  "rendering_note": "All numerical cells and curves are rebuilt from retained files and committed revision statistics. Figures 2 and 3 are deterministic, format-equivalent TikZ geometry components; final subfigure composition remains a LaTeX presentation step.",
   "results_root": "results/retained",
   "schema_version": 1,
   "scope": {

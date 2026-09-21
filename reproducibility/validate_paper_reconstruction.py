@@ -44,9 +44,12 @@ def main() -> None:
     results = args.results.resolve()
     meta = json.loads((ARCHIVE / "metadata.json").read_text())
     assert meta["scope"] == {"figures": 8, "model_execution": False, "tables": 12}
+    assert meta["figure_parameters"]["figure01"] == {
+        "crossover_bracket": [0.0012, 0.0030], "metric_scale": 100.0,
+    }
     logical_results = Path(meta["results_root"])
     assert not logical_results.is_absolute(), "results_root must be portable"
-    assert len(meta["inputs"]) >= 50
+    assert len(meta["inputs"]) == 64
     for item in meta["inputs"]:
         logical_path = Path(item["path"])
         assert not logical_path.is_absolute(), logical_path
@@ -73,12 +76,16 @@ def main() -> None:
     close(tables[2].set_index("method").loc["kNN", "scifact:NDCG@k"], .6405, "Table 3 SciFact")
     t4 = tables[3].set_index(["dataset", "method"])
     close(t4.loc[("MuSiQue", "CE+RNG-Score"), "F1"], .3431, "Table 4 MuSiQue RNG")
-    close(tables[4].set_index("method").loc["kNN", "max_regret"], .2203, "Table 5 kNN regret")
-    close(tables[5].query("rho == 1 and Method == 'MMR*'").iloc[0]["S-Recall@k"], .7460, "Table 6 heavy MMR")
+    assert {"max_downside", "minimax_regret"}.issubset(tables[4].columns)
+    close(tables[4].set_index("method").loc["kNN", "max_downside"], .2203, "Table 5 kNN downside")
+    close(tables[4].set_index("method").loc["kNN", "minimax_regret"], .221844396, "Table 5 kNN minimax regret")
+    close(tables[4].set_index("method").loc["MMR", "minimax_regret"], .063044070, "Table 5 MMR minimax regret")
+    close(tables[5].query("rho == 0 and Method == 'kNN'").iloc[0]["S-Recall@k"], .789989119, "Table 6 clean kNN")
+    close(tables[5].query("rho == 1 and Method == 'MMR*'").iloc[0]["S-Recall@k"], .749183896, "Table 6 heavy MMR")
     t7 = tables[6].set_index(["sweep", "rho"])
     assert t7.loc[("HotpotQA bge-m3", 0.0), "published_gamma"] == "+0.2"
     assert t7.loc[("HotpotQA Qwen3", .025), "published_gamma"] == "+/-"
-    close(tables[7].query("dataset == 'TREC-COVID' and method == 'RNG*'").iloc[0]["SRecall_0.75"], .2725, "Table 8 TREC")
+    close(tables[7].query("dataset == '2Wiki' and method == 'kNN'").iloc[0]["SRecall_0.75"], .874278384, "Table 8 2Wiki kNN")
     close(tables[8].query("level == '1.0' and selector == 'rule'").iloc[0]["S-Recall@k"], .742882, "Table 9 rule")
     assert "HotpotQA bge-m3 (tuning run)" not in set(tables[9].target)
     close(tables[10].query("dataset == 'HotpotQA' and method == 'rule'").iloc[0]["rho=1:EM"], .4777, "Table 11 Qwen rule EM")

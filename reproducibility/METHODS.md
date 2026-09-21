@@ -430,7 +430,7 @@ published under [`results/revision_stats/`](../results/revision_stats/):
 
 | Output | Published contents |
 |---|---|
-| `table_refresh/` | Thirteen corrected test-split level-mean CSVs used to refresh the displayed injection and chunk-overlap sweeps |
+| `table_refresh/` | Thirteen corrected test-split level-mean CSVs, including measured pool redundancy, used to refresh the displayed injection and chunk-overlap sweeps |
 | `rule_transfer/rule_inference.csv` | Frozen-rule effects, query-clustered intervals, multiplicity-adjusted p-values, trigger rates, and improved/harmed fractions |
 | `gate_budgeted/gate_budgeted.csv` | BEIR subset of the frozen-rule analysis under the budgeted threshold |
 | `generation_inference/generation_inference.csv` | Paired EM risk differences and F1 mean differences for the two retained historical generation runs |
@@ -488,10 +488,10 @@ environment documented above. Outputs are written to
 | 2 | HotpotQA fixed rerankers and generation | Per-query injection rows + frozen split; two FLAN summaries; Qwen extension with 59,240 per-query predictions |
 | 3 | Five BEIR tasks | Two BEIR result summaries |
 | 4 | Four cross-encoder pipelines | Four cross-encoder summaries; NDCG-tuned S2-V1 rows |
-| 5 | Misspecification regret | HotpotQA `analysis_regret.csv` |
-| 6 | HotpotQA injection sweep | HotpotQA `analysis_summary.csv` |
+| 5 | Misspecification downside and minimax regret | Historical HotpotQA `analysis_regret.csv` plus `revision_stats/minimax_regret/minimax_regret.csv` |
+| 6 | Corrected HotpotQA injection sweep | August `revision_stats/table_refresh` level means and measured pool redundancy |
 | 7 | Selected RNG margins | Five per-seed sweep summaries; modal/sign rule is recomputed |
-| 8 | Chunk-overlap sweep | Six retained chunking summaries |
+| 8 | Corrected chunk-overlap sweep | Six August `revision_stats/table_refresh` level-mean CSVs |
 | 9 | Frozen decision rule | Per-query rows + frozen split for the three deployable policies; retained threshold bounds |
 | 10 | Transfer summary | Fifteen non-tuning targets in `frozen_rule_transfer_summary.csv` |
 | 11 | Answer quality under injection | Two frozen generation analyses |
@@ -506,7 +506,7 @@ recomputed from per-query rows rather than copied from tuned aggregate rows.
 
 | Paper figure | Reconstruction |
 |---|---|
-| 1 | Three-policy HotpotQA summary from gate, measured-redundancy and frozen-rule files |
+| 1 | Three-policy HotpotQA summary from gate, measured-redundancy and frozen-rule files; fixed-pool crossover bracket `[0.0012, 0.0030]` |
 | 2 | Deterministic lune and seeded RNG TikZ components |
 | 3 | Deterministic k-NN/RNG/MMR selection geometry in one TikZ asset |
 | 4 | Three-encoder HotpotQA crossover panels |
@@ -517,13 +517,14 @@ recomputed from per-query rows rather than copied from tuned aggregate rows.
 
 Figures 2 and 3 are code-generated, format-equivalent geometry assets. Their
 final subfigure framing is performed by LaTeX and contains no experimental
-data. Figures 1 and 4–8 are derived exclusively from retained per-run files.
+data. Figures 1 and 4–8 are derived from retained per-run files, with Figure
+1's crossover bracket recorded explicitly in the reconstruction metadata.
 
 ## Validation
 
 The validator verifies:
 
-- all 53 retained inputs and every output against SHA-256;
+- every retained and revision-statistics input, and every output, against SHA-256;
 - 12/12 table schemas, row counts and manuscript-value anchors;
 - 8/8 figure coverage;
 - absence of model execution in the reconstruction scope; and
