@@ -119,12 +119,22 @@ def table02(results: Path, inputs: set[Path]) -> pd.DataFrame:
     ret = pq.groupby(["seed", "Method"], as_index=False)[metrics].mean().groupby("Method")[metrics].mean()
     gen0 = read(results, "2026-06-05_200449_hotpotqa_fullwiki/results_generation.csv", inputs).set_index("Method")
     gen9 = read(results, "2026-07-28_152156_hotpotqa_fullwiki/results_generation.csv", inputs).set_index("Method")
-    qwen = read(
+    qwen_rows = read(
         results,
         "2026-09-01_191110_redundancy_hotpotqa_fullwiki/"
         "results_redundancy_gen_per_query.csv",
         inputs,
-    ).groupby("Method")[["EM", "F1"]].mean()
+    ).merge(test, on=["seed", "qid"], how="inner", validate="many_to_one")
+    expected_qwen_queries = len(test[test.seed.eq(0)])
+    qwen_counts = qwen_rows.groupby("Method").size()
+    expected_qwen_methods = {
+        "kNN", "MMR(0.3)", "MMR(0.5)", "MMR(0.7)", "MMR(0.9)",
+        "Maxmin", "Greedy-DPP", "RNG(0.2)",
+    }
+    if (set(qwen_counts.index) != expected_qwen_methods
+            or set(qwen_counts.values) != {expected_qwen_queries}):
+        raise ValueError(f"incomplete seed-0 Qwen test partition: {qwen_counts.to_dict()}")
+    qwen = qwen_rows.groupby("Method")[["EM", "F1"]].mean()
     specs = [
         ("kNN", "kNN", "kNN"), ("MMR(0.3)", "MMR(0.3)", "MMR(λ=0.3)"),
         ("MMR(0.5)", "MMR(0.5)", "MMR(λ=0.5)"), ("MMR(0.7)", "MMR(0.7)", "MMR(λ=0.7)"),

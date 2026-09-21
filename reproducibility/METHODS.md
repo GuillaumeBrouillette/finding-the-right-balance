@@ -485,7 +485,7 @@ environment documented above. Outputs are written to
 | Paper table | Reconstructed content | Retained source |
 |---|---|---|
 | 1 | Five displayed passage-title rankings | Frozen displayed rows from the retained passage export |
-| 2 | HotpotQA fixed rerankers and generation | Per-query injection rows + frozen split; two FLAN summaries; Qwen extension with 59,240 per-query predictions |
+| 2 | HotpotQA fixed rerankers and generation | Per-query injection rows + frozen split; two FLAN summaries; Qwen extension filtered from 59,240 predictions to the 5,924 seed-0 test queries |
 | 3 | Five BEIR tasks | Two BEIR result summaries |
 | 4 | Four cross-encoder pipelines | Four cross-encoder summaries; NDCG-tuned S2-V1 rows |
 | 5 | Misspecification downside and minimax regret | Historical HotpotQA `analysis_regret.csv` plus `revision_stats/minimax_regret/minimax_regret.csv` |

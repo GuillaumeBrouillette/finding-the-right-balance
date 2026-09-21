@@ -21,6 +21,41 @@ METHODS = [
 ]
 
 
+def filter_partition(rows, split_manifest, partition, split_seed):
+    """Select one frozen split partition and verify complete query coverage."""
+    with split_manifest.open(newline="", encoding="utf-8") as handle:
+        split_rows = list(csv.DictReader(handle))
+    required = {"dataset", "seed", "query_id", "partition"}
+    if not split_rows or not required.issubset(split_rows[0]):
+        present = set(split_rows[0]) if split_rows else set()
+        raise SystemExit(
+            f"Split manifest missing required columns: {sorted(required - present)}"
+        )
+    selected_list = [
+        row["query_id"] for row in split_rows
+        if int(row["seed"]) == split_seed and row["partition"] == partition
+        and row["dataset"] == "hotpotqa_fullwiki"
+    ]
+    selected = set(selected_list)
+    if not selected or len(selected) != len(selected_list):
+        raise SystemExit(
+            f"Expected unique HotpotQA query IDs for seed={split_seed}, "
+            f"partition={partition}; found {len(selected_list)} rows and "
+            f"{len(selected)} unique IDs"
+        )
+    filtered = [
+        row for row in rows
+        if int(row["seed"]) == split_seed and row["qid"] in selected
+    ]
+    present = {row["qid"] for row in filtered}
+    if present != selected:
+        raise SystemExit(
+            f"Generation rows do not cover the frozen partition: "
+            f"{len(selected - present)} missing, {len(present - selected)} unexpected"
+        )
+    return filtered, len(selected)
+
+
 def sha256(path):
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -56,7 +91,17 @@ def main():
     parser.add_argument("--run-params", required=True, type=Path)
     parser.add_argument("--output-csv", required=True, type=Path)
     parser.add_argument("--output-tex", required=True, type=Path)
+    parser.add_argument(
+        "--partition", choices=("all", "validation", "test"), default="all",
+        help="query scope to summarize; validation/test require --split-manifest",
+    )
+    parser.add_argument("--split-manifest", type=Path)
+    parser.add_argument("--split-seed", type=int, default=0)
     args = parser.parse_args()
+    if args.partition != "all" and args.split_manifest is None:
+        raise SystemExit("--split-manifest is required when --partition is not 'all'")
+    if args.partition == "all" and args.split_manifest is not None:
+        raise SystemExit("--split-manifest requires --partition validation or test")
 
     with args.run_params.open(encoding="utf-8") as handle:
         params = json.load(handle)
@@ -83,21 +128,44 @@ def main():
         raise SystemExit(f"Missing required columns: {sorted(required - set(rows[0] if rows else []))}")
 
     expected_methods = [name for name, _ in METHODS]
-    counts = Counter(row["Method"] for row in rows)
-    unexpected = sorted(set(counts) - set(expected_methods))
+    raw_counts = Counter(row["Method"] for row in rows)
+    unexpected = sorted(set(raw_counts) - set(expected_methods))
     if unexpected:
         raise SystemExit(f"Unexpected methods: {unexpected}")
-    if len(set(counts.values())) != 1 or set(counts) != set(expected_methods):
-        raise SystemExit(f"Unbalanced or missing method rows: {dict(counts)}")
-    n_queries = next(iter(counts.values()))
-    if n_queries != 7405:
-        raise SystemExit(f"Expected 7405 queries per method, found {n_queries}")
+    if (len(set(raw_counts.values())) != 1
+            or set(raw_counts) != set(expected_methods)):
+        raise SystemExit(f"Unbalanced or missing method rows: {dict(raw_counts)}")
+    raw_n_queries = next(iter(raw_counts.values()))
+    if raw_n_queries != 7405:
+        raise SystemExit(
+            f"Expected 7405 source queries per method, found {raw_n_queries}"
+        )
 
     keys = [(row["rho"], row["seed"], row["qid"], row["Method"]) for row in rows]
     if len(keys) != len(set(keys)):
         raise SystemExit("Duplicate (rho, seed, qid, Method) rows detected")
     if {float(row["rho"]) for row in rows} != {0.0} or {int(row["seed"]) for row in rows} != {0}:
         raise SystemExit("Expected only rho=0 and seed=0")
+
+    split_provenance = None
+    if args.partition != "all":
+        rows, expected_queries = filter_partition(
+            rows, args.split_manifest, args.partition, args.split_seed
+        )
+        split_provenance = (
+            f"% [split] {args.split_manifest}; SHA-256 "
+            f"{sha256(args.split_manifest)}; seed={args.split_seed}; "
+            f"partition={args.partition}."
+        )
+        scope = f"the {expected_queries:,} seed-{args.split_seed} {args.partition} queries"
+    else:
+        expected_queries = raw_n_queries
+        scope = f"all {raw_n_queries:,} queries"
+
+    counts = Counter(row["Method"] for row in rows)
+    if set(counts) != set(expected_methods) or set(counts.values()) != {expected_queries}:
+        raise SystemExit(f"Unbalanced partition method rows: {dict(counts)}")
+    n_queries = expected_queries
 
     values = defaultdict(dict)
     for method in expected_methods:
@@ -119,14 +187,19 @@ def main():
         f1 = render(values["F1"][method], decorations["F1"][method])
         body.append(f"    {label} & {em} & {f1} \\\\")
 
-    table = "\n".join([
+    provenance = [
         rf"% [provenance] {args.per_query}; SHA-256 {sha256(args.per_query)}",
         rf"% [parameters] {args.run_params}; SHA-256 {sha256(args.run_params)}",
+    ]
+    if split_provenance:
+        provenance.append(split_provenance)
+    table = "\n".join([
+        *provenance,
         rf"% Qwen revision {params['generator_revision']}; prompt {params['generator_prompt_version']}; temperature=0; top_p=1; seed=0; max_new_tokens={params['generator_max_new_tokens']}; thinking disabled.",
         r"\begin{table}[ht]",
         r"  \centering",
         r"  \small",
-        r"  \caption{Answer quality on the clean HotpotQA pools with the modern open reader \texttt{Qwen3.8-27B} (one deterministic run over all 7,405 queries). Best in bold, second best underlined.}",
+        rf"  \caption{{Answer quality on the clean HotpotQA pools with the modern open reader \texttt{{Qwen3.8-27B}} (one deterministic run over {scope}). Best in bold, second best underlined.}}",
         r"  \label{tab:rq1-qwen}",
         r"  \begin{tabular}{lcc}",
         r"    \hline",
@@ -139,7 +212,7 @@ def main():
         "",
     ])
     args.output_tex.write_text(table, encoding="utf-8")
-    print(f"Validated {len(rows)} rows ({n_queries} queries x {len(METHODS)} methods)")
+    print(f"Validated {len(rows)} rows ({n_queries} queries x {len(METHODS)} methods; {args.partition})")
     print(f"Saved: {args.output_csv}")
     print(f"Saved: {args.output_tex}")
 

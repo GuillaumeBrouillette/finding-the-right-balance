@@ -76,9 +76,16 @@ Validate and reconstruct it with:
 python reproducibility/build_qwen38_rq1_table.py \
   --per-query RUN_HOTPOT/results_redundancy_gen_per_query.csv \
   --run-params RUN_HOTPOT/run_params.json \
-  --output-csv RUN_HOTPOT/analysis_generation_rq1_qwen38.csv \
-  --output-tex RUN_HOTPOT/table_rq1_qwen38.tex
+  --split-manifest manifests/splits/hotpotqa_fullwiki.csv \
+  --partition test \
+  --split-seed 0 \
+  --output-csv RUN_HOTPOT/analysis_generation_rq1_qwen38_test.csv \
+  --output-tex RUN_HOTPOT/table_rq1_qwen38_test.tex
 ```
+
+This reports the 5,924 seed-0 test queries used by the paper's other Table 2
+columns without replacing the archived all-7,405-query audit files. Omit the
+three split arguments only when reproducing that original all-query audit.
 
 Generation CSVs are atomically checkpointed every 256 answers. Resume an
 interrupted run with `--resume_run_dir` and unchanged arguments. The builder

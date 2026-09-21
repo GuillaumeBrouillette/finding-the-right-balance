@@ -8,6 +8,7 @@ import pytest
 from experiments.evaluate_redundancy import _validate_reuse_source
 from generation.generator import OpenAICompatibleGenerator
 from ftrb.run_utils import save_csv
+from reproducibility.build_qwen38_rq1_table import filter_partition
 
 
 class _Response:
@@ -94,3 +95,22 @@ def test_save_csv_replaces_atomically_without_temp_files(tmp_path) -> None:
     with path.open(newline="", encoding="utf-8") as handle:
         assert list(csv.DictReader(handle)) == [{"qid": "q2", "value": "2"}]
     assert list(tmp_path.glob(".checkpoint.csv.*.tmp")) == []
+
+
+def test_qwen_summary_can_filter_a_frozen_partition(tmp_path) -> None:
+    manifest = tmp_path / "split.csv"
+    manifest.write_text(
+        "dataset,seed,query_id,partition\n"
+        "hotpotqa_fullwiki,0,q1,test\n"
+        "hotpotqa_fullwiki,0,q2,validation\n"
+        "hotpotqa_fullwiki,1,q1,validation\n",
+        encoding="utf-8",
+    )
+    rows = [
+        {"seed": "0", "qid": qid, "Method": method}
+        for qid in ("q1", "q2") for method in ("kNN", "RNG(0.2)")
+    ]
+    selected, n_queries = filter_partition(rows, manifest, "test", 0)
+    assert n_queries == 1
+    assert {row["qid"] for row in selected} == {"q1"}
+    assert {row["Method"] for row in selected} == {"kNN", "RNG(0.2)"}

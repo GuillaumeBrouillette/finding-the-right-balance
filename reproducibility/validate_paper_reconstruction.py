@@ -71,8 +71,20 @@ def main() -> None:
     assert tables[0].iloc[4]["RNG-Score(gamma=0)"] == "George V"
     close(tables[1].set_index("method").loc["MMR(0.3)", "S-Recall@k"], .481150, "Table 2 MMR(.3)")
     close(tables[1].set_index("method").loc["RNG-Score(0.2)", "Recall@k"], .750872, "Table 2 RNG")
-    close(tables[1].set_index("method").loc["kNN", "Qwen_EM"], .513841999, "Table 2 Qwen kNN EM")
-    close(tables[1].set_index("method").loc["RNG-Score(0.2)", "Qwen_F1"], .640625874, "Table 2 Qwen RNG F1")
+    qwen_expected = {
+        "kNN": (.507765024, .635747755),
+        "MMR(0.3)": (.364449696, .477916796),
+        "MMR(0.5)": (.416103984, .534783406),
+        "MMR(0.7)": (.475523295, .599349308),
+        "MMR(0.9)": (.502532073, .628685398),
+        "Maxmin": (.360229575, .473893130),
+        "Greedy-DPP": (.458642809, .580061209),
+        "RNG-Score(0.2)": (.509115463, .635511951),
+    }
+    table2 = tables[1].set_index("method")
+    for method, (em, f1) in qwen_expected.items():
+        close(table2.loc[method, "Qwen_EM"], em, f"Table 2 Qwen {method} EM")
+        close(table2.loc[method, "Qwen_F1"], f1, f"Table 2 Qwen {method} F1")
     close(tables[2].set_index("method").loc["kNN", "scifact:NDCG@k"], .6405, "Table 3 SciFact")
     t4 = tables[3].set_index(["dataset", "method"])
     close(t4.loc[("MuSiQue", "CE+RNG-Score"), "F1"], .3431, "Table 4 MuSiQue RNG")
