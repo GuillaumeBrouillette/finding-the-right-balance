@@ -405,6 +405,19 @@ experiments additionally report variation across seeds. The complete protocol,
 including Holm correction and query clustering, is documented in
 [`reproducibility/METHODS.md`](reproducibility/METHODS.md).
 
+Revision-specific rule, generation, oracle, regret, and refreshed-table
+statistics can be rebuilt without model inference using:
+
+```bash
+python reproducibility/run_remaining_stats.py --help
+python reproducibility/dataset_stats.py --help
+```
+
+The committed outputs are under [`results/revision_stats/`](results/revision_stats/)
+and [`results/dataset_statistics.csv`](results/dataset_statistics.csv); their
+mixed corrected/historical source lineage is documented in
+[`results/revision_stats/SOURCE_MODE.txt`](results/revision_stats/SOURCE_MODE.txt).
+
 ## Project structure
 
 ```text

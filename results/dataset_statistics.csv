@@ -1,0 +1,4 @@
+dataset,split,n_queries,pool_mean,pool_median,pool_min,pool_p05,pool_p95,pool_max,rel_mean,rel_median,rel_min,rel_p05,rel_p95,rel_max,rel_frac_exactly_one,paper_claim
+scifact,test,300,,,,,,,1.13,1.0,1,1.0,2.0,5,0.9233,92% of queries have exactly one relevant document
+fiqa,test,648,,,,,,,2.633,2.0,1,1.0,7.0,15,0.3395,typically two to three relevant documents
+trec-covid,test,50,,,,,,,493.46,478.0,111,176.5,863.9,1266,0.0,mean 493 relevant documents per query

@@ -71,6 +71,9 @@ python reproducibility/create_execution_artifacts.py
 /usr/bin/python3 reproducibility/validate_execution_artifacts.py
 python reproducibility/create_statistical_archive.py --workers 3 --bootstrap-samples 1999
 python reproducibility/validate_statistical_archive.py
+python reproducibility/run_remaining_stats.py --source-mode historical --only rule_transfer,generation_inference,oracle_minimax
+python reproducibility/run_remaining_stats.py --source-mode corrected --only table_refresh
+python reproducibility/dataset_stats.py
 python reproducibility/reconstruct_paper.py
 python reproducibility/validate_paper_reconstruction.py
 python reproducibility/create_qwen38_manifest.py
@@ -164,6 +167,35 @@ sweeps. The analysis uses frozen validation/test splits, validation-selected
 S-Recall, query-cluster bootstrap confidence intervals, raw p-values, and
 Holm-adjusted p-values. Historical aggregate-only result families are clearly
 identified rather than assigned unrecoverable query-level statistics.
+
+## Revision-specific statistics and dataset descriptions
+
+[`run_remaining_stats.py`](run_remaining_stats.py) publishes the additional
+CPU-only calculations introduced during manuscript revision. Its small outputs
+are committed under [`results/revision_stats/`](../results/revision_stats/):
+corrected test-set level means, frozen-rule and budgeted-gate inference,
+retained generation contrasts, oracle intervals, and minimax regret. The
+committed [`SOURCE_MODE.txt`](../results/revision_stats/SOURCE_MODE.txt) records
+that table refreshes use the fixed-pool re-executions while the remaining
+quantities use the historical runs displayed by the paper.
+
+Reproduce the same two-source arrangement in this order:
+
+```bash
+python reproducibility/run_remaining_stats.py \
+  --source-mode historical \
+  --only rule_transfer,generation_inference,oracle_minimax
+python reproducibility/run_remaining_stats.py \
+  --source-mode corrected \
+  --only table_refresh
+```
+
+[`dataset_stats.py`](dataset_stats.py) recomputes the pool-size and
+relevant-set summaries discussed in Section 5.2. It writes
+[`results/dataset_statistics.csv`](../results/dataset_statistics.csv). The
+committed CSV contains the three inexpensive BEIR qrel summaries; running the
+script without `--datasets` also attempts the QA datasets and may download
+their source data on first use.
 
 ## Table and figure reconstruction
 

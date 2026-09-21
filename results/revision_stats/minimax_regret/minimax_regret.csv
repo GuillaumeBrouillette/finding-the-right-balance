@@ -1,0 +1,6 @@
+run,family,minimax_regret_pp,argmin_member,ci95_lo_pp,ci95_hi_pp,regimes,action_library
+2026-06-24_230733_redundancy_hotpotqa_fullwiki__redundancy,kNN,22.184439608269802,kNN,21.55870284729777,22.769314472252457,rho=0 vs rho=1,kNN + all displayed-family grid members (Seg excluded)
+2026-06-24_230733_redundancy_hotpotqa_fullwiki__redundancy,Greedy-DPP,10.04488574537541,Greedy-DPP,9.56168389553862,10.616158868335146,rho=0 vs rho=1,kNN + all displayed-family grid members (Seg excluded)
+2026-06-24_230733_redundancy_hotpotqa_fullwiki__redundancy,MMR*,6.304406964091402,MMR(0.7),5.869151251360182,6.800870511425461,rho=0 vs rho=1,kNN + all displayed-family grid members (Seg excluded)
+2026-06-24_230733_redundancy_hotpotqa_fullwiki__redundancy,Maxmin,33.58269858541894,Maxmin,32.92947497279652,34.28352829162133,rho=0 vs rho=1,kNN + all displayed-family grid members (Seg excluded)
+2026-06-24_230733_redundancy_hotpotqa_fullwiki__redundancy,RNG*,9.454343489299955,RNG(-0.2),8.871678908233577,9.99846980413496,rho=0 vs rho=1,kNN + all displayed-family grid members (Seg excluded)
